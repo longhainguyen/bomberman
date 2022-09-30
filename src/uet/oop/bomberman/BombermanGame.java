@@ -1,12 +1,17 @@
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
@@ -15,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
+    private static Bomber player;
 
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
@@ -58,8 +64,51 @@ public class BombermanGame extends Application {
         createMap();
         creatMap2("res/levels/Level1.txt");
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+        //set event for player
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case UP:
+                        player.setGoUp(true);
+                        break;
+                    case DOWN:
+                        player.setGoDown(true);
+                        break;
+                    case RIGHT:
+                        player.setGoRight(true);
+                        break;
+                    case LEFT:
+                        player.setGoLeft(true);
+                        break;
+                }
+            }
+        });
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case UP:
+                        player.setGoUp(false);
+                        break;
+                    case DOWN:
+                        player.setGoDown(false);
+                        break;
+                    case RIGHT:
+                        player.setGoRight(false);
+                        break;
+                    case LEFT:
+                        player.setGoLeft(false);
+                        break;
+                }
+            }
+        });
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+            player.animate++;
+            player.move();
+        }));
+        timeline.setCycleCount(-1);
+        timeline.play();
     }
 
     public void createMap() {
@@ -94,6 +143,7 @@ public class BombermanGame extends Application {
                         break;
                     case "p":
                         object = new Bomber(j, i, Sprite.player_right.getFxImage());
+                        player = (Bomber) object;
                         break;
                     case "1":
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
@@ -115,7 +165,8 @@ public class BombermanGame extends Application {
                 }
                 if(object.getClass().equals(Wall.class)
                         || object.getClass().equals(Brick.class)
-                        ||object.getClass().equals(Portal.class)) {
+                        ||object.getClass().equals(Portal.class)
+                        || object.getClass().equals(Grass.class)) {
                     stillObjects.add(object);
                 }else {
                     entities.add(object);

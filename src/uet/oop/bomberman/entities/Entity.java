@@ -8,6 +8,44 @@ import javafx.scene.paint.Color;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
+    protected static final int SPEED = 5;
+    protected boolean goUp;
+    protected boolean goDown;
+    protected boolean goLeft;
+    protected boolean goRight;
+
+    public boolean isGoUp() {
+        return goUp;
+    }
+
+    public void setGoUp(boolean goUp) {
+        this.goUp = goUp;
+    }
+
+    public boolean isGoDown() {
+        return goDown;
+    }
+
+    public void setGoDown(boolean goDown) {
+        this.goDown = goDown;
+    }
+
+    public boolean isGoLeft() {
+        return goLeft;
+    }
+
+    public void setGoLeft(boolean goLeft) {
+        this.goLeft = goLeft;
+    }
+
+    public boolean isGoRight() {
+        return goRight;
+    }
+
+    public void setGoRight(boolean goRight) {
+        this.goRight = goRight;
+    }
+
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
 
@@ -51,4 +89,6 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
+
+    public void move(){}
 }

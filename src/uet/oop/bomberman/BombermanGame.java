@@ -7,10 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
 
@@ -59,6 +56,7 @@ public class BombermanGame extends Application {
         timer.start();
 
         createMap();
+        creatMap2("res/levels/Level1.txt");
 
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         entities.add(bomberman);
@@ -74,6 +72,54 @@ public class BombermanGame extends Application {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 stillObjects.add(object);
+            }
+        }
+    }
+
+    public void creatMap2(String fileName) {
+        Map map = new Map();
+        map.setAndGetMapCode(fileName);
+        for (int i = 0; i < map.row; i++) {
+            for (int j = 0; j < map.col; j++) {
+                Entity object;
+                switch (map.mapCode[i][j]) {
+                    case "#":
+                        object = new Wall(j, i, Sprite.wall.getFxImage());
+                        break;
+                    case "*":
+                        object = new Brick(j, i, Sprite.brick_exploded.getFxImage());
+                        break;
+                    case "x":
+                        object = new Portal(j, i, Sprite.portal.getFxImage());
+                        break;
+                    case "p":
+                        object = new Bomber(j, i, Sprite.player_right.getFxImage());
+                        break;
+                    case "1":
+                        object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        break;
+                    case "2":
+                        object = new Balloon(j, i, Sprite.oneal_right1.getFxImage());
+                        break;
+                    case "b":
+                        object = new Bomb(j ,i, Sprite.bomb_exploded.getFxImage());
+                        break;
+                    case "f":
+                        object = new Flame(j, i, Sprite.powerup_flames.getFxImage());
+                        break;
+                    case "s":
+                        object = new Speed(j, i, Sprite.powerup_speed.getFxImage());
+                        break;
+                    default:
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                }
+                if(object.getClass().equals(Wall.class)
+                        || object.getClass().equals(Brick.class)
+                        ||object.getClass().equals(Portal.class)) {
+                    stillObjects.add(object);
+                }else {
+                    entities.add(object);
+                }
             }
         }
     }

@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
-    private static Bomber player;
 
+    public Bomber player = new Bomber(1 , 1, Sprite.player_right.getFxImage()) ;
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
 
@@ -30,6 +30,7 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
+    private Map mapGame = new Map();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -61,9 +62,10 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
+        //entities.add(player);
         createMap();
-        creatMap2("res/levels/Level1.txt");
-
+       // creatMap2("res/levels/Level1.txt");
+        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
         //set event for player
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -125,7 +127,7 @@ public class BombermanGame extends Application {
         }
     }
 
-    public void creatMap2(String fileName) {
+   /* public void creatMap2(String fileName) {
         Map map = new Map();
         map.setAndGetMapCode(fileName);
         for (int i = 0; i < map.row; i++) {
@@ -152,7 +154,7 @@ public class BombermanGame extends Application {
                         object = new Balloon(j, i, Sprite.oneal_right1.getFxImage());
                         break;
                     case "b":
-                        object = new Bomb(j ,i, Sprite.bomb_exploded.getFxImage());
+                        object = new Bomb(j, i, Sprite.bomb_exploded.getFxImage());
                         break;
                     case "f":
                         object = new Flame(j, i, Sprite.powerup_flames.getFxImage());
@@ -163,18 +165,17 @@ public class BombermanGame extends Application {
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                 }
-                if(object.getClass().equals(Wall.class)
+                if (object.getClass().equals(Wall.class)
                         || object.getClass().equals(Brick.class)
-                        ||object.getClass().equals(Portal.class)
+                        || object.getClass().equals(Portal.class)
                         || object.getClass().equals(Grass.class)) {
                     stillObjects.add(object);
-                }else {
+                } else {
                     entities.add(object);
                 }
             }
         }
-    }
-
+    }*/
     public void update() {
         entities.forEach(Entity::update);
     }

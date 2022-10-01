@@ -21,7 +21,9 @@ public class Bomber extends Entity {
         super( x, y, img);
         this.image_current = img;
     }
-
+   /* public void setBomber(Bomber other){
+        this = other;
+    }*/
     @Override
     public void update() {
 

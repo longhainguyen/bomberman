@@ -1,9 +1,11 @@
 package uet.oop.bomberman.maps;
 
+import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.graphics.Sprite;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
@@ -37,4 +39,57 @@ public class Map {
             }
         }
     }
+
+    public void creatMap2(String fileName, List<Entity> entities
+            , List<Entity> stillObjects, Bomber player) {
+        setAndGetMapCode(fileName);
+        for (int i = 0; i < this.row; i++) {
+            for (int j = 0; j < this.col; j++) {
+                Entity object;
+                switch (this.mapCode[i][j]) {
+                    case "#":
+                        object = new Wall(j, i, Sprite.wall.getFxImage());
+                        break;
+                    case "*":
+                        object = new Brick(j, i, Sprite.brick_exploded.getFxImage());
+                        break;
+                    case "x":
+                        object = new Portal(j, i, Sprite.portal.getFxImage());
+                        break;
+                    case "p":
+                        player.setX(j * 32);
+                        player.setY(i * 32);
+                        player.setImg(Sprite.player_right.getFxImage());
+                        object = player;
+                        break;
+                    case "1":
+                        object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        break;
+                    case "2":
+                        object = new Balloon(j, i, Sprite.oneal_right1.getFxImage());
+                        break;
+                    case "b":
+                        object = new Bomb(j, i, Sprite.bomb_exploded.getFxImage());
+                        break;
+                    case "f":
+                        object = new Flame(j, i, Sprite.powerup_flames.getFxImage());
+                        break;
+                    case "s":
+                        object = new Speed(j, i, Sprite.powerup_speed.getFxImage());
+                        break;
+                    default:
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                }
+                if (object.getClass().equals(Wall.class)
+                        || object.getClass().equals(Brick.class)
+                        || object.getClass().equals(Portal.class)
+                        || object.getClass().equals(Grass.class)) {
+                    stillObjects.add(object);
+                } else {
+                    entities.add(object);
+                }
+            }
+        }
+    }
+
 }

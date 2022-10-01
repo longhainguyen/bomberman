@@ -39,13 +39,14 @@ public class Map {
             }
         }
     }
-
+// Set map and character
     public void creatMap2(String fileName, List<Entity> entities
             , List<Entity> stillObjects, Bomber player) {
         setAndGetMapCode(fileName);
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
                 Entity object;
+                Entity grass;
                 switch (this.mapCode[i][j]) {
                     case "#":
                         object = new Wall(j, i, Sprite.wall.getFxImage());
@@ -55,18 +56,24 @@ public class Map {
                         break;
                     case "x":
                         object = new Portal(j, i, Sprite.portal.getFxImage());
+                        grass = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(grass);
                         break;
                     case "p":
-                        player.setX(j * 32);
-                        player.setY(i * 32);
-                        player.setImg(Sprite.player_right.getFxImage());
+                        player.setBomber(j, i, Sprite.player_right.getFxImage());
                         object = player;
+                        grass = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(grass);
                         break;
                     case "1":
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        grass = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(grass);
                         break;
                     case "2":
                         object = new Balloon(j, i, Sprite.oneal_right1.getFxImage());
+                        grass = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(grass);
                         break;
                     case "b":
                         object = new Bomb(j, i, Sprite.bomb_exploded.getFxImage());

@@ -1,9 +1,8 @@
 package uet.oop.bomberman.collisions;
 
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
+import uet.oop.bomberman.entities.*;
 
+import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,9 @@ public class Collision {
 
     public void setRectCollisions(List<Entity> stillObjects) {
         for (int i = 0; i < stillObjects.size(); i++) {
-            if (!stillObjects.get(i).getClass().equals(Grass.class)) {
+            if (!((stillObjects.get(i).getClass().equals(Grass.class))
+                    || stillObjects.get(i).getClass().equals(Portal.class)
+                    || stillObjects.get(i).getClass().equals(Flame.class))) {
                 Entity object = stillObjects.get(i);
                 collisions.add(new Rect(object.getX(), object.getY(), width, height));
             }

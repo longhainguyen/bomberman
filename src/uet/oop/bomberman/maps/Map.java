@@ -90,7 +90,8 @@ public class Map {
                 if (object.getClass().equals(Wall.class)
                         || object.getClass().equals(Brick.class)
                         || object.getClass().equals(Portal.class)
-                        || object.getClass().equals(Grass.class)) {
+                        || object.getClass().equals(Grass.class)
+                        || object.getClass().equals(Flame.class)) {
                     stillObjects.add(object);
                 } else {
                     entities.add(object);

@@ -23,6 +23,7 @@ public class Bomber extends Entity {
     private static final int vec_bom = 5;
     private static final int width = 21;
     private static final int height = 32;
+
     private Collision Bomber_collision = new Collision();
     private Rect Bomber_rect;
     public Bomber(int x, int y, Image img) {
@@ -54,7 +55,7 @@ public class Bomber extends Entity {
     public void move() {
         //Bomber_rect.getInfo();
         //System.out.println(x + " " + y + " Rect: " + Bomber_rect.getX() + " " + Bomber_rect.getY());
-        if (animate > 2) {
+        if (animate > 6) {
             animate = 0;
         }
         if (goUp && animate > 0) {

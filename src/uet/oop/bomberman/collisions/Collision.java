@@ -20,7 +20,6 @@ public class Collision {
                 collisions.add(new Rect(object.getX(), object.getY(), width, height));
             }
         }
-        System.out.println(collisions.size());
     }
 
     public boolean checkCollisions(Rect playerRect) {

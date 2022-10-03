@@ -68,6 +68,6 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-
+        this.move();
     }
 }

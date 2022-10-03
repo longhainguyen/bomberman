@@ -56,14 +56,14 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
-        AnimationTimer timer = new AnimationTimer() {
+        /*AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 render();
                 update();
             }
         };
-        timer.start();
+        timer.start();*/
         //createMap();
         // creatMap2("res/levels/Level1.txt");
         mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
@@ -116,19 +116,18 @@ public class BombermanGame extends Application {
                 }
             }
         });
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {
-            player.animate++;
-            player.move();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
+            render();
+            update();
         }));
         timeline.setCycleCount(-1);
         timeline.play();
 
         Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(250), e -> {
-            bomb.move();
+
             bomb.setBomb_frame(bomb.getBomb_frame() + 1);
             if (bomb.isGo()) {
                 bomb.setExplosion_time(bomb.getExplosion_time() + 1);
-                System.out.println(bomb.getExplosion_time());
             }
             if (bomb.getExplosion_time() >= 10) {
                 for (int i = 0; i < entities.size(); i++) {
@@ -140,6 +139,8 @@ public class BombermanGame extends Application {
                     }
                 }
             }
+            /*render();
+            update();*/
         }));
         timebomb.setCycleCount(-1);
         timebomb.play();

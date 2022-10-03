@@ -64,7 +64,7 @@ public class BombermanGame extends Application {
 //            }
 //        };
 //        timer.start();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), e -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             update();
         }));

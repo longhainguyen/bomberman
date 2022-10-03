@@ -19,6 +19,8 @@ public class Bomber extends Entity {
     public int posXInMap;
     public int posYInMap;
 
+    private int animation_time = 9;
+
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         this.image_current = img;
@@ -34,7 +36,7 @@ public class Bomber extends Entity {
     @Override
     public void move() {
         this.animate++;
-        if (animate > 2) {
+        if (animate > animation_time - 1) {
             animate = 0;
         }
         if (goUp && animate > 0) {
@@ -50,7 +52,7 @@ public class Bomber extends Entity {
             }
             y -= SPEED;
             Image image_bomberman_move_up = Sprite.movingSprite(Sprite.player_up,
-                    Sprite.player_up_1, Sprite.player_up_2, animate, 3).getFxImage();
+                    Sprite.player_up_1, Sprite.player_up_2, animate, animation_time).getFxImage();
             image_current = Sprite.player_up.getFxImage();
             this.setImg(image_bomberman_move_up);
         }
@@ -67,7 +69,7 @@ public class Bomber extends Entity {
             }
             y += SPEED;
             Image image_bomberman_move_down = Sprite.movingSprite(Sprite.player_down,
-                    Sprite.player_down_1, Sprite.player_down_2, animate, 3).getFxImage();
+                    Sprite.player_down_1, Sprite.player_down_2, animate, animation_time).getFxImage();
             image_current = Sprite.player_down.getFxImage();
             this.setImg(image_bomberman_move_down);
         }
@@ -85,7 +87,7 @@ public class Bomber extends Entity {
             x -= SPEED;
 
             Image image_bomberman_move_left = Sprite.movingSprite(Sprite.player_left,
-                    Sprite.player_left_1, Sprite.player_left_2, animate, 3).getFxImage();
+                    Sprite.player_left_1, Sprite.player_left_2, animate, animation_time).getFxImage();
             image_current = Sprite.player_left.getFxImage();
             this.setImg(image_bomberman_move_left);
         }
@@ -104,7 +106,7 @@ public class Bomber extends Entity {
             x += SPEED;
 
             Image image_bomberman_move_right = Sprite.movingSprite(Sprite.player_right,
-                    Sprite.player_right_1, Sprite.player_right_2, animate, 3).getFxImage();
+                    Sprite.player_right_1, Sprite.player_right_2, animate, animation_time).getFxImage();
             image_current = Sprite.player_right.getFxImage();
             this.setImg(image_bomberman_move_right);
         }

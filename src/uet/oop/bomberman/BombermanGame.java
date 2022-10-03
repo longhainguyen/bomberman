@@ -1,31 +1,39 @@
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import javafx.util.Duration;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.maps.Map;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
-    
+
+    public Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
-    
+
+    public static final int WINDOW_WIDTH = WIDTH * Sprite.SCALED_SIZE;
+    public static final int WINDOW_HEIGHT = HEIGHT * Sprite.SCALED_SIZE;
+
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
+    private Map mapGame = new Map();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -48,19 +56,70 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
-        AnimationTimer timer = new AnimationTimer() {
+//        AnimationTimer timer = new AnimationTimer() {
+//            @Override
+//            public void handle(long l) {
+//                render();
+//                update();
+//            }
+//        };
+//        timer.start();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
+            render();
+            update();
+        }));
+        timeline.setCycleCount(-1);
+        timeline.play();
+
+        mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
+
+        //set event for player
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(long l) {
-                render();
-                update();
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case UP:
+                        player.setGoUp(true);
+                        Map.goDown = true;
+                        break;
+                    case DOWN:
+                        player.setGoDown(true);
+                        Map.goUp = true;
+                        break;
+                    case RIGHT:
+                        player.setGoRight(true);
+                        Map.goLeft = true;
+                        break;
+                    case LEFT:
+                        player.setGoLeft(true);
+                        Map.goRight = true;
+                        break;
+                }
             }
-        };
-        timer.start();
-
-        createMap();
-
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+        });
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case UP:
+                        player.setGoUp(false);
+                        Map.goDown = false;
+                        break;
+                    case DOWN:
+                        player.setGoDown(false);
+                        Map.goUp = false;
+                        break;
+                    case RIGHT:
+                        player.setGoRight(false);
+                        Map.goLeft = false;
+                        break;
+                    case LEFT:
+                        player.setGoLeft(false);
+                        Map.goRight = false;
+                        break;
+                }
+            }
+        });
     }
 
     public void createMap() {
@@ -69,8 +128,7 @@ public class BombermanGame extends Application {
                 Entity object;
                 if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
+                } else {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 stillObjects.add(object);
@@ -80,6 +138,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        mapGame.update();
     }
 
     public void render() {

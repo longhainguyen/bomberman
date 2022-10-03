@@ -1,5 +1,6 @@
 package uet.oop.bomberman.maps;
 
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -56,13 +57,17 @@ public class Map {
         }
     }
 
+
     /**
      * Create entity of map and initialization for stillEntity, entitiesEntity of map.
-     * @param fileName file name
-     * @param entities entities
+     *
+     * @param fileName     file name
+     * @param entities     entities
      * @param stillObjects stillObjects
-     * @param player player
+     * @param player       player
      */
+
+// Set map and character
     public void creatMap2(String fileName, List<Entity> entities
             , List<Entity> stillObjects, Bomber player) {
         setAndGetMapCode(fileName);
@@ -70,9 +75,11 @@ public class Map {
             for (int j = 0; j < this.col; j++) {
                 Entity object;
                 Entity grass;
+
                 /*
                         At positions where the frame is not "Wall", we will creat an addition Grass's frame below it.
                  */
+
                 switch (this.mapCode[i][j]) {
                     case "#":
                         object = new Wall(j, i, Sprite.wall.getFxImage());
@@ -90,12 +97,11 @@ public class Map {
                         object = new Portal(j, i, Sprite.portal.getFxImage());
                         break;
                     case "p":
+
                         grass = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(grass);
                         stillEntity.add(grass);
-                        player.setX(j * Sprite.SCALED_SIZE);
-                        player.setY(i * Sprite.SCALED_SIZE);
-                        player.setImg(Sprite.player_right.getFxImage());
+                        player.setBomber(j, i, Sprite.player_right.getFxImage());
                         object = player;
                         break;
                     case "1":
@@ -134,7 +140,8 @@ public class Map {
                 if (object.getClass().equals(Wall.class)
                         || object.getClass().equals(Brick.class)
                         || object.getClass().equals(Portal.class)
-                        || object.getClass().equals(Grass.class)) {
+                        || object.getClass().equals(Grass.class)
+                        || object.getClass().equals(Flame.class)) {
                     stillObjects.add(object);
                     stillEntity.add(object);
                 } else {
@@ -150,19 +157,22 @@ public class Map {
      * Update Map when player move.
      */
     public void update() {
-        if (goRight) {
-            distanceX();
+        if (Map.widthOfMap > BombermanGame.WINDOW_WIDTH) {
+            if (goRight) {
+                distanceX();
+            }
+            if (goLeft) {
+                distanceX();
+            }
         }
-        if (goLeft) {
-            distanceX();
+        if (Map.heightOfMap > BombermanGame.WINDOW_HEIGHT) {
+            if (goUp) {
+                distanceY();
+            }
+            if (goDown) {
+                distanceY();
+            }
         }
-        if (goUp) {
-            distanceY();
-        }
-        if (goDown) {
-            distanceY();
-        }
-
     }
 
     /**

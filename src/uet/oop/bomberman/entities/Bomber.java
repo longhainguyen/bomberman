@@ -9,8 +9,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.collisions.Collision;
+import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
+
+import java.util.List;
 
 public class Bomber extends Entity {
     private Image image_current;
@@ -19,28 +23,74 @@ public class Bomber extends Entity {
     public int posXInMap;
     public int posYInMap;
 
+//    private int animation_time = 9;
+
+//    public Bomber(int x, int y, Image img) {
+//            super(x, y, img);
+//            this.image_current = img;
+//            posXInMap = x * Sprite.SCALED_SIZE;
+//            posYInMap = y * Sprite.SCALED_SIZE;
+//    }
+
+    private int posX;
+    private int posY;
+    private static final int vec_bom = 5;
+    private static final int width = 21;
+    private static final int height = 32;
+
     private int animation_time = 9;
+    private Collision Bomber_collision = new Collision();
+    private Rect Bomber_rect;
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         this.image_current = img;
+        Bomber_rect = new Rect(x * width, y * height, width, height);
         posXInMap = x * Sprite.SCALED_SIZE;
         posYInMap = y * Sprite.SCALED_SIZE;
+    }
+
+    public void setBomber(int x, int y, Image img) {
+        this.x = x * 32;
+        this.y = y * 32;
+        this.img = img;
+        Bomber_rect = new Rect(x * 32, y * height, width, height);
+    }
+
+    public Collision getBomber_collision() {
+        return Bomber_collision;
+    }
+
+    public void setBomberRectCollisions(List<Entity> stillObjects) {
+        Bomber_collision.setRectCollisions(stillObjects);
     }
 
     @Override
     public void update() {
         this.move();
+        Bomber_collision.update(Map.stillEntity);
     }
 
     @Override
     public void move() {
+        //System.out.println(this.getX());
+        // this.animate++;
+        //if (animate > animation_time - 1) {
+        //Bomber_rect.getInfo();
+        //System.out.println(x + " " + y + " Rect: " + Bomber_rect.getX() + " " + Bomber_rect.getY());
         this.animate++;
         if (animate > animation_time - 1) {
             animate = 0;
         }
         if (goUp && animate > 0) {
             posYInMap -= SPEED;
+            y -= SPEED;
+            Bomber_rect.setY(y);
+            if (Bomber_collision.checkCollisions(Bomber_rect)) {
+                y += SPEED;
+                posYInMap += SPEED;
+            }
+            Bomber_rect.setY(y);
             if (posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
                     && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                 y += SPEED;
@@ -50,7 +100,8 @@ public class Bomber extends Entity {
             } else if (posYInMap > Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                 Map.mapStartY = BombermanGame.WINDOW_HEIGHT - Map.heightOfMap;
             }
-            y -= SPEED;
+
+
             Image image_bomberman_move_up = Sprite.movingSprite(Sprite.player_up,
                     Sprite.player_up_1, Sprite.player_up_2, animate, animation_time).getFxImage();
             image_current = Sprite.player_up.getFxImage();
@@ -58,6 +109,13 @@ public class Bomber extends Entity {
         }
         if (goDown && animate > 0) {
             posYInMap += SPEED;
+            y += SPEED;
+            Bomber_rect.setY(y);
+            if (Bomber_collision.checkCollisions(Bomber_rect)) {
+                y -= SPEED;
+                posYInMap -= SPEED;
+            }
+            Bomber_rect.setY(y);
             if (posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
                     && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                 y -= SPEED;
@@ -67,7 +125,8 @@ public class Bomber extends Entity {
             } else if (posYInMap < BombermanGame.WINDOW_HEIGHT / 2) {
                 Map.mapStartY = 0;
             }
-            y += SPEED;
+
+
             Image image_bomberman_move_down = Sprite.movingSprite(Sprite.player_down,
                     Sprite.player_down_1, Sprite.player_down_2, animate, animation_time).getFxImage();
             image_current = Sprite.player_down.getFxImage();
@@ -75,6 +134,13 @@ public class Bomber extends Entity {
         }
         if (goLeft && animate > 0) {
             posXInMap -= SPEED;
+            x -= SPEED;
+            Bomber_rect.setX(x);
+            if (Bomber_collision.checkCollisions(Bomber_rect)) {
+                x += SPEED;
+                posXInMap += SPEED;
+            }
+            Bomber_rect.setX(x);
             if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                 x += SPEED;
@@ -84,7 +150,7 @@ public class Bomber extends Entity {
             } else if (posXInMap > Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                 Map.mapStartX = BombermanGame.WINDOW_WIDTH - Map.widthOfMap;
             }
-            x -= SPEED;
+
 
             Image image_bomberman_move_left = Sprite.movingSprite(Sprite.player_left,
                     Sprite.player_left_1, Sprite.player_left_2, animate, animation_time).getFxImage();
@@ -93,7 +159,14 @@ public class Bomber extends Entity {
         }
         if (goRight && animate > 0) {
             posXInMap += SPEED;
-
+            x += SPEED;
+            Bomber_rect.setX(x);
+            if (Bomber_collision.checkCollisions(Bomber_rect)) {
+                x -= SPEED;
+                posXInMap -= SPEED;
+            }
+            Bomber_rect.setX(x);
+            System.out.println("it worked");
             if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                 x -= SPEED;
@@ -103,7 +176,7 @@ public class Bomber extends Entity {
             } else if (posXInMap < BombermanGame.WINDOW_WIDTH / 2) {
                 Map.mapStartX = 0;
             }
-            x += SPEED;
+
 
             Image image_bomberman_move_right = Sprite.movingSprite(Sprite.player_right,
                     Sprite.player_right_1, Sprite.player_right_2, animate, animation_time).getFxImage();
@@ -118,5 +191,6 @@ public class Bomber extends Entity {
             Map.goDown = false;
             this.setImg(image_current);
         }
+
     }
 }

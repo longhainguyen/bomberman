@@ -21,12 +21,16 @@ import java.util.List;
 
 public class BombermanGame extends Application {
 
-    public Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
+    private Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
 
     public static final int WINDOW_WIDTH = WIDTH * Sprite.SCALED_SIZE;
     public static final int WINDOW_HEIGHT = HEIGHT * Sprite.SCALED_SIZE;
+
+    private Bomb bomb = new Bomb(player.getX() / Sprite.SCALED_SIZE, player.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
+
+    public static final int bomb_max = 1;
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -56,6 +60,7 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+
 //        AnimationTimer timer = new AnimationTimer() {
 //            @Override
 //            public void handle(long l) {
@@ -70,8 +75,31 @@ public class BombermanGame extends Application {
         }));
         timeline.setCycleCount(-1);
         timeline.play();
+        Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(250), e -> {
 
-        mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
+            bomb.setBomb_frame(bomb.getBomb_frame() + 1);
+            if (bomb.isGo()) {
+                bomb.setExplosion_time(bomb.getExplosion_time() + 1);
+            }
+            if (bomb.getExplosion_time() >= 10) {
+                for (int i = 0; i < entities.size(); i++) {
+                    if (entities.get(i) instanceof Bomb) {
+                        entities.remove(i);
+                        bomb.setBomb_number(bomb.getBomb_number() - 1);
+                        bomb.setExplosion_time(0);
+                        bomb.setGo(false);
+                    }
+                }
+            }
+            /*render();
+            update();*/
+        }));
+        timebomb.setCycleCount(-1);
+        timebomb.play();
+
+       // mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
+        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
+        player.setBomberRectCollisions(stillObjects);
 
         //set event for player
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -94,6 +122,14 @@ public class BombermanGame extends Application {
                         player.setGoLeft(true);
                         Map.goRight = true;
                         break;
+                    case SPACE:
+                        if (bomb.getBomb_number() < bomb_max) {
+                            bomb.setGo(true);
+                            bomb.setBomb(player.getX(), player.getY(), Sprite.bomb.getFxImage());
+                            bomb.setBomb_number(bomb.getBomb_number() + 1);
+                            entities.add(bomb);
+                        }
+                        break;
                 }
             }
         });
@@ -115,11 +151,17 @@ public class BombermanGame extends Application {
                         break;
                     case LEFT:
                         player.setGoLeft(false);
+
                         Map.goRight = false;
+
+                    case SPACE:
+
                         break;
                 }
             }
         });
+
+
     }
 
     public void createMap() {

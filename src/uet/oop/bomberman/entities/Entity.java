@@ -8,7 +8,8 @@ import javafx.scene.paint.Color;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
-    public static final int SPEED = 2;
+
+    protected static final int SPEED = 2;
     protected boolean goUp;
     protected boolean goDown;
     protected boolean goLeft;

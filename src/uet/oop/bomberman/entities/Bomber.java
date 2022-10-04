@@ -90,7 +90,11 @@ public class Bomber extends Entity {
                 y += SPEED;
                 posYInMap += SPEED;
             }
-            Bomber_rect.setY(y);
+            if (!(posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
+                    && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2)) {
+                Bomber_rect.setY(y);
+            }
+
             if (posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
                     && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                 y += SPEED;
@@ -118,7 +122,10 @@ public class Bomber extends Entity {
                 y -= SPEED;
                 posYInMap -= SPEED;
             }
-            Bomber_rect.setY(y);
+            if (!(posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
+                    && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2)) {
+                Bomber_rect.setY(y);
+            }
             if (posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
                     && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                 y -= SPEED;
@@ -146,7 +153,11 @@ public class Bomber extends Entity {
                 x += SPEED;
                 posXInMap += SPEED;
             }
-            Bomber_rect.setX(x);
+            if (!(posXInMap >= BombermanGame.WINDOW_WIDTH / 2
+                    && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2)) {
+                Bomber_rect.setX(x);
+            }
+
             if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                 x += SPEED;
@@ -173,6 +184,10 @@ public class Bomber extends Entity {
             if (Bomber_collision.checkCollisions(Bomber_rect)) {
                 posXInMap -= SPEED;
                 x -= SPEED;
+            }
+            if (!(posXInMap >= BombermanGame.WINDOW_WIDTH / 2
+                    && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2)) {
+                Bomber_rect.setX(x);
             }
             if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {

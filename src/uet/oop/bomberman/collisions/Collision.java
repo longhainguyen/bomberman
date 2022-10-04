@@ -38,6 +38,7 @@ public class Collision {
                     || Top_player >= Bottom_object
                     || Right_player <= Left_object
                     || Left_player >= Right_object) == false) {
+                System.out.println(Left_player  + " " + Top_player +  "---" + Left_object + " y: " + Top_object );
                 return true;
             }
         }

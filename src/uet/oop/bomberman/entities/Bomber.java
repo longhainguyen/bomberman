@@ -28,7 +28,7 @@ public class Bomber extends Entity {
     private int posY;
 
     private static final int vec_bom = 5;
-    private static final int width = 24;
+    private static final int width = 21;
     private static final int height = 30;
 
     private int animation_time = 12;
@@ -47,7 +47,7 @@ public class Bomber extends Entity {
         this.x = x * 32;
         this.y = y * 32;
         this.img = img;
-        Bomber_rect = new Rect(x * 32, y * height, width, height);
+        Bomber_rect = new Rect(x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE, width, height);
     }
 
     public Collision getBomber_collision() {
@@ -175,10 +175,12 @@ public class Bomber extends Entity {
             if (Bomber_collision.checkCollisions(Bomber_rect)) {
                 posXInMap -= SPEED;
                 x -= SPEED;
+                System.out.println(x);
             }
             if (!(posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2)) {
                 Bomber_rect.setX(x);
+                System.out.println("this is bug");
             }
             if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {

@@ -23,20 +23,13 @@ public class Bomber extends Entity {
     public int posXInMap;
     public int posYInMap;
 
-//    private int animation_time = 9;
-
-//    public Bomber(int x, int y, Image img) {
-//            super(x, y, img);
-//            this.image_current = img;
-//            posXInMap = x * Sprite.SCALED_SIZE;
-//            posYInMap = y * Sprite.SCALED_SIZE;
-//    }
-
     private int posX;
+
     private int posY;
+
     private static final int vec_bom = 5;
-    private static final int width = 21;
-    private static final int height = 32;
+    private static final int width = 24;
+    private static final int height = 30;
 
     private int animation_time = 12;
     private Collision Bomber_collision = new Collision();
@@ -73,11 +66,6 @@ public class Bomber extends Entity {
 
     @Override
     public void move() {
-        //System.out.println(this.getX());
-        // this.animate++;
-        //if (animate > animation_time - 1) {
-        //Bomber_rect.getInfo();
-        //System.out.println(x + " " + y + " Rect: " + Bomber_rect.getX() + " " + Bomber_rect.getY());
         this.animate++;
         if (animate > animation_time - 1) {
             animate = 0;
@@ -101,6 +89,7 @@ public class Bomber extends Entity {
                 if (Bomber_collision.checkCollisions(Bomber_rect)) {
                     y -= SPEED;
                 }
+                Bomber_rect.setY(y + SPEED);
                 Map.mapStartY = BombermanGame.WINDOW_HEIGHT / 2 - posYInMap;
             } else if (posYInMap < BombermanGame.WINDOW_HEIGHT / 2) {
                 Map.mapStartY = 0;
@@ -132,6 +121,7 @@ public class Bomber extends Entity {
                 if (Bomber_collision.checkCollisions(Bomber_rect)) {
                     y += SPEED;
                 }
+                Bomber_rect.setY(y - SPEED);
                 Map.mapStartY = BombermanGame.WINDOW_HEIGHT / 2 - posYInMap;
             } else if (posYInMap > Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                 Map.mapStartY = BombermanGame.WINDOW_HEIGHT - Map.heightOfMap;
@@ -164,6 +154,7 @@ public class Bomber extends Entity {
                 if (Bomber_collision.checkCollisions(Bomber_rect)) {
                     x -= SPEED;
                 }
+                Bomber_rect.setX(x + SPEED);
                 Map.mapStartX = BombermanGame.WINDOW_WIDTH / 2 - posXInMap;
             } else if (posXInMap < BombermanGame.WINDOW_WIDTH / 2) {
                 Map.mapStartX = 0;
@@ -193,8 +184,9 @@ public class Bomber extends Entity {
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                 x -= SPEED;
                 if (Bomber_collision.checkCollisions(Bomber_rect)) {
-                    x += SPEED;
+                        x += SPEED;
                 }
+                Bomber_rect.setX(x - SPEED);
                 Map.mapStartX = BombermanGame.WINDOW_WIDTH / 2 - posXInMap;
             } else if (posXInMap > Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                 Map.mapStartX = BombermanGame.WINDOW_WIDTH - Map.widthOfMap;

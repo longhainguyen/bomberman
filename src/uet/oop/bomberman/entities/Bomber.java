@@ -180,7 +180,6 @@ public class Bomber extends Entity {
             if (!(posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2)) {
                 Bomber_rect.setX(x);
-                System.out.println("this is bug");
             }
             if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {

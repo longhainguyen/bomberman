@@ -61,14 +61,6 @@ public class BombermanGame extends Application {
         stage.show();
 
 
-//        AnimationTimer timer = new AnimationTimer() {
-//            @Override
-//            public void handle(long l) {
-//                render();
-//                update();
-//            }
-//        };
-//        timer.start();
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             update();
@@ -97,8 +89,8 @@ public class BombermanGame extends Application {
         timebomb.setCycleCount(-1);
         timebomb.play();
 
-       // mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
-        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
+        mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
+        //mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
         player.setBomberRectCollisions(stillObjects);
 
         //set event for player

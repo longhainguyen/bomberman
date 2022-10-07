@@ -66,6 +66,7 @@ public class Bomber extends Entity {
 
     @Override
     public void move() {
+
         this.animate++;
         if (animate > animation_time - 1) {
             animate = 0;
@@ -175,7 +176,6 @@ public class Bomber extends Entity {
             if (Bomber_collision.checkCollisions(Bomber_rect)) {
                 posXInMap -= SPEED;
                 x -= SPEED;
-                System.out.println(x);
             }
             if (!(posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                     && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2)) {

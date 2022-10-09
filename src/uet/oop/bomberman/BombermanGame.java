@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.binding.MapExpression;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -75,29 +76,45 @@ public class BombermanGame extends Application {
         }));
         timeline.setCycleCount(-1);
         timeline.play();
-        Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(250), e -> {
+        Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(200), e -> {
 
             bomb.setBomb_frame(bomb.getBomb_frame() + 1);
             if (bomb.isGo()) {
                 bomb.setExplosion_time(bomb.getExplosion_time() + 1);
             }
             if (bomb.getExplosion_time() >= 10) {
+                bomb.setBomb_explosion();
                 for (int i = 0; i < entities.size(); i++) {
                     if (entities.get(i) instanceof Bomb) {
                         entities.remove(i);
+                        Map.entitiesEntity.remove(bomb);
                         bomb.setBomb_number(bomb.getBomb_number() - 1);
                         bomb.setExplosion_time(0);
                         bomb.setGo(false);
                     }
                 }
+                bomb.addEntities(entities);
+                bomb.addEntities(Map.entitiesEntity);
             }
-            /*render();
-            update();*/
+            if (!bomb.isGo()) {
+                if (bomb.getBomb_explosion().get(0).getExplosion_frame() == Explosion.max_explosion_frame_time - 1) {
+                    for (int i = 0; i < bomb.getBomb_explosion().size(); i++) {
+                        entities.remove(bomb.getBomb_explosion().get(i));
+                        Map.entitiesEntity.remove(bomb.getBomb_explosion().get(i));
+                    }
+                } else {
+                    for (int i = 0; i < bomb.getBomb_explosion().size(); i++) {
+                        int num = bomb.getBomb_explosion().get(i).getExplosion_frame();
+                        bomb.getBomb_explosion().get(i).setExplosion_frame(num + 1);
+                    }
+                }
+            }
+
         }));
         timebomb.setCycleCount(-1);
         timebomb.play();
 
-       // mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
+        //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
         mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
         player.setBomberRectCollisions(stillObjects);
 
@@ -125,9 +142,10 @@ public class BombermanGame extends Application {
                     case SPACE:
                         if (bomb.getBomb_number() < bomb_max) {
                             bomb.setGo(true);
-                            bomb.setBomb(player.getX(), player.getY(), Sprite.bomb.getFxImage());
+                            bomb.setBomb(player, Sprite.bomb.getFxImage());
                             bomb.setBomb_number(bomb.getBomb_number() + 1);
                             entities.add(bomb);
+                            Map.entitiesEntity.add(bomb);
                         }
                         break;
                 }

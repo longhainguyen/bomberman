@@ -34,11 +34,11 @@ public class Collision {
             int Right_object = collisions.get(i).getX() + collisions.get(i).getW();
             int Top_object = collisions.get(i).getY();
             int Bottom_object = collisions.get(i).getY() + collisions.get(i).getH();
-            if ((Bottom_player <= Top_object
+            if (!(Bottom_player <= Top_object
                     || Top_player >= Bottom_object
                     || Right_player <= Left_object
-                    || Left_player >= Right_object) == false) {
-                //System.out.println(Left_player  + " " + Top_player +  "---" + Left_object + " y: " + Top_object );
+                    || Left_player >= Right_object)) {
+                /* System.out.println(Left_player  + " " + Top_player +  "---" + Left_object + " y: " + Top_object ); */
                 return true;
             }
         }

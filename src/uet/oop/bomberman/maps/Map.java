@@ -114,7 +114,7 @@ public class Map {
                         grass = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(grass);
                         stillEntity.add(grass);
-                        object = new Balloon(j, i, Sprite.oneal_right1.getFxImage());
+                        object = new Oneal(j, i, Sprite.oneal_right1.getFxImage());
                         break;
                     case "b":
                         grass = new Grass(j, i, Sprite.grass.getFxImage());

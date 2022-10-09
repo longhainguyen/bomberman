@@ -1,6 +1,8 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.collisions.Collision;
+import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Explosion extends Entity {
@@ -9,10 +11,16 @@ public class Explosion extends Entity {
 
     private int pri_frame;
 
+    private Collision explosion_collison;
+
+    private Rect explosion_rect;
+
     public Explosion(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         explosion_frame = 0;
         pri_frame = -1;
+        explosion_rect = new Rect(xUnit, yUnit, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
+        explosion_collison = new Collision();
     }
 
    public void setExplosion(int x, int y, Image img){
@@ -21,6 +29,8 @@ public class Explosion extends Entity {
         this.img = img;
        explosion_frame = 0;
        pri_frame = -1;
+       explosion_rect = new Rect(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
+       explosion_collison = new Collision();
    }
 
     public int getPri_frame() {
@@ -37,6 +47,22 @@ public class Explosion extends Entity {
 
     public void setExplosion_frame(int explosion_frame) {
         this.explosion_frame = explosion_frame;
+    }
+
+    public Collision getExplosion_collison() {
+        return explosion_collison;
+    }
+
+    public void setExplosion_collison(Collision explosion_collison) {
+        this.explosion_collison = explosion_collison;
+    }
+
+    public Rect getExplosion_rect() {
+        return explosion_rect;
+    }
+
+    public void setExplosion_rect(Rect explosion_rect) {
+        this.explosion_rect = explosion_rect;
     }
 
     public void move() {

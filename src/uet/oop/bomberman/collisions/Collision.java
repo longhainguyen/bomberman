@@ -48,4 +48,12 @@ public class Collision {
     public void update(List<Entity> stillObjects){
           setRectCollisions(stillObjects);
     }
+
+    public List<Rect> getCollisions() {
+        return collisions;
+    }
+
+    public void setCollisions(List<Rect> collisions) {
+        this.collisions = collisions;
+    }
 }

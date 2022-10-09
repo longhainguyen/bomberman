@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Collision {
     private List<Rect> collisions = new ArrayList<>();
+    private List<Rect> collisionsOfentities = new ArrayList<>();
     public static final int width = 32;
     public static final int height = 32;
 
@@ -22,6 +23,18 @@ public class Collision {
             }
         }
         collisions = temp;
+    }
+
+    public void setRectCollisionsOfentities(List<Entity> entities) {
+        List<Rect> temp = new ArrayList<>();
+        for (int i = 0; i < entities.size(); i++) {
+            if (!(entities.get(i).getClass().equals(Bomber.class)
+            || entities.get(i).getClass().equals(Bomb.class))) {
+                Entity object = entities.get(i);
+                temp.add(new Rect(object.getX(), object.getY(), width, height));
+            }
+        }
+        collisionsOfentities = temp;
     }
 
     public boolean checkCollisions(Rect playerRect) {
@@ -44,9 +57,30 @@ public class Collision {
         }
         return false;
     }
+    public boolean checkCollisionsOfentities(Rect playerRect) {
+        int Left_player = playerRect.getX();
+        int Right_player = playerRect.getX() + playerRect.getW();
+        int Top_player = playerRect.getY();
+        int Bottom_player = playerRect.getY() + playerRect.getH();
+        for (int i = 0; i < collisionsOfentities.size(); i++) {
+            int Left_object = collisionsOfentities.get(i).getX();
+            int Right_object = collisionsOfentities.get(i).getX() + collisionsOfentities.get(i).getW();
+            int Top_object = collisionsOfentities.get(i).getY();
+            int Bottom_object = collisionsOfentities.get(i).getY() + collisionsOfentities.get(i).getH();
+            if (!(Bottom_player <= Top_object
+                    || Top_player >= Bottom_object
+                    || Right_player <= Left_object
+                    || Left_player >= Right_object)) {
+                /* System.out.println(Left_player  + " " + Top_player +  "---" + Left_object + " y: " + Top_object ); */
+                return true;
+            }
+        }
+        return false;
+    }
 
-    public void update(List<Entity> stillObjects){
+    public void update(List<Entity> stillObjects, List<Entity>entities){
           setRectCollisions(stillObjects);
+          setRectCollisionsOfentities(entities);
     }
 
     public List<Rect> getCollisions() {
@@ -55,5 +89,13 @@ public class Collision {
 
     public void setCollisions(List<Rect> collisions) {
         this.collisions = collisions;
+    }
+
+    public List<Rect> getCollisionsOfentities() {
+        return collisionsOfentities;
+    }
+
+    public void setCollisionsOfentities(List<Rect> collisionsOfentities) {
+        this.collisionsOfentities = collisionsOfentities;
     }
 }

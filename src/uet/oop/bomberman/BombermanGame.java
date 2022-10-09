@@ -73,6 +73,11 @@ public class BombermanGame extends Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             update();
+            if(player.getIsDie_time() > Bomber.max_die_time - 1){
+                entities.remove(player);
+                player.setHeart(0);
+               // player.setDie(false);
+            }
         }));
         timeline.setCycleCount(-1);
         timeline.play();
@@ -112,7 +117,6 @@ public class BombermanGame extends Application {
                         }
                     }
                 }
-
         }));
         timebomb.setCycleCount(-1);
         timebomb.play();
@@ -143,7 +147,7 @@ public class BombermanGame extends Application {
                         Map.goRight = true;
                         break;
                     case SPACE:
-                        if (bomb.getBomb_number() < bomb_max  && !bomb.isIs_explode()) {
+                        if (bomb.getBomb_number() < bomb_max  && !bomb.isIs_explode() && player.getHeart() != 0) {
                             bomb.setGo(true);
                             bomb.setBomb(player, Sprite.bomb.getFxImage());
                             bomb.setBomb_number(bomb.getBomb_number() + 1);

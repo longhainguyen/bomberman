@@ -25,7 +25,7 @@ public class Bomb extends Entity {
         this.bomb_frame = 0;
         this.bomb_number = 0;
         this.explosion_time = 0;
-        this.max_length_explosion = 5;
+        this.max_length_explosion = 3;
         this.is_explode = false;
     }
 

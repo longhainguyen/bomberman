@@ -76,7 +76,16 @@ public class BombermanGame extends Application {
             if(player.getIsDie_time() > Bomber.max_die_time - 1){
                 entities.remove(player);
                 player.setHeart(0);
-               // player.setDie(false);
+            }
+            for ( int i = 0; i < stillObjects.size(); i++){
+                if(stillObjects.get(i) instanceof  Brick){
+                    Brick value = (Brick)stillObjects.get(i);
+                    if(value.getBrick_frame() > value.getMax_long_time() - 1){
+                        Map.stillEntity.remove(stillObjects.get(i));
+                        stillObjects.remove(i);
+                        i--;
+                    }
+                }
             }
         }));
         timeline.setCycleCount(-1);
@@ -205,6 +214,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        stillObjects.forEach(Entity::update);
         mapGame.update();
     }
 

@@ -34,7 +34,7 @@ public class Bomber extends Entity {
     private boolean turn_up;
     private boolean turn_down;
 
-    private boolean isDie;
+    //private boolean isDie;
     private int isDie_time;
 
     private int heart;

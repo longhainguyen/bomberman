@@ -9,6 +9,8 @@ import java.util.List;
 public class Collision {
     private List<Rect> collisions = new ArrayList<>();
     private List<Rect> collisionsOfentities = new ArrayList<>();
+
+    private Rect is_die_rect;
     public static final int width = 32;
     public static final int height = 32;
 
@@ -20,6 +22,7 @@ public class Collision {
                     || stillObjects.get(i).getClass().equals(Flame.class))) {
                 Entity object = stillObjects.get(i);
                 temp.add(new Rect(object.getX(), object.getY(), width, height));
+                stillObjects.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));
             }
         }
         collisions = temp;
@@ -32,6 +35,7 @@ public class Collision {
             || entities.get(i).getClass().equals(Bomb.class))) {
                 Entity object = entities.get(i);
                 temp.add(new Rect(object.getX(), object.getY(), width, height));
+                entities.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));
             }
         }
         collisionsOfentities = temp;
@@ -52,6 +56,7 @@ public class Collision {
                     || Right_player <= Left_object
                     || Left_player >= Right_object)) {
                 /* System.out.println(Left_player  + " " + Top_player +  "---" + Left_object + " y: " + Top_object ); */
+                is_die_rect = (new Rect(Left_object, Top_object, width, height));
                 return true;
             }
         }
@@ -76,6 +81,14 @@ public class Collision {
             }
         }
         return false;
+    }
+
+    public Rect getIs_die_rect() {
+        return is_die_rect;
+    }
+
+    public void setIs_die_rect(Rect is_die_rect) {
+        this.is_die_rect = is_die_rect;
     }
 
     public void update(List<Entity> stillObjects, List<Entity>entities){

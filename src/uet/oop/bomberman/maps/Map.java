@@ -88,7 +88,7 @@ public class Map {
                         grass = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(grass);
                         stillEntity.add(grass);
-                        object = new Brick(j, i, Sprite.brick_exploded.getFxImage());
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "x":
                         grass = new Grass(j, i, Sprite.grass.getFxImage());

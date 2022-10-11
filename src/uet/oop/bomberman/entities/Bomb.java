@@ -67,6 +67,10 @@ public class Bomb extends Entity {
         this.is_explode = is_explode;
     }
 
+    public void set_entities_die(List<Rect>is_die_rect, List<Entity>entities){
+
+    }
+
     public int getMax_length_explosion() {
         return max_length_explosion;
     }
@@ -129,6 +133,14 @@ public class Bomb extends Entity {
         arr.set(i, arr.get(j));
         arr.set(j, temp);
     }
+
+    public void set_stillobject_die(Rect object, List<Entity>stillObjects){
+        for(Entity value : stillObjects){
+            if(value.getEntities_rect().getX() == object.getX() && value.getEntities_rect().getY() == object.getY() && value instanceof Brick){
+                value.setDie(true);
+            }
+        }
+    }
     @Override
     public void update() {
         this.move();
@@ -160,6 +172,7 @@ public void setbomb_explosion(List<Entity>stillObjects) {
             temp.get(count).setPri_frame(3);
             left = count;
         } else {
+            set_stillobject_die(change.getExplosion_collison().getIs_die_rect(),  stillObjects);
             break;
         }
     }
@@ -180,6 +193,7 @@ public void setbomb_explosion(List<Entity>stillObjects) {
             right = count;
             temp.get(count).setPri_frame(3);
         } else {
+            set_stillobject_die(change.getExplosion_collison().getIs_die_rect(),  stillObjects);
             break;
         }
     }
@@ -200,6 +214,7 @@ public void setbomb_explosion(List<Entity>stillObjects) {
             temp.get(count).setPri_frame(6);
             up = count;
         } else {
+            set_stillobject_die(change.getExplosion_collison().getIs_die_rect(),  stillObjects);
             break;
         }
     }
@@ -220,6 +235,7 @@ public void setbomb_explosion(List<Entity>stillObjects) {
             down = count;
             temp.get(count).setPri_frame(6);
         } else {
+            set_stillobject_die(change.getExplosion_collison().getIs_die_rect(),  stillObjects);
             break;
         }
     }
@@ -243,7 +259,9 @@ public void setbomb_explosion(List<Entity>stillObjects) {
                 Sprite.explosion_vertical_down_last.getFxImage());
         temp.get(down).setPri_frame(5);
     }
+
     setBomb_explosion(temp);
+
 }
 
     /*public void setBomb_explosion() {

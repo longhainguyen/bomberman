@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -14,6 +15,26 @@ public abstract class Entity {
     protected boolean goDown;
     protected boolean goLeft;
     protected boolean goRight;
+
+    protected boolean isDie;
+
+    protected Rect entities_rect;
+
+    public Rect getEntities_rect() {
+        return entities_rect;
+    }
+
+    public void setEntities_rect(Rect entities_rect) {
+        this.entities_rect = entities_rect;
+    }
+
+    public boolean isDie() {
+        return isDie;
+    }
+
+    public void setDie(boolean die) {
+        isDie = die;
+    }
 
     public boolean isGoUp() {
         return goUp;
@@ -84,6 +105,8 @@ public abstract class Entity {
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
+        this.entities_rect = new Rect(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
+        this.isDie = false;
     }
 
     public void render(GraphicsContext gc) {

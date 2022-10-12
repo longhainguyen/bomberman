@@ -115,7 +115,6 @@ public class Map {
                         stillObjects.add(grass);
                         stillEntity.add(grass);
                         object = new Oneal(j, i, Sprite.oneal_right1.getFxImage());
-                       // System.out.println("ddd");
                         break;
                     case "b":
                         grass = new Grass(j, i, Sprite.grass.getFxImage());

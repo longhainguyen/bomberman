@@ -87,11 +87,11 @@ public class BombermanGame extends Application {
                 }
             }
 
-            for ( int i = 0; i < entities.size(); i++) {
-                if(!(entities.get(i) instanceof Bomber ||
+            for (int i = 0; i < entities.size(); i++) {
+                if (!(entities.get(i) instanceof Bomber ||
                         entities.get(i) instanceof Bomb ||
-                        entities.get(i) instanceof Explosion)){
-                    if(entities.get(i).getEntity_frame() > entities.get(i).getMax_long_time() - 1 && entities.get(i).isDie()) {
+                        entities.get(i) instanceof Explosion)) {
+                    if (entities.get(i).getEntity_frame() > entities.get(i).getMax_long_time() - 1 && entities.get(i).isDie()) {
                         entities.get(i).setDie(false);
                         Map.entitiesEntity.remove(entities.get(i));
                         entities.remove(i);
@@ -109,7 +109,7 @@ public class BombermanGame extends Application {
                 bomb.setExplosion_time(bomb.getExplosion_time() + 1);
             }
             if (bomb.getExplosion_time() >= 10) {
-                bomb.setbomb_explosion(stillObjects,entities);
+                bomb.setbomb_explosion(stillObjects, entities);
                 bomb.setIs_explode(true);
                 for (int i = 0; i < entities.size(); i++) {
                     if (entities.get(i) instanceof Bomb) {
@@ -170,7 +170,13 @@ public class BombermanGame extends Application {
                     case SPACE:
                         if (bomb.getBomb_number() < bomb_max && !bomb.isIs_explode() && player.getHeart() != 0) {
                             bomb.setGo(true);
-                            bomb.setBomb(player, Sprite.bomb.getFxImage());
+                            if(Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE != 0) {
+                                bomb.setBomb(player, Sprite.bomb.getFxImage(), Sprite.SCALED_SIZE -
+                                        (Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE));
+                            }else {
+                                bomb.setBomb(player, Sprite.bomb.getFxImage(), 0);
+                            }
+                            System.out.println(stillObjects.get(0).getX() + "----" + player.getX());
                             bomb.setBomb_number(bomb.getBomb_number() + 1);
                             entities.add(bomb);
                             Map.entitiesEntity.add(bomb);

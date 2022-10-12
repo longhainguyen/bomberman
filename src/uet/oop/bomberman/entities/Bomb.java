@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -128,12 +129,6 @@ public class Bomb extends Entity {
     }
 
 
-    public void swap(int i, int j, List<Explosion>arr){
-        Explosion temp = arr.get(i);
-        arr.set(i, arr.get(j));
-        arr.set(j, temp);
-    }
-
     public void set_stillobject_die(Rect object, List<Entity>stillObjects){
         for(Entity value : stillObjects){
             if(value.getEntities_rect().getX() == object.getX() && value.getEntities_rect().getY() == object.getY() && value instanceof Brick){
@@ -145,7 +140,7 @@ public class Bomb extends Entity {
     public void update() {
         this.move();
     }
-public void setbomb_explosion(List<Entity>stillObjects) {
+public void setbomb_explosion(List<Entity>stillObjects, List<Entity> entities) {
     int posx = this.getX();
     int posy = this.getY();
     int length = max_length_explosion;
@@ -261,72 +256,19 @@ public void setbomb_explosion(List<Entity>stillObjects) {
     }
 
     setBomb_explosion(temp);
+    for(Entity value : entities){
+        if(!(value instanceof Bomber) && !(value instanceof Bomb)){
+                for(int i = 0; i < temp.size(); i++){
+                    if(temp.get(i).getExplosion_collison().checkcollision(temp.get(i).getExplosion_rect(), value.getEntities_rect())){
+                        value.setDie(true);
+                        break;
+                    }
+                }
+        }
+    }
 
 }
 
-    /*public void setBomb_explosion() {
-        // set horizontal
-        int posx = this.getX();
-        int posy = this.getY();
-        int length = max_length_explosion;
-        List<Explosion> temp = new ArrayList<>();
-        List<Explosion> change = new ArrayList<>();
-
-        for (int i = 0; i < length * 2; i++) {
-            change.add(new Explosion(posx - length / 2, posy,
-                    Sprite.explosion_horizontal_left_last.getFxImage()));
-        }
-        // set horizontal
-        for (int i = 0; i < length; i++) {
-            if (i == 0) {
-                change.get(i).setExplosion(posx - Sprite.SCALED_SIZE * (length / 2), posy,
-                        Sprite.explosion_horizontal_left_last.getFxImage());
-                temp.add(change.get(i));
-                temp.get(0).setPri_frame(0);
-            } else if (i == length / 2) {
-                change.get(i).setExplosion(posx, posy, Sprite.bomb_exploded.getFxImage());
-                temp.add(change.get(i));
-                temp.get(length / 2).setPri_frame(1);
-            } else if (i == length - 1) {
-                change.get(i).setExplosion(temp.get(i - 1).getX()
-                                + Sprite.SCALED_SIZE, temp.get(i - 1).getY(),
-                        Sprite.explosion_horizontal_right_last.getFxImage());
-                temp.add(change.get(i));
-                temp.get(i).setPri_frame(2);
-            } else {
-                change.get(i).setExplosion(temp.get(i - 1).getX()
-                                + Sprite.SCALED_SIZE, temp.get(i - 1).getY(),
-                        Sprite.explosion_horizontal.getFxImage());
-                temp.add(change.get(i));
-                temp.get(i).setPri_frame(3);
-            }
-        }
-        // set vertical
-        for (int j = length; j < length * 2; j++) {
-            if (j == length) {
-                change.get(j).setExplosion(posx, posy - Sprite.SCALED_SIZE * (length / 2),
-                        Sprite.explosion_vertical_top_last.getFxImage());
-                temp.add(change.get(j));
-                temp.get(j).setPri_frame(4);
-            } else if (j == (3 * length - 1) / 2) {
-                change.get(j).setExplosion(posx, posy, Sprite.bomb_exploded.getFxImage());
-                temp.add(change.get(j));
-                temp.get(j).setPri_frame(1);
-            } else if (j == length * 2 - 1) {
-                change.get(j).setExplosion(posx, temp.get(j - 1).getY() + Sprite.SCALED_SIZE,
-                        Sprite.explosion_vertical_down_last.getFxImage());
-
-                temp.add(change.get(j));
-                temp.get(j).setPri_frame(5);
-            } else {
-                change.get(j).setExplosion(posx, temp.get(j - 1).getY() + Sprite.SCALED_SIZE,
-                        Sprite.explosion_vertical.getFxImage());
-                temp.add(change.get(j));
-                temp.get(j).setPri_frame(6);
-            }
-        }
-        setBomb_explosion(temp);
-    }*/
 
     public void addEntities(List<Entity> entities) {
         entities.addAll(bomb_explosion);

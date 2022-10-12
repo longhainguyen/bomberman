@@ -1,6 +1,10 @@
 package uet.oop.bomberman.collisions;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.maps.Map;
 
 import javax.sound.sampled.Port;
 import java.util.ArrayList;
@@ -9,6 +13,7 @@ import java.util.List;
 public class Collision {
     private List<Rect> collisions = new ArrayList<>();
     private List<Rect> collisionsOfentities = new ArrayList<>();
+
 
     private Rect is_die_rect;
     public static final int width = 32;
@@ -32,14 +37,16 @@ public class Collision {
         List<Rect> temp = new ArrayList<>();
         for (int i = 0; i < entities.size(); i++) {
             if (!(entities.get(i).getClass().equals(Bomber.class)
-            || entities.get(i).getClass().equals(Bomb.class))) {
+                    || entities.get(i).getClass().equals(Bomb.class))) {
                 Entity object = entities.get(i);
                 temp.add(new Rect(object.getX(), object.getY(), width, height));
-                entities.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));
+                entities.get(i).setEntities_rect(new Rect(entities.get(i).getX(), entities.get(i).getY(), width, height));
             }
+            //   entities.get(i).setEntities_rect(new Rect(entities.get(i).getX(), entities.get(i).getY(), width, height));
         }
         collisionsOfentities = temp;
     }
+
 
     public boolean checkCollisions(Rect playerRect) {
         int Left_player = playerRect.getX();
@@ -62,6 +69,7 @@ public class Collision {
         }
         return false;
     }
+
     public boolean checkCollisionsOfentities(Rect playerRect) {
         int Left_player = playerRect.getX();
         int Right_player = playerRect.getX() + playerRect.getW();
@@ -83,6 +91,24 @@ public class Collision {
         return false;
     }
 
+    public boolean checkcollision(Rect playerRect, Rect other) {
+            int Left_player = playerRect.getX();
+            int Right_player = playerRect.getX() + playerRect.getW();
+            int Top_player = playerRect.getY();
+            int Bottom_player = playerRect.getY() + playerRect.getH();
+            int Left_object = other.getX();
+            int Right_object = other.getX() + other.getW();
+            int Top_object = other.getY();
+            int Bottom_object = other.getY() + other.getH();
+            if (!(Bottom_player <= Top_object
+                    || Top_player >= Bottom_object
+                    || Right_player <= Left_object
+                    || Left_player >= Right_object)) {
+                return true;
+            }
+            return false;
+    }
+
     public Rect getIs_die_rect() {
         return is_die_rect;
     }
@@ -91,9 +117,9 @@ public class Collision {
         this.is_die_rect = is_die_rect;
     }
 
-    public void update(List<Entity> stillObjects, List<Entity>entities){
-          setRectCollisions(stillObjects);
-          setRectCollisionsOfentities(entities);
+    public void update(List<Entity> stillObjects, List<Entity> entities) {
+        setRectCollisions(stillObjects);
+        setRectCollisionsOfentities(entities);
     }
 
     public List<Rect> getCollisions() {

@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -18,7 +19,21 @@ public abstract class Entity {
 
     protected boolean isDie;
 
+    protected int max_long_time;
+
+    protected int entity_frame;
+
     protected Rect entities_rect;
+
+    protected Collision entity_collision = new Collision();
+
+    public Collision getEntity_collision() {
+        return entity_collision;
+    }
+
+    public void setEntity_collision(Collision entity_collision) {
+        this.entity_collision = entity_collision;
+    }
 
     public Rect getEntities_rect() {
         return entities_rect;
@@ -66,6 +81,22 @@ public abstract class Entity {
 
     public void setGoRight(boolean goRight) {
         this.goRight = goRight;
+    }
+
+    public int getMax_long_time() {
+        return max_long_time;
+    }
+
+    public void setMax_long_time(int max_long_time) {
+        this.max_long_time = max_long_time;
+    }
+
+    public int getEntity_frame() {
+        return entity_frame;
+    }
+
+    public void setEntity_frame(int entity_frame) {
+        this.entity_frame = entity_frame;
     }
 
     //Tọa độ X tính từ góc trái trên trong Canvas

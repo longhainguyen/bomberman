@@ -10,6 +10,10 @@ public class Oneal extends Entity {
     private int animation_time = 12;
     private int animate = 0;
 
+    private Image image_goRight = Sprite.movingSprite(Sprite.oneal_right1,
+            Sprite.oneal_right2, Sprite.oneal_right2, animate, animation_time).getFxImage();
+    private Image image_goLeft = Sprite.movingSprite(Sprite.oneal_left1,
+            Sprite.oneal_left2, Sprite.oneal_left3, animate, animation_time).getFxImage();
     private Collision collision = new Collision();
     private Rect rect;
     public Oneal(int xUnit, int yUnit, Image img) {
@@ -25,13 +29,9 @@ public class Oneal extends Entity {
             animate = 0;
         }
         if (goRight) {
-            Image image_goRight = Sprite.movingSprite(Sprite.oneal_right1,
-                    Sprite.oneal_right2, Sprite.oneal_right2, animate, animation_time).getFxImage();
             this.setImg(image_goRight);
         } else if (goLeft) {
-            Image image_goRight = Sprite.movingSprite(Sprite.oneal_left1,
-                    Sprite.oneal_left2, Sprite.oneal_left3, animate, animation_time).getFxImage();
-            this.setImg(image_goRight);
+            this.setImg(image_goLeft);
         }
     }
 

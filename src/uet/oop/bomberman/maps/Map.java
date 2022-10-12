@@ -20,11 +20,11 @@ public class Map {
 
     public static int widthOfMap;
     public static int heightOfMap;
-    public int col;
-    public int row;
+    public static int col;
+    public static int row;
     public String level;
     private List<String> readFile;
-    public String[][] mapCode;
+    public static String[][] mapCode;
 
     public static List<Entity> stillEntity = new ArrayList<>();//Store of stillEntity in Map.
     public static List<Entity> entitiesEntity = new ArrayList<>();//Store of entitiesEntity in Map.

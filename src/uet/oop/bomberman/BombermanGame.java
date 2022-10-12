@@ -83,8 +83,6 @@ public class BombermanGame extends Application {
                     }
                 }
             }
-            /*render();
-            update();*/
         }));
         timebomb.setCycleCount(-1);
         timebomb.play();

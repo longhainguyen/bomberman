@@ -6,18 +6,29 @@ import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
 
-public class Balloon extends Entity {
+import java.util.Random;
 
-    private int animation_time = 12;
+public class Balloon extends Entity {
+    private final int MAX_CELL_WALK_PASSED = 5;
+    private int xBeforeChange;
+    private int yBeforeChange;
+    private int randomMove = 3;
+    private final int animation_time = 12;
     private int animate = 0;
-    private Collision collision = new Collision();
-    private Rect rect;
+    private final Collision collision = new Collision();
+    private final Rect rect;
+
+    private final Image image_goRight = Sprite.movingSprite(Sprite.balloom_right1,
+            Sprite.balloom_right2, Sprite.balloom_right3, animate, animation_time).getFxImage();
+    private final Image image_goLeft = Sprite.movingSprite(Sprite.balloom_left1,
+            Sprite.balloom_left2, Sprite.balloom_left3, animate, animation_time).getFxImage();
+    private int cellWalkPassed;
 
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         rect = new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
-        this.goRight = true;
-        this.goLeft = false;
+        xBeforeChange = this.x;
+        yBeforeChange = this.y;
     }
 
     private void updateAnimation() {
@@ -26,13 +37,9 @@ public class Balloon extends Entity {
             animate = 0;
         }
         if (goRight) {
-            Image image_goRight = Sprite.movingSprite(Sprite.balloom_right1,
-                    Sprite.balloom_right2, Sprite.balloom_right3, animate, animation_time).getFxImage();
             this.setImg(image_goRight);
         } else if (goLeft) {
-            Image image_goRight = Sprite.movingSprite(Sprite.balloom_left1,
-                    Sprite.balloom_left2, Sprite.balloom_left3, animate, animation_time).getFxImage();
-            this.setImg(image_goRight);
+            this.setImg(image_goLeft);
         }
     }
 
@@ -43,21 +50,57 @@ public class Balloon extends Entity {
         collision.update(Map.stillEntity);
         rect.setX(x);
         rect.setY(y);
-        if (this.goRight && !this.goLeft) {
-            this.x += Entity.SPEED;
-            if (collision.checkCollisions(rect)) {
-                this.x -= Entity.SPEED * 2;
-                this.goRight = false;
-                this.goLeft = true;
+        this.move();
+    }
+
+    @Override
+    public void move() {
+        this.setCellWalkPassed();
+        if (randomMove == 1) {
+            this.x -= SPEED;
+            if (collision.checkCollisions(rect) || cellWalkPassed > MAX_CELL_WALK_PASSED) {
+                this.x += 2 * SPEED;
+                setRandomMove();
             }
-        } else if (this.goLeft && !this.goRight) {
-            this.x -= Entity.SPEED;
-            if (collision.checkCollisions(rect)) {
-                this.x += Entity.SPEED * 2;
-                this.goLeft = false;
-                this.goRight = true;
+        } else if (randomMove == 2) {
+            this.x += SPEED;
+            if (collision.checkCollisions(rect) || cellWalkPassed > MAX_CELL_WALK_PASSED) {
+                this.x -= 2 * SPEED;
+                setRandomMove();
+            }
+        } else if (randomMove == 3) {
+            this.y += SPEED;
+            if (collision.checkCollisions(rect) || cellWalkPassed > MAX_CELL_WALK_PASSED) {
+                this.y -= 2 * SPEED;
+                setRandomMove();
+            }
+        }else {
+            this.y -= SPEED;
+            if (collision.checkCollisions(rect) || cellWalkPassed > MAX_CELL_WALK_PASSED) {
+                this.y += 2 * SPEED;
+                setRandomMove();
             }
         }
     }
+
+    public void setRandomMove() {
+        Random random = new Random();
+        int temp = random.nextInt(4) + 1;
+        if(temp != randomMove) {
+            randomMove = temp;
+        }
+        this.setXYBeforeChange(x,y);
+    }
+
+    public void setCellWalkPassed() {
+        double distance = Math.sqrt(Math.pow(x - xBeforeChange,2) + Math.pow(y - yBeforeChange,2));
+        cellWalkPassed = (int) distance / Sprite.SCALED_SIZE;
+    }
+
+    public void setXYBeforeChange(int x_, int y_) {
+        this.xBeforeChange = x_;
+        this.yBeforeChange = y_;
+    }
+
 
 }

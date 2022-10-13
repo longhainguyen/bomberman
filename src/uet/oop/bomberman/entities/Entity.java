@@ -19,7 +19,13 @@ public abstract class Entity {
 
     protected boolean isDie;
 
-    protected int max_long_time;
+    protected int max_long_time = 18;
+
+    protected int emotional_death_time = 0;
+
+    protected int max_long_time_emotion = 30;
+
+    protected boolean is_time_out_of_emotion = false;
 
     protected int entity_frame;
 

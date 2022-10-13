@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.maps.Map;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +41,7 @@ public class Bomb extends Entity {
                 && posy + Sprite.SCALED_SIZE >= other.getY() + Bomber.height) {
             checkinside = true;
         }
-        if (checkinside) {
-            this.x = posx + virtual_distance;
-            this.y = posy;
-        } else {
+       if(!checkinside) {
             if (other.isTurn_right()) {
                 this.x = posx + virtual_distance + 32;
                 this.y = posy;
@@ -57,6 +55,12 @@ public class Bomb extends Entity {
                 this.x = posx + virtual_distance;
                 this.y = posy + 32;
             }
+           this.setEntities_rect(new Rect(this.x, this.y , Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
+        }
+        if (checkinside || this.getEntity_collision().checkCollisions(this.getEntities_rect())) {
+            this.x = posx + virtual_distance;
+            this.y = posy;
+            this.setEntities_rect(new Rect(this.x, this.y , Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }
         this.img = img;
     }
@@ -141,6 +145,7 @@ public class Bomb extends Entity {
     @Override
     public void update() {
         this.move();
+        this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
     }
 
     public void setbomb_explosion(List<Entity> stillObjects, List<Entity> entities) {

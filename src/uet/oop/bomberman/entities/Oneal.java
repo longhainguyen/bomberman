@@ -8,15 +8,23 @@ public class Oneal extends Entity {
     public Oneal(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         entity_frame = 0;
-        max_long_time = 30;
     }
 
     public void move() {
         if (this.isDie) {
-            Image oneal_image = Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2,
-                    Sprite.mob_dead3, entity_frame, max_long_time).getFxImage();
-            this.setImg(oneal_image);
-            entity_frame++;
+            if (is_time_out_of_emotion) {
+                Image oneal_image = Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2,
+                        Sprite.mob_dead3, entity_frame, max_long_time).getFxImage();
+                this.setImg(oneal_image);
+                entity_frame++;
+            } else {
+                Image oneal_image = Sprite.oneal_dead.getFxImage();
+                this.setImg(oneal_image);
+                emotional_death_time++;
+                if (emotional_death_time > max_long_time_emotion - 1) {
+                    is_time_out_of_emotion = true;
+                }
+            }
         }
     }
 

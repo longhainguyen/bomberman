@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Collision {
-    public boolean isLeftCollision;
-    public boolean isRightCollision;
-    public boolean isUpCollision;
-    public boolean isDownCollision;
     private List<Rect> collisions = new ArrayList<>();
     public static final int width = 32;
     public static final int height = 32;

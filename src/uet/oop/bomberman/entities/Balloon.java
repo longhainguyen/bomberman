@@ -9,7 +9,6 @@ import uet.oop.bomberman.maps.Map;
 import java.util.Random;
 
 public class Balloon extends Entity {
-    private final int MAX_CELL_WALK_PASSED = 5;
     private int xBeforeChange;
     private int yBeforeChange;
     private int randomMove = 3;
@@ -17,11 +16,6 @@ public class Balloon extends Entity {
     private int animate = 0;
     private final Collision collision = new Collision();
     private final Rect rect;
-
-    private final Image image_goRight = Sprite.movingSprite(Sprite.balloom_right1,
-            Sprite.balloom_right2, Sprite.balloom_right3, animate, animation_time).getFxImage();
-    private final Image image_goLeft = Sprite.movingSprite(Sprite.balloom_left1,
-            Sprite.balloom_left2, Sprite.balloom_left3, animate, animation_time).getFxImage();
     private int cellWalkPassed;
 
     public Balloon(int xUnit, int yUnit, Image img) {
@@ -37,8 +31,12 @@ public class Balloon extends Entity {
             animate = 0;
         }
         if (goRight) {
+            Image image_goRight = Sprite.movingSprite(Sprite.balloom_right1,
+                    Sprite.balloom_right2, Sprite.balloom_right3, animate, animation_time).getFxImage();
             this.setImg(image_goRight);
         } else if (goLeft) {
+            Image image_goLeft = Sprite.movingSprite(Sprite.balloom_left1,
+                    Sprite.balloom_left2, Sprite.balloom_left3, animate, animation_time).getFxImage();
             this.setImg(image_goLeft);
         }
     }
@@ -47,7 +45,6 @@ public class Balloon extends Entity {
     public void update() {
         this.updateAnimation();
         collision.setRectCollisions(Map.stillEntity);
-        collision.update(Map.stillEntity);
         rect.setX(x);
         rect.setY(y);
         this.move();
@@ -56,13 +53,18 @@ public class Balloon extends Entity {
     @Override
     public void move() {
         this.setCellWalkPassed();
+        int MAX_CELL_WALK_PASSED = 4;
         if (randomMove == 1) {
+            this.goLeft = true;
+            this.goRight = false;
             this.x -= SPEED;
             if (collision.checkCollisions(rect) || cellWalkPassed > MAX_CELL_WALK_PASSED) {
                 this.x += 2 * SPEED;
                 setRandomMove();
             }
         } else if (randomMove == 2) {
+            this.goRight = true;
+            this.goLeft = false;
             this.x += SPEED;
             if (collision.checkCollisions(rect) || cellWalkPassed > MAX_CELL_WALK_PASSED) {
                 this.x -= 2 * SPEED;

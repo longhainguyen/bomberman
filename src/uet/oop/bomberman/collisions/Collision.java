@@ -35,7 +35,11 @@ public class Collision {
 
     public void setRectCollisionsOfentities(List<Entity> entities) {
         List<Rect> temp = new ArrayList<>();
+
         for (int i = 0; i < entities.size(); i++) {
+            if(entities.get(i) instanceof Grass){
+               // System.out.println("dung me roi");
+            }
             if (!(entities.get(i).getClass().equals(Bomber.class)
                     || entities.get(i).getClass().equals(Bomb.class))) {
                 Entity object = entities.get(i);

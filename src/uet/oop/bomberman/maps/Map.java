@@ -27,6 +27,9 @@ public class Map {
     public String[][] mapCode;
 
     public static List<Entity> stillEntity = new ArrayList<>();//Store of stillEntity in Map.
+
+    public static List<Entity> grassMap = new ArrayList<>();//Store of grass in Map.
+    public static List<Entity> powerMap = new ArrayList<>();//Store of powerup in Map.
     public static List<Entity> entitiesEntity = new ArrayList<>();//Store of entitiesEntity in Map.
 
     private void setReadFile(String fileName) {
@@ -69,12 +72,14 @@ public class Map {
 
 // Set map and character
     public void creatMap2(String fileName, List<Entity> entities
-            , List<Entity> stillObjects, Bomber player) {
+            , List<Entity> stillObjects, List<Entity> powerup,
+                          List<Entity> grass, Bomber player) {
         setAndGetMapCode(fileName);
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
                 Entity object;
-                Entity grass;
+                Entity grass_object = new Grass(j, i, Sprite.grass.getFxImage());
+                Entity power;
 
                 /*
                         At positions where the frame is not "Wall", we will creat an addition Grass's frame below it.
@@ -85,68 +90,54 @@ public class Map {
                         object = new Wall(j, i, Sprite.wall.getFxImage());
                         break;
                     case "*":
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
                         object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "x":
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
-                        object = new Portal(j, i, Sprite.portal.getFxImage());
+                        power = new Portal(j, i, Sprite.portal.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "p":
-
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
                         player.setBomber(j, i, Sprite.player_right.getFxImage());
                         object = player;
                         break;
                     case "1":
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
                         break;
                     case "2":
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
                         object = new Oneal(j, i, Sprite.oneal_right1.getFxImage());
                         break;
                     case "b":
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
                         object = new Bomb(j, i, Sprite.bomb_exploded.getFxImage());
                         break;
                     case "f":
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
-                        object = new Flame(j, i, Sprite.powerup_flames.getFxImage());
+                        power = new Flame(j, i, Sprite.powerup_flames.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "s":
-                        grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(grass);
-                        stillEntity.add(grass);
-                        object = new Speed(j, i, Sprite.powerup_speed.getFxImage());
+                        power = new Speed(j, i, Sprite.powerup_speed.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                 }
+                grass.add(grass_object);
+                grassMap.add(grass_object);
                 if (object.getClass().equals(Wall.class)
                         || object.getClass().equals(Brick.class)
-                        || object.getClass().equals(Portal.class)
-                        || object.getClass().equals(Grass.class)
-                        || object.getClass().equals(Flame.class)) {
+                ) {
                     stillObjects.add(object);
                     stillEntity.add(object);
                 } else {
-                    entities.add(object);
-                    if (!object.getClass().equals(Bomber.class))
+                    if (!(object instanceof Grass)) {
+                        entities.add(object);
+                    }
+                    if (!object.getClass().equals(Bomber.class) && !object.getClass().equals(Grass.class))
                         entitiesEntity.add(object);
                 }
             }
@@ -186,6 +177,12 @@ public class Map {
         for (Entity entity : entitiesEntity) {
             entity.setY(entity.getY() - distance);
         }
+        for (Entity entity : grassMap) {
+            entity.setY(entity.getY() - distance);
+        }
+        for (Entity entity : powerMap) {
+            entity.setY(entity.getY() - distance);
+        }
     }
 
     /**
@@ -197,6 +194,12 @@ public class Map {
             entity.setX(entity.getX() - distance);
         }
         for (Entity entity : entitiesEntity) {
+            entity.setX(entity.getX() - distance);
+        }
+        for (Entity entity : grassMap) {
+            entity.setX(entity.getX() - distance);
+        }
+        for (Entity entity : powerMap) {
             entity.setX(entity.getX() - distance);
         }
     }

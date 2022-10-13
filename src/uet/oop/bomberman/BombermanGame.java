@@ -21,6 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
+    private List<Entity> entities = new ArrayList<>();
+    private List<Entity> stillObjects = new ArrayList<>();
+
+    private List<Entity> powerup = new ArrayList<>();
+
+    private List<Entity> grass = new ArrayList<>();
 
     private Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
     public static final int WIDTH = 20;
@@ -29,14 +35,14 @@ public class BombermanGame extends Application {
     public static final int WINDOW_WIDTH = WIDTH * Sprite.SCALED_SIZE;
     public static final int WINDOW_HEIGHT = HEIGHT * Sprite.SCALED_SIZE;
 
-    private Bomb bomb = new Bomb(player.getX() / Sprite.SCALED_SIZE, player.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
+    private Bomb bomb = new Bomb(player.getX() / Sprite.SCALED_SIZE,
+            player.getY() / Sprite.SCALED_SIZE,
+            Sprite.bomb.getFxImage());
 
     public static final int bomb_max = 1;
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
 
     private Map mapGame = new Map();
 
@@ -143,7 +149,7 @@ public class BombermanGame extends Application {
         timebomb.play();
 
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
-        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
+        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup,grass,player);
         player.setBomberRectCollisions(stillObjects);
 
         //set event for player
@@ -170,10 +176,10 @@ public class BombermanGame extends Application {
                     case SPACE:
                         if (bomb.getBomb_number() < bomb_max && !bomb.isIs_explode() && player.getHeart() != 0) {
                             bomb.setGo(true);
-                            if(Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE != 0) {
+                            if (Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE != 0) {
                                 bomb.setBomb(player, Sprite.bomb.getFxImage(), Sprite.SCALED_SIZE -
                                         (Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE));
-                            }else {
+                            } else {
                                 bomb.setBomb(player, Sprite.bomb.getFxImage(), 0);
                             }
                             System.out.println(stillObjects.get(0).getX() + "----" + player.getX());
@@ -231,6 +237,8 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        grass.forEach(Entity::update);
+        powerup.forEach(Entity::update);
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
         mapGame.update();
@@ -238,6 +246,8 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        grass.forEach(g -> g.render(gc));
+        powerup.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }

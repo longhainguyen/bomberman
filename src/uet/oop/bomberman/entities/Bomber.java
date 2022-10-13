@@ -5,6 +5,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.itemType;
 import uet.oop.bomberman.maps.Map;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public class Bomber extends Entity {
     private int isDie_time;
 
     private int heart;
+
+    private itemType powerType;
 
     public boolean isTurn_right() {
         return turn_right;
@@ -93,6 +96,14 @@ public class Bomber extends Entity {
         this.heart = heart;
     }
 
+    public itemType getPowerType() {
+        return powerType;
+    }
+
+    public void setPowerType(itemType powerType) {
+        this.powerType = powerType;
+    }
+
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         this.image_current = img;
@@ -106,6 +117,7 @@ public class Bomber extends Entity {
         this.isDie = false;
         this.isDie_time = 0;
         this.heart = 1;
+        powerType = itemType.Nothing;
     }
 
     public void setBomber(int x, int y, Image img) {
@@ -148,7 +160,6 @@ public class Bomber extends Entity {
             }
             if (isDie_time > max_die_time - 1) {
                 isDie = false;
-                //isDie_time = 0;
             }
             Image die_image = Sprite.movingSprite(Sprite.player_dead1,
                     Sprite.player_dead2,

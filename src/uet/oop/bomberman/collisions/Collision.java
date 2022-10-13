@@ -22,9 +22,7 @@ public class Collision {
     public void setRectCollisions(List<Entity> stillObjects) {
         List<Rect> temp = new ArrayList<>();
         for (int i = 0; i < stillObjects.size(); i++) {
-            if (!((stillObjects.get(i).getClass().equals(Grass.class))
-                    || stillObjects.get(i).getClass().equals(Portal.class)
-                    || stillObjects.get(i).getClass().equals(Flame.class))) {
+            if (!((stillObjects.get(i).getClass().equals(Grass.class)))) {
                 Entity object = stillObjects.get(i);
                 temp.add(new Rect(object.getX(), object.getY(), width, height));
                 stillObjects.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));

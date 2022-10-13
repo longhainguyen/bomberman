@@ -3,6 +3,10 @@ package uet.oop.bomberman.maps;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.Flame;
+import uet.oop.bomberman.items.Item;
+import uet.oop.bomberman.items.Portal;
+import uet.oop.bomberman.items.Speed;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +33,7 @@ public class Map {
     public static List<Entity> stillEntity = new ArrayList<>();//Store of stillEntity in Map.
 
     public static List<Entity> grassMap = new ArrayList<>();//Store of grass in Map.
-    public static List<Entity> powerMap = new ArrayList<>();//Store of powerup in Map.
+    public static List<Item> powerMap = new ArrayList<>();//Store of powerup in Map.
     public static List<Entity> entitiesEntity = new ArrayList<>();//Store of entitiesEntity in Map.
 
     private void setReadFile(String fileName) {
@@ -72,14 +76,14 @@ public class Map {
 
 // Set map and character
     public void creatMap2(String fileName, List<Entity> entities
-            , List<Entity> stillObjects, List<Entity> powerup,
+            , List<Entity> stillObjects, List<Item> powerup,
                           List<Entity> grass, Bomber player) {
         setAndGetMapCode(fileName);
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
                 Entity object;
                 Entity grass_object = new Grass(j, i, Sprite.grass.getFxImage());
-                Entity power;
+                Item power;
 
                 /*
                         At positions where the frame is not "Wall", we will creat an addition Grass's frame below it.
@@ -100,6 +104,7 @@ public class Map {
                         break;
                     case "p":
                         player.setBomber(j, i, Sprite.player_right.getFxImage());
+                        BombermanGame.fake_player = player;
                         object = player;
                         break;
                     case "1":
@@ -180,7 +185,7 @@ public class Map {
         for (Entity entity : grassMap) {
             entity.setY(entity.getY() - distance);
         }
-        for (Entity entity : powerMap) {
+        for (Item entity : powerMap) {
             entity.setY(entity.getY() - distance);
         }
     }
@@ -199,7 +204,7 @@ public class Map {
         for (Entity entity : grassMap) {
             entity.setX(entity.getX() - distance);
         }
-        for (Entity entity : powerMap) {
+        for (Item entity : powerMap) {
             entity.setX(entity.getX() - distance);
         }
     }

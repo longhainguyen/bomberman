@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.maps.Map;
 
 import java.util.ArrayList;
@@ -24,11 +25,13 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
-    private List<Entity> powerup = new ArrayList<>();
+    private List<Item> powerup = new ArrayList<>();
 
     private List<Entity> grass = new ArrayList<>();
 
     private Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
+
+    public static Bomber fake_player = new Bomber(1, 1, Sprite.player_right.getFxImage());
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
 
@@ -103,6 +106,13 @@ public class BombermanGame extends Application {
                         entities.remove(i);
                         i--;
                     }
+                }
+            }
+            for(int i = 0; i < powerup.size(); i++){
+                if(powerup.get(i).isAte()){
+                    Map.powerMap.remove(powerup.get(i));
+                    powerup.remove(i);
+                    i--;
                 }
             }
         }));
@@ -182,7 +192,6 @@ public class BombermanGame extends Application {
                             } else {
                                 bomb.setBomb(player, Sprite.bomb.getFxImage(), 0);
                             }
-                            System.out.println(stillObjects.get(0).getX() + "----" + player.getX());
                             bomb.setBomb_number(bomb.getBomb_number() + 1);
                             entities.add(bomb);
                             Map.entitiesEntity.add(bomb);
@@ -238,7 +247,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         grass.forEach(Entity::update);
-        powerup.forEach(Entity::update);
+        powerup.forEach(Item::update);
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
         mapGame.update();

@@ -4,11 +4,18 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.intelligent.MoveRandom;
 import uet.oop.bomberman.maps.Map;
 
 import java.util.*;
 
 public class Oneal extends Entity {
+
+    private MoveRandom moveRandom = new MoveRandom();
+    public static int bomberX;
+    public static int bomberY;
+
+
     private List<Rect> listRectHaveToMove = new ArrayList<>();
     private int animation_time = 12;
     private int animate = 0;
@@ -19,8 +26,8 @@ public class Oneal extends Entity {
     public Oneal(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         rect = new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
-        this.goRight = true;
-        this.goLeft = false;
+        moveRandom.xBeforeChange = this.x;
+        moveRandom.yBeforeChange = this.y;
     }
 
     private void updateAnimation() {
@@ -41,24 +48,18 @@ public class Oneal extends Entity {
 
     @Override
     public void update() {
-        this.find_road();
-        for(Rect rect1 : listRectHaveToMove) {
-            System.out.println(rect1.getX() + "---" + rect1.getY());
-        }
-        System.out.println("---------");
         this.updateAnimation();
         collision.setRectCollisions(Map.stillEntity);
         collision.update(Map.stillEntity);
         rect.setX(x);
         rect.setY(y);
-        if(listRectHaveToMove.size() >= 2)
-            this.move();
+        this.move();
     }
 
     private void find_road() {
         boolean[][] visited = new boolean[Map.widthOfMap][Map.heightOfMap];
         Queue<Rect> pos = new LinkedList<>();
-        Rect rect1 = new Rect(rect.getX()/32 * 32, rect.getY()/32 * 32, rect.getW(), rect.getH());
+        Rect rect1 = rect;
         pos.add(rect1);
         visited[rect1.getX()][rect1.getY()] = true;
         java.util.Map<Rect,Rect> parentMap = new HashMap<>();
@@ -66,7 +67,7 @@ public class Oneal extends Entity {
         parentMap.put(start, null);
         while (!pos.isEmpty()) {
             start = pos.poll();
-            if(start.getX() == 32 && start.getY() == 32) {
+            if(start.getX() == bomberX && start.getY() == bomberY) {
                 break;
             }
 
@@ -103,18 +104,7 @@ public class Oneal extends Entity {
 
     @Override
     public void move() {
-        Rect rect1 = listRectHaveToMove.get(1);
-        Rect rect2 = new Rect(rect.getX()/32 * 32, rect.getY()/32 * 32, rect.getW(), rect.getH());
-        if(rect1.getY() > rect.getY()) {
-            this.y += SPEED;
-        }else if(rect1.getY() < rect.getY()) {
-            this.y -= SPEED;
-        }
-        if(rect1.getX() > rect.getX()) {
-            this.x += SPEED;
-        }else if(rect1.getX() < rect.getX()) {
-            this.x -= SPEED;
-        }
-
+        moveRandom.moveRandom(this,collision,rect);
     }
+
 }

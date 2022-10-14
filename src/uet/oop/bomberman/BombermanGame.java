@@ -88,7 +88,7 @@ public class BombermanGame extends Application {
         timebomb.play();
 
         mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
-        //mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, player);
+        //mapGame.creatMap2("res/levels/Level1Fake.txt", entities, stillObjects, player);
         player.setBomberRectCollisions(stillObjects);
 
         //set event for player
@@ -171,6 +171,8 @@ public class BombermanGame extends Application {
     public void update() {
         entities.forEach(Entity::update);
         mapGame.update();
+        Oneal.bomberX = (player.getX());
+        Oneal.bomberY = (player.getY());
     }
 
     public void render() {

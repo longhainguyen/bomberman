@@ -9,11 +9,12 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
 
-    protected static final int SPEED = 2;
+    public static final int SPEED = 2;
     protected boolean goUp;
     protected boolean goDown;
     protected boolean goLeft;
     protected boolean goRight;
+
 
     public boolean isGoUp() {
         return goUp;

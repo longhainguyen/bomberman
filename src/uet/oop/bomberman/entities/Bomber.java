@@ -28,12 +28,12 @@ public class Bomber extends Entity {
     private int posY;
 
     private static final int vec_bom = 5;
-    private static final int width = 21;
-    private static final int height = 30;
+    public static final int width = 21;
+    public static final int height = 30;
 
     private int animation_time = 12;
     private Collision Bomber_collision = new Collision();
-    private Rect Bomber_rect;
+    public Rect Bomber_rect;//Change public to easy use
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);

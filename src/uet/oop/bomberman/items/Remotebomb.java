@@ -15,6 +15,7 @@ public class Remotebomb extends Item {
         if (collisionItem.checkcollision(rectItem, BombermanGame.fake_player.getEntities_rect())
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Remote);
+            BombermanGame.fake_player.isRemote = true;
             this.setAte(true);
         }
     }

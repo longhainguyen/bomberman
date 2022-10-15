@@ -18,9 +18,17 @@ public class Bomber extends Entity {
 
     private int speed_clock = 0;// use to count time of speed power
 
-    private int flame_clock = 0;
+    private int flame_clock = 0;// use to connt time of flame power
 
-    private int multibomb_clock = 0;
+    private int multibomb_clock = 0;// use to count time of multibomb
+
+    private int remote_clock = 0; // use to count time of remote bomb
+
+    public boolean isRemote = false;
+
+    public boolean is_press_B = false;
+
+    public boolean is_out_of_time_B = false;
 
     private ArrayList<itemType> storePower = new ArrayList<>();
 
@@ -171,6 +179,7 @@ public class Bomber extends Entity {
         this.Speed();
         this.Flame();
         this.Multibomb();
+        this.Controlbomb();
         entity_collision.update(Map.stillEntity, Map.entitiesEntity);
     }
 
@@ -224,6 +233,26 @@ public class Bomber extends Entity {
                 } else {
                     multibomb_clock = 0;
                     BombermanGame.bomb_max = 1;
+                    storePower.remove(i);
+                    i--;
+                }
+            }
+        }
+    }
+
+    /**
+     * check control bomb.
+     */
+    public void Controlbomb(){
+        for (int i = 0; i < storePower.size(); i++) {
+            if (storePower.get(i).equals(itemType.Remote)) {
+                if (multibomb_clock <  2 * acceleration_time) {
+                    multibomb_clock++;
+                } else {
+                    System.out.println("it worked");
+                    isRemote = false;
+                    is_out_of_time_B = true;
+                    multibomb_clock = 0;
                     storePower.remove(i);
                     i--;
                 }

@@ -55,6 +55,16 @@ public class BombermanGame extends Application {
         Application.launch(BombermanGame.class);
     }
 
+    public void setupBomb(Bomb other){
+        other.setbomb_explosion(stillObjects, entities);
+        other.setIs_explode(true);
+        entities.remove(other);
+        Map.entitiesEntity.remove(other);
+        other.addEntities(entities);
+        other.addEntities(Map.entitiesEntity);
+        other.setExplosion_time(0);
+    }
+
     @Override
     public void start(Stage stage) {
         // Tao Canvas
@@ -122,18 +132,20 @@ public class BombermanGame extends Application {
         timeline.play();
         Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(200), e -> {
             for(int i = 0; i < bombChain.size(); i++){
-                bombChain.get(i).setBomb_frame(bombChain.get(i).getBomb_frame() + 1);
-                if (bombChain.get(i).isGo()) {
-                    bombChain.get(i).setExplosion_time(bombChain.get(i).getExplosion_time() + 1);
-                }
-                if (bombChain.get(i).getExplosion_time() >= 10) {
-                    bombChain.get(i).setbomb_explosion(stillObjects, entities);
-                    bombChain.get(i).setIs_explode(true);
-                    entities.remove(bombChain.get(i));
-                    Map.entitiesEntity.remove(bombChain.get(i));
-                    bombChain.get(i).addEntities(entities);
-                    bombChain.get(i).addEntities(Map.entitiesEntity);
-                    bombChain.get(i).setExplosion_time(0);
+                if(player.is_press_B ){
+                    player.is_press_B = false;
+                    setupBomb(bombChain.get(i));
+                } else if (player.is_out_of_time_B && !bombChain.get(i).isGo()) {
+                    player.is_out_of_time_B = false;
+                    setupBomb(bombChain.get(i));
+                } else {
+                    bombChain.get(i).setBomb_frame(bombChain.get(i).getBomb_frame() + 1);
+                    if (bombChain.get(i).isGo()) {
+                        bombChain.get(i).setExplosion_time(bombChain.get(i).getExplosion_time() + 1);
+                    }
+                    if (bombChain.get(i).getExplosion_time() >= 10) {
+                        setupBomb(bombChain.get(i));
+                    }
                 }
 
                 if (bombChain.get(i).isIs_explode()) {
@@ -156,7 +168,7 @@ public class BombermanGame extends Application {
         timebomb.setCycleCount(-1);
         timebomb.play();
 
-        //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
+        //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
         mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
         player.setBomberRectCollisions(stillObjects);
 
@@ -190,10 +202,20 @@ public class BombermanGame extends Application {
                             } else {
                                 temp.setBomb(player, Sprite.bomb.getFxImage(), 0);
                             }
-                            temp.setGo(true);
+                            if(!player.isRemote) {
+                                temp.setGo(true);
+                            }
                             bombChain.add(temp);
                             entities.add(temp);
                             Map.entitiesEntity.add(temp);
+                        }
+                        break;
+                    case B:
+                        if(player.isRemote && bombChain.size() > 0){
+                            player.is_press_B = true;
+                            for(Bomb value : bombChain){
+                                value.setGo(true);
+                            }
                         }
                         break;
                 }
@@ -217,11 +239,11 @@ public class BombermanGame extends Application {
                         break;
                     case LEFT:
                         player.setGoLeft(false);
-
                         Map.goRight = false;
-
+                        break;
                     case SPACE:
-
+                        break;
+                    case B:
                         break;
                 }
             }

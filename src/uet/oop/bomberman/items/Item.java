@@ -5,7 +5,9 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.maps.Map;
 
 
 public abstract class Item {
@@ -66,8 +68,9 @@ public abstract class Item {
         return rectItem;
     }
 
-    public void setRectItem(Rect rectItem) {
-        this.rectItem = rectItem;
+    public void setRectItem() {
+        rectItem.setX(this.x);
+        rectItem.setY(this.y);
     }
 
 
@@ -87,5 +90,14 @@ public abstract class Item {
 
     public void move() {
 
+    }
+
+    public boolean isBrickcovered(){
+        for(Entity value : Map.stillEntity){
+            if(value.getX() == this.x && value.getY() == this.y){
+                return true;
+            }
+        }
+        return false;
     }
 }

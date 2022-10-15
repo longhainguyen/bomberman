@@ -3,10 +3,7 @@ package uet.oop.bomberman.maps;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.items.Flame;
-import uet.oop.bomberman.items.Item;
-import uet.oop.bomberman.items.Portal;
-import uet.oop.bomberman.items.Speed;
+import uet.oop.bomberman.items.*;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -114,7 +111,10 @@ public class Map {
                         object = new Oneal(j, i, Sprite.oneal_right1.getFxImage());
                         break;
                     case "b":
-                        object = new Bomb(j, i, Sprite.bomb_exploded.getFxImage());
+                        power = new Multibomb(j, i, Sprite.powerup_bombs.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "f":
                         power = new Flame(j, i, Sprite.powerup_flames.getFxImage());
@@ -124,6 +124,36 @@ public class Map {
                         break;
                     case "s":
                         power = new Speed(j, i, Sprite.powerup_speed.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        break;
+                    case "w":
+                        power = new Wallpass(j, i, Sprite.powerup_wallpass.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        break;
+                    case "F":
+                        power = new Firepass(j, i, Sprite.powerup_flamepass.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        break;
+                    case "B":
+                        power = new Bombpass(j, i, Sprite.powerup_bombpass.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        break;
+                    case "r":
+                        power = new Remotebomb(j, i, Sprite.powerup_detonator.getFxImage());
+                        powerup.add(power);
+                        powerMap.add(power);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        break;
+                    case "?":
+                        power = new Secret(j, i, Sprite.powerup_secret.getFxImage());
                         powerup.add(power);
                         powerMap.add(power);
                         object = new Brick(j, i, Sprite.brick.getFxImage());

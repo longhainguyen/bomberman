@@ -13,7 +13,7 @@ public class Bomb extends Entity {
 
     private int bomb_frame;
     private int bomb_number;
-    private int max_length_explosion;
+    public static int max_length_explosion;
 
     private List<Explosion> bomb_explosion = new ArrayList<>();
     private int explosion_time;
@@ -55,13 +55,14 @@ public class Bomb extends Entity {
                 this.x = posx + virtual_distance;
                 this.y = posy + 32;
             }
-           this.setEntities_rect(new Rect(this.x, this.y , Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }
+        this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
         if (checkinside || this.getEntity_collision().checkCollisions(this.getEntities_rect())) {
             this.x = posx + virtual_distance;
             this.y = posy;
             this.setEntities_rect(new Rect(this.x, this.y , Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }
+//        System.out.println(getEntities_rect().getX() + " " + getEntities_rect().getY());
         this.img = img;
     }
 
@@ -73,9 +74,6 @@ public class Bomb extends Entity {
         this.is_explode = is_explode;
     }
 
-    public void set_entities_die(List<Rect> is_die_rect, List<Entity> entities) {
-
-    }
 
     public int getMax_length_explosion() {
         return max_length_explosion;
@@ -144,8 +142,8 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-        this.move();
         this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
+        this.move();
     }
 
     public void setbomb_explosion(List<Entity> stillObjects, List<Entity> entities) {

@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.maps.Map;
 
 import javax.sound.sampled.Port;
@@ -13,7 +14,6 @@ import java.util.List;
 public class Collision {
     private List<Rect> collisions = new ArrayList<>();
     private List<Rect> collisionsOfentities = new ArrayList<>();
-
 
     private Rect is_die_rect;
     public static final int width = 32;
@@ -44,11 +44,9 @@ public class Collision {
                 temp.add(new Rect(object.getX(), object.getY(), width, height));
                 entities.get(i).setEntities_rect(new Rect(entities.get(i).getX(), entities.get(i).getY(), width, height));
             }
-            //   entities.get(i).setEntities_rect(new Rect(entities.get(i).getX(), entities.get(i).getY(), width, height));
         }
         collisionsOfentities = temp;
     }
-
 
     public boolean checkCollisions(Rect playerRect) {
         int Left_player = playerRect.getX();

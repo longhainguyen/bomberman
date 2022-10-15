@@ -8,10 +8,21 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.itemType;
 import uet.oop.bomberman.maps.Map;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bomber extends Entity {
     private Image image_current;
+
+    public static final int acceleration_time = 100;
+
+    private int speed_clock = 0;// use to count time of speed power
+
+    private int flame_clock = 0;
+
+    private int multibomb_clock = 0;
+
+    private ArrayList<itemType> storePower = new ArrayList<>();
 
     public int animate = 0;
     public int posXInMap;
@@ -25,7 +36,7 @@ public class Bomber extends Entity {
     public static final int width = 21;
     public static final int height = 31;
 
-    public static final int  animation_time = 12;
+    public static final int animation_time = 12;
     public static final int max_die_time = 30;
 
     private boolean turn_right;
@@ -38,7 +49,6 @@ public class Bomber extends Entity {
 
     private int heart;
 
-    private itemType powerType;
 
     public boolean isTurn_right() {
         return turn_right;
@@ -96,12 +106,25 @@ public class Bomber extends Entity {
         this.heart = heart;
     }
 
-    public itemType getPowerType() {
-        return powerType;
+
+    public int getSpeed_clock() {
+        return speed_clock;
     }
 
-    public void setPowerType(itemType powerType) {
-        this.powerType = powerType;
+    public void setSpeed_clock(int speed_clock) {
+        this.speed_clock = speed_clock;
+    }
+
+    public ArrayList<itemType> getStorePower() {
+        return storePower;
+    }
+
+    public void setStorePower(ArrayList<itemType> storePower) {
+        this.storePower = storePower;
+    }
+
+    public void addType(itemType type) {
+        storePower.add(type);
     }
 
     public Bomber(int x, int y, Image img) {
@@ -117,7 +140,7 @@ public class Bomber extends Entity {
         this.isDie = false;
         this.isDie_time = 0;
         this.heart = 1;
-        powerType = itemType.Nothing;
+        speed_clock = 0;
     }
 
     public void setBomber(int x, int y, Image img) {
@@ -145,7 +168,67 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         this.move();
+        this.Speed();
+        this.Flame();
+        this.Multibomb();
         entity_collision.update(Map.stillEntity, Map.entitiesEntity);
+    }
+
+    /**
+     * check speed item.
+     */
+    public void Speed() {
+        for (int i = 0; i < storePower.size(); i++) {
+            if (storePower.get(i).equals(itemType.Speed)) {
+                if (speed_clock < acceleration_time) {
+                    speed_clock++;
+                    SPEED = 4;
+                } else {
+                    speed_clock = 0;
+                    SPEED = 2;
+                    storePower.remove(i);
+                    i--;
+                }
+            }
+        }
+    }
+
+    /**
+     * check flame item.
+     */
+    public void Flame() {
+        for (int i = 0; i < storePower.size(); i++) {
+            if (storePower.get(i).equals(itemType.Flame)) {
+                if (flame_clock < acceleration_time) {
+                    flame_clock++;
+                    Bomb.max_length_explosion = 5;
+                } else {
+                    flame_clock = 0;
+                    Bomb.max_length_explosion = 3;
+                    storePower.remove(i);
+                    i--;
+                }
+            }
+        }
+    }
+
+    /**
+     * check multibomb.
+     */
+    public void Multibomb(){
+        for (int i = 0; i < storePower.size(); i++) {
+            if (storePower.get(i).equals(itemType.Multibomb)) {
+                if (multibomb_clock < acceleration_time) {
+                    multibomb_clock++;
+                    BombermanGame.bomb_max  = 2;
+                } else {
+                    multibomb_clock = 0;
+                    BombermanGame.bomb_max = 1;
+                    storePower.remove(i);
+                    i--;
+                }
+            }
+        }
     }
 
     @Override
@@ -155,8 +238,8 @@ public class Bomber extends Entity {
         }
         if (isDie) {
             isDie_time++;
-            if(this.getIsDie_time() == 1){
-               this.setHeart(0);
+            if (this.getIsDie_time() == 1) {
+                this.setHeart(0);
             }
             if (isDie_time > max_die_time - 1) {
                 isDie = false;

@@ -8,15 +8,18 @@ import uet.oop.bomberman.maps.Map;
 
 
 public class Flame extends Item {
+    // extends the blast radius of bomb by one tile
     public Flame(int x, int y, Image img) {
         super(x, y, img);
     }
 
     @Override
     public void update() {
-       if(collisionItem.checkcollision(rectItem, BombermanGame.fake_player.getEntities_rect())){
-                  BombermanGame.fake_player.setPowerType(itemType.Flame);
-                  this.setAte(true);
-       }
+        this.setRectItem();
+        if (collisionItem.checkcollision(rectItem, BombermanGame.fake_player.getEntities_rect())
+                && !isBrickcovered()) {
+            BombermanGame.fake_player.addType(itemType.Flame);
+            this.setAte(true);
+        }
     }
 }

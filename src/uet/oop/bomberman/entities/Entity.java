@@ -11,7 +11,14 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
 
-    protected static final int SPEED = 2;
+    public  int SPEED = 2;
+    //Tọa độ X tính từ góc trái trên trong Canvas
+    protected int x;
+
+    //Tọa độ Y tính từ góc trái trên trong Canvas
+    protected int y;
+
+    protected Image img;
     protected boolean goUp;
     protected boolean goDown;
     protected boolean goLeft;
@@ -105,13 +112,6 @@ public abstract class Entity {
         this.entity_frame = entity_frame;
     }
 
-    //Tọa độ X tính từ góc trái trên trong Canvas
-    protected int x;
-
-    //Tọa độ Y tính từ góc trái trên trong Canvas
-    protected int y;
-
-    protected Image img;
 
     public int getX() {
         return x;
@@ -136,6 +136,7 @@ public abstract class Entity {
     public void setImg(Image img) {
         this.img = img;
     }
+
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity(int xUnit, int yUnit, Image img) {

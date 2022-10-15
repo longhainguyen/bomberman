@@ -42,7 +42,9 @@ public class BombermanGame extends Application {
             player.getY() / Sprite.SCALED_SIZE,
             Sprite.bomb.getFxImage());
 
-    public static final int bomb_max = 1;
+    private List<Bomb> bombChain = new ArrayList<>();
+
+    public static int bomb_max = 1;
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -108,8 +110,8 @@ public class BombermanGame extends Application {
                     }
                 }
             }
-            for(int i = 0; i < powerup.size(); i++){
-                if(powerup.get(i).isAte()){
+            for (int i = 0; i < powerup.size(); i++) {
+                if (powerup.get(i).isAte()) {
                     Map.powerMap.remove(powerup.get(i));
                     powerup.remove(i);
                     i--;
@@ -119,38 +121,34 @@ public class BombermanGame extends Application {
         timeline.setCycleCount(-1);
         timeline.play();
         Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(200), e -> {
-
-            bomb.setBomb_frame(bomb.getBomb_frame() + 1);
-            if (bomb.isGo()) {
-                bomb.setExplosion_time(bomb.getExplosion_time() + 1);
-            }
-            if (bomb.getExplosion_time() >= 10) {
-                bomb.setbomb_explosion(stillObjects, entities);
-                bomb.setIs_explode(true);
-                for (int i = 0; i < entities.size(); i++) {
-                    if (entities.get(i) instanceof Bomb) {
-                        entities.remove(i);
-                        Map.entitiesEntity.remove(bomb);
-                        bomb.setBomb_number(bomb.getBomb_number() - 1);
-                        bomb.setExplosion_time(0);
-                        bomb.setGo(false);
-                    }
+            for(int i = 0; i < bombChain.size(); i++){
+                bombChain.get(i).setBomb_frame(bombChain.get(i).getBomb_frame() + 1);
+                if (bombChain.get(i).isGo()) {
+                    bombChain.get(i).setExplosion_time(bombChain.get(i).getExplosion_time() + 1);
                 }
-                bomb.addEntities(entities);
-                bomb.addEntities(Map.entitiesEntity);
-            }
+                if (bombChain.get(i).getExplosion_time() >= 10) {
+                    bombChain.get(i).setbomb_explosion(stillObjects, entities);
+                    bombChain.get(i).setIs_explode(true);
+                    entities.remove(bombChain.get(i));
+                    Map.entitiesEntity.remove(bombChain.get(i));
+                    bombChain.get(i).addEntities(entities);
+                    bombChain.get(i).addEntities(Map.entitiesEntity);
+                    bombChain.get(i).setExplosion_time(0);
+                }
 
-            if (bomb.isIs_explode()) {
-                if (bomb.getBomb_explosion().get(0).getExplosion_frame() == Explosion.max_explosion_frame_time - 1) {
-                    for (int i = 0; i < bomb.getBomb_explosion().size(); i++) {
-                        entities.remove(bomb.getBomb_explosion().get(i));
-                        Map.entitiesEntity.remove(bomb.getBomb_explosion().get(i));
-                    }
-                    bomb.setIs_explode(false);
-                } else {
-                    for (int i = 0; i < bomb.getBomb_explosion().size(); i++) {
-                        int num = bomb.getBomb_explosion().get(i).getExplosion_frame();
-                        bomb.getBomb_explosion().get(i).setExplosion_frame(num + 1);
+                if (bombChain.get(i).isIs_explode()) {
+                    if (bombChain.get(i).getBomb_explosion().get(0).getExplosion_frame() == Explosion.max_explosion_frame_time - 1) {
+                        for (int j = 0; j < bombChain.get(i).getBomb_explosion().size(); j++) {
+                            entities.remove(bombChain.get(i).getBomb_explosion().get(j));
+                            Map.entitiesEntity.remove(bombChain.get(i).getBomb_explosion().get(j));
+                        }
+                        bombChain.remove(i);
+                        i--;
+                    } else {
+                        for (int j = 0; j < bombChain.get(i).getBomb_explosion().size(); j++) {
+                            int num = bombChain.get(i).getBomb_explosion().get(j).getExplosion_frame();
+                            bombChain.get(i).getBomb_explosion().get(j).setExplosion_frame(num + 1);
+                        }
                     }
                 }
             }
@@ -159,7 +157,7 @@ public class BombermanGame extends Application {
         timebomb.play();
 
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, player);
-        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup,grass,player);
+        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
         player.setBomberRectCollisions(stillObjects);
 
         //set event for player
@@ -184,17 +182,18 @@ public class BombermanGame extends Application {
                         Map.goRight = true;
                         break;
                     case SPACE:
-                        if (bomb.getBomb_number() < bomb_max && !bomb.isIs_explode() && player.getHeart() != 0) {
-                            bomb.setGo(true);
+                        if (bombChain.size() < bomb_max && player.getHeart() != 0) {
+                            Bomb temp = new Bomb(0, 0, Sprite.bomb.getFxImage());
                             if (Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE != 0) {
-                                bomb.setBomb(player, Sprite.bomb.getFxImage(), Sprite.SCALED_SIZE -
+                                temp.setBomb(player, Sprite.bomb.getFxImage(), Sprite.SCALED_SIZE -
                                         (Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE));
                             } else {
-                                bomb.setBomb(player, Sprite.bomb.getFxImage(), 0);
+                                temp.setBomb(player, Sprite.bomb.getFxImage(), 0);
                             }
-                            bomb.setBomb_number(bomb.getBomb_number() + 1);
-                            entities.add(bomb);
-                            Map.entitiesEntity.add(bomb);
+                            temp.setGo(true);
+                            bombChain.add(temp);
+                            entities.add(temp);
+                            Map.entitiesEntity.add(temp);
                         }
                         break;
                 }

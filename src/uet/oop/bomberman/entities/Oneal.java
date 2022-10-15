@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.intelligent.MoveRandom;
 import uet.oop.bomberman.maps.Map;
 
@@ -12,9 +13,7 @@ import java.util.*;
 public class Oneal extends Entity {
 
     private MoveRandom moveRandom = new MoveRandom();
-    public static int bomberX;
-    public static int bomberY;
-
+    private MoveIntelligent moveIntelligent = new MoveIntelligent();
 
     private List<Rect> listRectHaveToMove = new ArrayList<>();
     private int animation_time = 12;
@@ -56,55 +55,17 @@ public class Oneal extends Entity {
         this.move();
     }
 
-    private void find_road() {
-        boolean[][] visited = new boolean[Map.widthOfMap][Map.heightOfMap];
-        Queue<Rect> pos = new LinkedList<>();
-        Rect rect1 = rect;
-        pos.add(rect1);
-        visited[rect1.getX()][rect1.getY()] = true;
-        java.util.Map<Rect,Rect> parentMap = new HashMap<>();
-        Rect start = rect1;
-        parentMap.put(start, null);
-        while (!pos.isEmpty()) {
-            start = pos.poll();
-            if(start.getX() == bomberX && start.getY() == bomberY) {
-                break;
-            }
-
-            int[] dr = new int[]{-32, +32, 0, 0};
-            int[] dc = new int[]{0, 0, 32, -32};
-            for(int i = 0; i < 4; i++) {
-
-                int cc = start.getX() + dr[i];
-                int rr = start.getY() + dc[i];
-
-                if (cc < 0 || rr < 0) continue;
-                if (cc >= Map.widthOfMap || rr >= Map.heightOfMap) continue;
-
-
-                Rect rect2 = new Rect(cc, rr, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
-
-                if(collision.checkCollisions(start)) continue;
-
-                if(!visited[rect2.getX()][rect2.getY()]) {
-                    pos.add(rect2);
-                    visited[rect2.getX()][rect2.getY()] = true;
-                    parentMap.put(rect2,start);
-                }
-            }
-        }
-        List<Rect> path = new ArrayList<>();
-        Rect curr = start;
-        while (curr != null) {
-            path.add(0,curr);
-            curr = parentMap.get(curr);
-        }
-        listRectHaveToMove = path;
-    }
-
     @Override
     public void move() {
-        moveRandom.moveRandom(this,collision,rect);
+
+        double distance = Math.sqrt(Math.pow(x - MoveIntelligent.bomberX, 2)
+                + Math.pow(y - MoveIntelligent.bomberY, 2));
+        if(distance >= 100) {
+            moveRandom.moveRandom(this,collision,rect);
+        }else {
+            moveIntelligent.find_road(rect,collision);
+            moveIntelligent.moveIntelligent(this);
+        }
     }
 
 }

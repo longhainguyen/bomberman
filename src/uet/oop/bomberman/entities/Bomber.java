@@ -30,14 +30,20 @@ public class Bomber extends Entity {
 
     public boolean is_out_of_time_B = false;
 
+    public int press_B_number = 0;
+
     private int wallpass_clock = 0; // use to count the time of wallpass.
 
     public boolean isWallpass = false;
 
-    private int survival_clock = 0;
+    private int survival_clock = 0;// use to count the time of survival.
 
     public boolean isSurvival = false;
 
+    private int bombpass_clock = 0;// use to count the time of bombpass.
+
+    public boolean isBombpass = false;
+    public boolean is_check_out_of_bomb = false;
     private ArrayList<itemType> storePower = new ArrayList<>();
 
     public int animate = 0;
@@ -190,6 +196,7 @@ public class Bomber extends Entity {
         this.Controlbomb();
         this.Wallpass();
         this.Survival();
+        this.Bombpass();
         entity_collision.update(Map.stillEntity, Map.entitiesEntity);
     }
 
@@ -278,7 +285,6 @@ public class Bomber extends Entity {
                 if (wallpass_clock < acceleration_time) {
                     wallpass_clock++;
                 } else {
-                    System.out.println("time out");
                     wallpass_clock = 0;
                     isWallpass = false;
                     storePower.remove(i);
@@ -306,11 +312,30 @@ public class Bomber extends Entity {
         }
     }
 
+    /**
+     *check bombpass.
+     */
+    public void Bombpass(){
+        for (int i = 0; i < storePower.size(); i++) {
+            if (storePower.get(i).equals(itemType.Bombpass)) {
+                if (bombpass_clock < 2 * acceleration_time) {
+                    bombpass_clock ++;
+                } else {
+                    System.out.println("end of period");
+                    bombpass_clock = 0;
+                    isBombpass = false;
+                    storePower.remove(i);
+                    i--;
+                }
+            }
+        }
+    }
+
     @Override
     public void move() {
         if(!this.isSurvival) {
             if (entity_collision.checkCollisionsOfentities(entities_rect)) {
-                this.setDie(true);
+                //this.setDie(true);
             }
         }
         if (isDie) {

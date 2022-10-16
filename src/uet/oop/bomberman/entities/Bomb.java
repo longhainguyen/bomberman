@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
@@ -15,10 +16,15 @@ public class Bomb extends Entity {
     private int bomb_number;
     public static int max_length_explosion;
 
+    public int press_B_number = 0;
+
     private List<Explosion> bomb_explosion = new ArrayList<>();
     private int explosion_time;
     private boolean is_explode;
     private boolean go;
+
+    public boolean is_out_of_bomber = false;
+
 
     private List<Explosion> temp = new ArrayList<>();
 
@@ -37,11 +43,11 @@ public class Bomb extends Entity {
         int posy = (other.getY() / 32) * 32;
         boolean checkinside = false;
         if (other.getX() >= posx - virtual_distance
-                && other.getX() + Bomber.width <= posx +  Sprite.SCALED_SIZE  + Bomber.width
+                && other.getX() + Bomber.width <= posx + Sprite.SCALED_SIZE + Bomber.width
                 && posy + Sprite.SCALED_SIZE >= other.getY() + Bomber.height) {
             checkinside = true;
         }
-       if(!checkinside) {
+        if (!checkinside) {
             if (other.isTurn_right()) {
                 this.x = posx + virtual_distance + 32;
                 this.y = posy;
@@ -60,10 +66,18 @@ public class Bomb extends Entity {
         if (checkinside || this.getEntity_collision().checkCollisions(this.getEntities_rect())) {
             this.x = posx + virtual_distance;
             this.y = posy;
-            this.setEntities_rect(new Rect(this.x, this.y , Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
+            this.setEntities_rect(new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }
-//        System.out.println(getEntities_rect().getX() + " " + getEntities_rect().getY());
+        this.is_out_of_bomber = false;
         this.img = img;
+    }
+
+    public void setOutOfBomb() {
+        if (!BombermanGame.fake_player.is_check_out_of_bomb) {
+            if (!this.getEntity_collision().checkcollision(BombermanGame.fake_player.getEntities_rect(), this.getEntities_rect())) {
+                is_out_of_bomber = true;
+            }
+        }
     }
 
     public boolean isIs_explode() {
@@ -144,6 +158,7 @@ public class Bomb extends Entity {
     public void update() {
         this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
         this.move();
+        this.setOutOfBomb();
     }
 
     public void setbomb_explosion(List<Entity> stillObjects, List<Entity> entities) {

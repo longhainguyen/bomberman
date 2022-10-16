@@ -22,8 +22,14 @@ public class Collision {
 
     public void setRectCollisions(List<Entity> stillObjects) {
         List<Rect> temp = new ArrayList<>();
-        if(!BombermanGame.fake_player.isWallpass) {
+        if (!BombermanGame.fake_player.isWallpass) {
             for (int i = 0; i < stillObjects.size(); i++) {
+                if (stillObjects.get(i) instanceof Bomb) {
+                    if (!((Bomb) stillObjects.get(i)).is_out_of_bomber || BombermanGame.fake_player.isBombpass) {
+                        stillObjects.get(i).setEntities_rect(new Rect(stillObjects.get(i).getX(), stillObjects.get(i).getY(), width, height));
+                        continue;
+                    }
+                }
                 if (!((stillObjects.get(i).getClass().equals(Grass.class)))) {
                     Entity object = stillObjects.get(i);
                     temp.add(new Rect(object.getX(), object.getY(), width, height));
@@ -36,10 +42,11 @@ public class Collision {
 
     public void setRectCollisionsOfentities(List<Entity> entities) {
         List<Rect> temp = new ArrayList<>();
-
         for (int i = 0; i < entities.size(); i++) {
-            if(entities.get(i) instanceof Grass){
-               // System.out.println("dung me roi");
+            if (entities.get(i) instanceof Bomber) {
+                entities.get(i).setEntities_rect(new Rect(entities.get(i).getX(),
+                        entities.get(i).getY(), Bomber.width, Bomber.height));
+                continue;
             }
             if (!(entities.get(i).getClass().equals(Bomber.class)
                     || entities.get(i).getClass().equals(Bomb.class))) {
@@ -94,21 +101,21 @@ public class Collision {
     }
 
     public boolean checkcollision(Rect playerRect, Rect other) {
-            int Left_player = playerRect.getX();
-            int Right_player = playerRect.getX() + playerRect.getW();
-            int Top_player = playerRect.getY();
-            int Bottom_player = playerRect.getY() + playerRect.getH();
-            int Left_object = other.getX();
-            int Right_object = other.getX() + other.getW();
-            int Top_object = other.getY();
-            int Bottom_object = other.getY() + other.getH();
-            if (!(Bottom_player <= Top_object
-                    || Top_player >= Bottom_object
-                    || Right_player <= Left_object
-                    || Left_player >= Right_object)) {
-                return true;
-            }
-            return false;
+        int Left_player = playerRect.getX();
+        int Right_player = playerRect.getX() + playerRect.getW();
+        int Top_player = playerRect.getY();
+        int Bottom_player = playerRect.getY() + playerRect.getH();
+        int Left_object = other.getX();
+        int Right_object = other.getX() + other.getW();
+        int Top_object = other.getY();
+        int Bottom_object = other.getY() + other.getH();
+        if (!(Bottom_player <= Top_object
+                || Top_player >= Bottom_object
+                || Right_player <= Left_object
+                || Left_player >= Right_object)) {
+            return true;
+        }
+        return false;
     }
 
     public Rect getIs_die_rect() {

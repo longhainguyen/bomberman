@@ -58,8 +58,8 @@ public class BombermanGame extends Application {
     public void setupBomb(Bomb other){
         other.setbomb_explosion(stillObjects, entities);
         other.setIs_explode(true);
-        entities.remove(other);
-        Map.entitiesEntity.remove(other);
+        stillObjects.remove(other);
+        Map.stillEntity.remove(other);
         other.addEntities(entities);
         other.addEntities(Map.entitiesEntity);
         other.setExplosion_time(0);
@@ -123,15 +123,14 @@ public class BombermanGame extends Application {
         timeline.play();
         Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(200), e -> {
             for(int i = 0; i < bombChain.size(); i++){
-                if(player.is_press_B ){
-                    player.is_press_B = false;
+                if(player.is_press_B && bombChain.get(i).isGo()){
+                   bombChain.get(i).setGo(false);
                     setupBomb(bombChain.get(i));
                 } else if (player.is_out_of_time_B && !bombChain.get(i).isGo()) {
-                    player.is_out_of_time_B = false;
-                    setupBomb(bombChain.get(i));
-                } else if (!player.is_out_of_time_B && !bombChain.get(i).isGo()) {
+                    player.is_press_B = false;
                     bombChain.get(i).setGo(true);
-                } else {
+                    setupBomb(bombChain.get(i));
+                }  else {
                     bombChain.get(i).setBomb_frame(bombChain.get(i).getBomb_frame() + 1);
                     if (bombChain.get(i).isGo()) {
                         bombChain.get(i).setExplosion_time(bombChain.get(i).getExplosion_time() + 1);
@@ -199,12 +198,15 @@ public class BombermanGame extends Application {
                                 temp.setGo(true);
                             }
                             bombChain.add(temp);
-                            entities.add(temp);
-                            Map.entitiesEntity.add(temp);
+                            stillObjects.add(temp);
+                            Map.stillEntity.add(temp);
                         }
                         break;
                     case B:
-                        if(player.isRemote && bombChain.size() > 0){
+                        if(player.isRemote && bombChain.size() > 0 && bombChain.get(0).press_B_number < 1){
+                            for(Bomb value : bombChain){
+                                value.press_B_number++;
+                            }
                             player.is_press_B = true;
                             for(Bomb value : bombChain){
                                 value.setGo(true);

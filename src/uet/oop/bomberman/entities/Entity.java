@@ -143,7 +143,7 @@ public abstract class Entity {
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
-        this.entities_rect = new Rect(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
+        this.entities_rect = new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
         this.isDie = false;
     }
 

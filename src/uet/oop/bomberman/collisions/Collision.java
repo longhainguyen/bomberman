@@ -3,6 +3,7 @@ package uet.oop.bomberman.collisions;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.maps.Map;
@@ -21,11 +22,13 @@ public class Collision {
 
     public void setRectCollisions(List<Entity> stillObjects) {
         List<Rect> temp = new ArrayList<>();
-        for (int i = 0; i < stillObjects.size(); i++) {
-            if (!((stillObjects.get(i).getClass().equals(Grass.class)))) {
-                Entity object = stillObjects.get(i);
-                temp.add(new Rect(object.getX(), object.getY(), width, height));
-                stillObjects.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));
+        if(!BombermanGame.fake_player.isWallpass) {
+            for (int i = 0; i < stillObjects.size(); i++) {
+                if (!((stillObjects.get(i).getClass().equals(Grass.class)))) {
+                    Entity object = stillObjects.get(i);
+                    temp.add(new Rect(object.getX(), object.getY(), width, height));
+                    stillObjects.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));
+                }
             }
         }
         collisions = temp;

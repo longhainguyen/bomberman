@@ -82,15 +82,6 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
-
-//        AnimationTimer timer = new AnimationTimer() {
-//            @Override
-//            public void handle(long l) {
-//                render();
-//                update();
-//            }
-//        };
-//        timer.start();
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             update();
@@ -138,6 +129,8 @@ public class BombermanGame extends Application {
                 } else if (player.is_out_of_time_B && !bombChain.get(i).isGo()) {
                     player.is_out_of_time_B = false;
                     setupBomb(bombChain.get(i));
+                } else if (!player.is_out_of_time_B && !bombChain.get(i).isGo()) {
+                    bombChain.get(i).setGo(true);
                 } else {
                     bombChain.get(i).setBomb_frame(bombChain.get(i).getBomb_frame() + 1);
                     if (bombChain.get(i).isGo()) {
@@ -248,8 +241,6 @@ public class BombermanGame extends Application {
                 }
             }
         });
-
-
     }
 
     public void createMap() {

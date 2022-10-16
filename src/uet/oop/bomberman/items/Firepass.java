@@ -15,6 +15,7 @@ public class Firepass extends Item {
         if (collisionItem.checkcollision(rectItem, BombermanGame.fake_player.getEntities_rect())
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Firepass);
+            BombermanGame.fake_player.isSurvival = true;
             this.setAte(true);
         }
     }

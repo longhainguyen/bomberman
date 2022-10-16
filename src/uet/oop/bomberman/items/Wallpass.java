@@ -15,6 +15,7 @@ public class Wallpass extends Item {
         if (collisionItem.checkcollision(rectItem, BombermanGame.fake_player.getEntities_rect())
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Wallpass);
+            BombermanGame.fake_player.isWallpass = true;
             this.setAte(true);
         }
     }

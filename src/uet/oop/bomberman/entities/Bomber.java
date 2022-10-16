@@ -30,6 +30,14 @@ public class Bomber extends Entity {
 
     public boolean is_out_of_time_B = false;
 
+    private int wallpass_clock = 0; // use to count the time of wallpass.
+
+    public boolean isWallpass = false;
+
+    private int survival_clock = 0;
+
+    public boolean isSurvival = false;
+
     private ArrayList<itemType> storePower = new ArrayList<>();
 
     public int animate = 0;
@@ -180,6 +188,8 @@ public class Bomber extends Entity {
         this.Flame();
         this.Multibomb();
         this.Controlbomb();
+        this.Wallpass();
+        this.Survival();
         entity_collision.update(Map.stillEntity, Map.entitiesEntity);
     }
 
@@ -224,12 +234,12 @@ public class Bomber extends Entity {
     /**
      * check multibomb.
      */
-    public void Multibomb(){
+    public void Multibomb() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Multibomb)) {
-                if (multibomb_clock < acceleration_time) {
+                if (multibomb_clock < 2 * acceleration_time) {
                     multibomb_clock++;
-                    BombermanGame.bomb_max  = 2;
+                    BombermanGame.bomb_max = 2;
                 } else {
                     multibomb_clock = 0;
                     BombermanGame.bomb_max = 1;
@@ -243,13 +253,12 @@ public class Bomber extends Entity {
     /**
      * check control bomb.
      */
-    public void Controlbomb(){
+    public void Controlbomb() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Remote)) {
-                if (multibomb_clock <  2 * acceleration_time) {
+                if (multibomb_clock < 2 * acceleration_time) {
                     multibomb_clock++;
                 } else {
-                    System.out.println("it worked");
                     isRemote = false;
                     is_out_of_time_B = true;
                     multibomb_clock = 0;
@@ -260,10 +269,49 @@ public class Bomber extends Entity {
         }
     }
 
+    /**
+     * check wallpass.
+     */
+    public void Wallpass(){
+        for (int i = 0; i < storePower.size(); i++) {
+            if (storePower.get(i).equals(itemType.Wallpass)) {
+                if (wallpass_clock < acceleration_time) {
+                    wallpass_clock++;
+                } else {
+                    System.out.println("time out");
+                    wallpass_clock = 0;
+                    isWallpass = false;
+                    storePower.remove(i);
+                    i--;
+                }
+            }
+        }
+    }
+
+    /**
+     * check survival of bomber.
+     */
+    public void Survival(){
+        for (int i = 0; i < storePower.size(); i++) {
+            if (storePower.get(i).equals(itemType.Firepass)) {
+                if (survival_clock < 2 * acceleration_time) {
+                    survival_clock ++;
+                } else {
+                    survival_clock = 0;
+                    isSurvival = false;
+                    storePower.remove(i);
+                    i--;
+                }
+            }
+        }
+    }
+
     @Override
     public void move() {
-        if (entity_collision.checkCollisionsOfentities(entities_rect)) {
-            this.setDie(true);
+        if(!this.isSurvival) {
+            if (entity_collision.checkCollisionsOfentities(entities_rect)) {
+                this.setDie(true);
+            }
         }
         if (isDie) {
             isDie_time++;

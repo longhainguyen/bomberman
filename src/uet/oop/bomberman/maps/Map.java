@@ -21,11 +21,11 @@ public class Map {
 
     public static int widthOfMap;
     public static int heightOfMap;
-    public int col;
-    public int row;
+    public static int col;
+    public static int row;
     public String level;
     private List<String> readFile;
-    public String[][] mapCode;
+    public static String[][] mapCode;
 
     public static List<Entity> stillEntity = new ArrayList<>();//Store of stillEntity in Map.
 
@@ -91,6 +91,10 @@ public class Map {
                         object = new Wall(j, i, Sprite.wall.getFxImage());
                         break;
                     case "*":
+
+                        //grass = new Grass(j, i, Sprite.grass.getFxImage());
+                        //stillObjects.add(grass);
+                        //stillEntity.add(grass);
                         object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "x":
@@ -108,6 +112,10 @@ public class Map {
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
                         break;
                     case "2":
+
+                        //grass = new Grass(j, i, Sprite.grass.getFxImage());
+                        //stillObjects.add(grass);
+                        //stillEntity.add(grass);
                         object = new Oneal(j, i, Sprite.oneal_right1.getFxImage());
                         break;
                     case "b":

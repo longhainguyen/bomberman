@@ -11,7 +11,6 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
 
-    public  int SPEED = 2;
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
 
@@ -19,6 +18,7 @@ public abstract class Entity {
     protected int y;
 
     protected Image img;
+    public static int SPEED = 2;
     protected boolean goUp;
     protected boolean goDown;
     protected boolean goLeft;

@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.Item;
+import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.maps.Map;
 
 import java.util.ArrayList;
@@ -162,6 +163,7 @@ public class BombermanGame extends Application {
 
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
         mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
+
         player.setBomberRectCollisions(stillObjects);
 
         //set event for player
@@ -265,6 +267,7 @@ public class BombermanGame extends Application {
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
         mapGame.update();
+        MoveIntelligent.setBomberXY(player.getX(),player.getY());
     }
 
     public void render() {

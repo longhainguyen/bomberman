@@ -30,13 +30,13 @@ public class MoveIntelligent {
         parentMap.put(start, null);
         while (!pos.isEmpty()) {
             start = pos.poll();
-            if((start.getX() <= bomberX + 2 && start.getX() >= bomberX - 2 )
-                    && (start.getY() <= bomberY + 2 && start.getY() >= bomberY - 2)) {
+            if((start.getX() <= bomberX + 4 && start.getX() >= bomberX - 4 )
+                    && (start.getY() <= bomberY + 4 && start.getY() >= bomberY - 4)) {
                 break;
             }
 
-            int[] dr = new int[]{-2, +2, 0, 0};
-            int[] dc = new int[]{0, 0, 2, -2};
+            int[] dr = new int[]{-Entity.SPEED, +Entity.SPEED, 0, 0};
+            int[] dc = new int[]{0, 0, Entity.SPEED, -Entity.SPEED};
             for(int i = 0; i < 4; i++) {
 
                 int cc = start.getX() + dr[i];
@@ -72,15 +72,15 @@ public class MoveIntelligent {
             Rect rect1 = listRectHaveToMove.get(1);
             if(entity.getX() != rect1.getX()  || entity.getY() != rect1.getY()) {
                 if(rect1.getX() > entity.getX()) {
-                    entity.setX(entity.getX() + 2);
+                    entity.setX(entity.getX() + Entity.SPEED);
                 } else if (rect1.getX() < entity.getX()) {
-                    entity.setX(entity.getX() - 2);
+                    entity.setX(entity.getX() - Entity.SPEED);
                 }
 
                 if(rect1.getY() > entity.getY()) {
-                    entity.setY(entity.getY() + 2);
+                    entity.setY(entity.getY() + Entity.SPEED);
                 }else if(rect1.getY() < entity.getY()) {
-                    entity.setY(entity.getY() - 2);
+                    entity.setY(entity.getY() - Entity.SPEED);
                 }
             }
         }

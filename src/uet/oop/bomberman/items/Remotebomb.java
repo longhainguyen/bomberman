@@ -16,6 +16,7 @@ public class Remotebomb extends Item {
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Remote);
             BombermanGame.fake_player.isRemote = true;
+            BombermanGame.fake_player.is_out_of_time_B = false;
             this.setAte(true);
         }
     }

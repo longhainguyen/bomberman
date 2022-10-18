@@ -127,8 +127,7 @@ public class BombermanGame extends Application {
                 if (player.is_press_B && bombChain.get(i).isGo()) {
                     bombChain.get(i).setGo(false);
                     setupBomb(bombChain.get(i));
-                } else if (player.is_out_of_time_B && !bombChain.get(i).isGo()) {
-                    player.is_press_B = false;
+                } else if (player.is_out_of_time_B && !bombChain.get(i).isGo() && !player.is_press_B) {
                     bombChain.get(i).setGo(true);
                     setupBomb(bombChain.get(i));
                 } else {

@@ -149,6 +149,9 @@ public class Bomber extends Entity {
         storePower.add(type);
     }
 
+    private Collision Bomber_collision = new Collision();
+    public Rect Bomber_rect;//Change public to easy use
+
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         this.image_current = img;

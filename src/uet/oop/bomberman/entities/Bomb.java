@@ -25,6 +25,8 @@ public class Bomb extends Entity {
 
     public boolean is_out_of_bomber = false;
 
+    public int positionOfwall = 0;
+
 
     private List<Explosion> temp = new ArrayList<>();
 
@@ -54,7 +56,7 @@ public class Bomb extends Entity {
                     || Top_player >= Bottom_object
                     || Right_player <= Left_object
                     || Left_player >= Right_object)) {
-                System.out.println("fwt" + Left_object);
+                this.positionOfwall = Left_object;
                 return true;
             }
         }
@@ -89,10 +91,12 @@ public class Bomb extends Entity {
         }
         this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
         if (checkinside || this.checkBombcollision(entities_rect)) {
-            System.out.println(other.getX());
             if(other.isTurn_left() && !checkinside) {
                 this.x = posx + virtual_distance + 32;
-            }else this.x = posx + virtual_distance;
+            }
+            else if (other.isTurn_right() && !checkinside && virtual_distance != 0) {
+                this.x = positionOfwall  - 32;
+            } else this.x = posx + virtual_distance;
             this.y = posy;
             this.setEntities_rect(new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }

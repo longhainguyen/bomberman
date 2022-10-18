@@ -37,6 +37,30 @@ public class Bomb extends Entity {
         this.is_explode = false;
     }
 
+    public boolean checkBombcollision(Rect playerRect) {
+        int Left_player = playerRect.getX();
+        int Right_player = playerRect.getX() + playerRect.getW();
+        int Top_player = playerRect.getY();
+        int Bottom_player = playerRect.getY() + playerRect.getH();
+        for (int i = 0; i < Map.stillEntity.size(); i++) {
+            if (Map.stillEntity.get(i) instanceof Bomb) {
+                continue;
+            }
+            int Left_object = Map.stillEntity.get(i).getEntities_rect().getX();
+            int Right_object = Map.stillEntity.get(i).getEntities_rect().getX() + Map.stillEntity.get(i).getEntities_rect().getW();
+            int Top_object = Map.stillEntity.get(i).getEntities_rect().getY();
+            int Bottom_object = Map.stillEntity.get(i).getEntities_rect().getY() + Map.stillEntity.get(i).getEntities_rect().getH();
+            if (!(Bottom_player <= Top_object
+                    || Top_player >= Bottom_object
+                    || Right_player <= Left_object
+                    || Left_player >= Right_object)) {
+                System.out.println("fwt" + Left_object);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void setBomb(Bomber other, Image img, int virtual_distance) {
         int posx = (other.getX() / 32) * 32;
@@ -61,10 +85,14 @@ public class Bomb extends Entity {
                 this.x = posx + virtual_distance;
                 this.y = posy + 32;
             }
+            this.setEntities_rect(new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }
         this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
-        if (checkinside || this.getEntity_collision().checkCollisions(this.getEntities_rect())) {
-            this.x = posx + virtual_distance;
+        if (checkinside || this.checkBombcollision(entities_rect)) {
+            System.out.println(other.getX());
+            if(other.isTurn_left() && !checkinside) {
+                this.x = posx + virtual_distance + 32;
+            }else this.x = posx + virtual_distance;
             this.y = posy;
             this.setEntities_rect(new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }
@@ -156,7 +184,6 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-        this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
         this.move();
         this.setOutOfBomb();
     }

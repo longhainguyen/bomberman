@@ -266,8 +266,10 @@ public class Bomber extends Entity {
                 if (multibomb_clock < 2 * acceleration_time) {
                     multibomb_clock++;
                 } else {
+                    System.out.println("end of period");
                     isRemote = false;
                     is_out_of_time_B = true;
+                    BombermanGame.fake_player.is_press_B = false;
                     multibomb_clock = 0;
                     storePower.remove(i);
                     i--;
@@ -321,7 +323,6 @@ public class Bomber extends Entity {
                 if (bombpass_clock < 2 * acceleration_time) {
                     bombpass_clock ++;
                 } else {
-                    System.out.println("end of period");
                     bombpass_clock = 0;
                     isBombpass = false;
                     storePower.remove(i);

@@ -44,15 +44,18 @@ public class Oneal extends Entity {
                 }
             }
         }else {
-            double distance = Math.sqrt(Math.pow(x - MoveIntelligent.bomberX, 2)
-                + Math.pow(y - MoveIntelligent.bomberY, 2));
-            if(distance >= 100) {
-                moveRandom.moveRandom(this,this.entity_collision,this.entities_rect);
+            double distance = Math.sqrt(Math.pow(this.getX() - MoveIntelligent.bomberX, 2)
+                    + Math.pow(this.getY() - MoveIntelligent.bomberY, 2));
+            if(distance <= 150) {
+                moveIntelligent.setIsCanMove(this.entities_rect, this.entity_collision);
+                if(moveIntelligent.isCanMove) {
+                    moveIntelligent.moveIntelligent(this);
+                }else {
+                    moveRandom.moveRandom(this,this.entity_collision,this.entities_rect);
+                }
             }else {
-                moveIntelligent.find_road(this.entities_rect,this.entity_collision);
-                moveIntelligent.moveIntelligent(this);
+                moveRandom.moveRandom(this,this.entity_collision,this.entities_rect);
             }
-            //moveRandom.moveRandom(this,this.entity_collision,this.entities_rect);
         }
     }
     private void updateAnimation() {

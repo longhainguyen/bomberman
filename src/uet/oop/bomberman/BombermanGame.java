@@ -56,7 +56,7 @@ public class BombermanGame extends Application {
         Application.launch(BombermanGame.class);
     }
 
-    public void setupBomb(Bomb other){
+    public void setupBomb(Bomb other) {
         other.setbomb_explosion(stillObjects, entities);
         other.setIs_explode(true);
         stillObjects.remove(other);
@@ -123,15 +123,15 @@ public class BombermanGame extends Application {
         timeline.setCycleCount(-1);
         timeline.play();
         Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(200), e -> {
-            for(int i = 0; i < bombChain.size(); i++){
-                if(player.is_press_B && bombChain.get(i).isGo()){
-                   bombChain.get(i).setGo(false);
+            for (int i = 0; i < bombChain.size(); i++) {
+                if (player.is_press_B && bombChain.get(i).isGo()) {
+                    bombChain.get(i).setGo(false);
                     setupBomb(bombChain.get(i));
                 } else if (player.is_out_of_time_B && !bombChain.get(i).isGo()) {
                     player.is_press_B = false;
                     bombChain.get(i).setGo(true);
                     setupBomb(bombChain.get(i));
-                }  else {
+                } else {
                     bombChain.get(i).setBomb_frame(bombChain.get(i).getBomb_frame() + 1);
                     if (bombChain.get(i).isGo()) {
                         bombChain.get(i).setExplosion_time(bombChain.get(i).getExplosion_time() + 1);
@@ -196,7 +196,7 @@ public class BombermanGame extends Application {
                             } else {
                                 temp.setBomb(player, Sprite.bomb.getFxImage(), 0);
                             }
-                            if(!player.isRemote) {
+                            if (!player.isRemote) {
                                 temp.setGo(true);
                             }
                             bombChain.add(temp);
@@ -205,12 +205,12 @@ public class BombermanGame extends Application {
                         }
                         break;
                     case B:
-                        if(player.isRemote && bombChain.size() > 0 && bombChain.get(0).press_B_number < 1){
-                            for(Bomb value : bombChain){
+                        if (player.isRemote && bombChain.size() > 0 && bombChain.get(0).press_B_number < 1) {
+                            for (Bomb value : bombChain) {
                                 value.press_B_number++;
                             }
                             player.is_press_B = true;
-                            for(Bomb value : bombChain){
+                            for (Bomb value : bombChain) {
                                 value.setGo(true);
                             }
                         }
@@ -267,7 +267,7 @@ public class BombermanGame extends Application {
         entities.forEach(Entity::update);
         stillObjects.forEach(Entity::update);
         mapGame.update();
-        MoveIntelligent.setBomberXY(player.getX(),player.getY());
+        MoveIntelligent.setBomberXY(player.getX(), player.getY());
     }
 
     public void render() {

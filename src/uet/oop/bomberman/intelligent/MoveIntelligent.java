@@ -10,34 +10,33 @@ import java.util.*;
 
 
 public class MoveIntelligent {
-
-    private List<Rect> listRectHaveToMove = null;
+    public boolean isCanMove;
+    public List<Rect> listRectHaveToMove = null;
     public static int bomberX;
     public static int bomberY;
 
-    public static void setBomberXY(int x,int y) {
+    public static void setBomberXY(int x, int y) {
         bomberX = x;
         bomberY = y;
     }
 
-    public void find_road(Rect rect, Collision collision ) {
+    public void find_road(Rect rect, Collision collision) {
         boolean[][] visited = new boolean[Map.widthOfMap][Map.heightOfMap];
         Queue<Rect> pos = new LinkedList<>();
         pos.add(rect);
         visited[rect.getX()][rect.getY()] = true;
-        java.util.Map<Rect,Rect> parentMap = new HashMap<>();
+        java.util.Map<Rect, Rect> parentMap = new HashMap<>();
         Rect start = rect;
         parentMap.put(start, null);
         while (!pos.isEmpty()) {
             start = pos.poll();
-            if((start.getX() <= bomberX + 4 && start.getX() >= bomberX - 4 )
-                    && (start.getY() <= bomberY + 4 && start.getY() >= bomberY - 4)) {
+            if (this.check(start)) {
                 break;
             }
 
             int[] dr = new int[]{-Entity.SPEED, +Entity.SPEED, 0, 0};
             int[] dc = new int[]{0, 0, Entity.SPEED, -Entity.SPEED};
-            for(int i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++) {
 
                 int cc = start.getX() + dr[i];
                 int rr = start.getY() + dc[i];
@@ -48,25 +47,25 @@ public class MoveIntelligent {
 
                 Rect rect2 = new Rect(cc, rr, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
 
-                if(collision.checkCollisions(start)) continue;
+                if (collision.checkCollisions(start)) continue;
 
-                if(!visited[rect2.getX()][rect2.getY()]) {
+                if (!visited[rect2.getX()][rect2.getY()]) {
                     pos.add(rect2);
                     visited[rect2.getX()][rect2.getY()] = true;
-                    parentMap.put(rect2,start);
+                    parentMap.put(rect2, start);
                 }
             }
         }
         Rect curr = start;
         List<Rect> path = new ArrayList<>();
         while (curr != null) {
-            path.add(0,curr);
+            path.add(0, curr);
             curr = parentMap.get(curr);
         }
         listRectHaveToMove = path;
     }
 
-    public void moveIntelligent (Entity entity) {
+    public void moveIntelligent(Entity entity) {
         if(listRectHaveToMove.size() >= 2)
         {
             Rect rect1 = listRectHaveToMove.get(1);
@@ -83,6 +82,19 @@ public class MoveIntelligent {
                     entity.setY(entity.getY() - Entity.SPEED);
                 }
             }
+        }
+    }
+
+    public boolean check(Rect start) {
+        return (start.getX() <= bomberX + 2 && start.getX() >= bomberX - 2)
+                && (start.getY() <= bomberY + 2 && start.getY() >= bomberY - 2);
+    }
+
+    public void setIsCanMove(Rect rect, Collision collision) {
+        this.find_road(rect, collision);
+        if(listRectHaveToMove.size() >= 1) {
+            Rect last = listRectHaveToMove.get(listRectHaveToMove.size() - 1);
+            this.isCanMove = check(last);
         }
     }
 }

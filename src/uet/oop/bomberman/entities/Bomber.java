@@ -271,6 +271,7 @@ public class Bomber extends Entity {
                 } else {
                     isRemote = false;
                     is_out_of_time_B = true;
+                    BombermanGame.fake_player.is_press_B = false;
                     multibomb_clock = 0;
                     storePower.remove(i);
                     i--;

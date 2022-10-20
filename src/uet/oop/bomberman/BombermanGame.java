@@ -18,6 +18,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.sounds.musicItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +52,26 @@ public class BombermanGame extends Application {
     private Canvas canvas;
 
     private Map mapGame = new Map();
+    public static musicItem gameMusic = new musicItem(-1, 50);
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
+    }
+
+    public musicItem getGameMusic() {
+        return gameMusic;
+    }
+
+    public void setGameMusic(musicItem gameMusic) {
+        this.gameMusic = gameMusic;
+    }
+
+    public void gameMusic() {
+        gameMusic.playSound(musicItem.youngMusic);
+    }
+
+    public void stopMusic(){
+        gameMusic.getMediaPlayer().pause();
     }
 
     public void setupBomb(Bomb other) {
@@ -82,6 +100,8 @@ public class BombermanGame extends Application {
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
+        // music when play
+        gameMusic();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
@@ -142,6 +162,12 @@ public class BombermanGame extends Application {
                 }
 
                 if (bombChain.get(i).isIs_explode()) {
+                    if(!player.isDie()) {
+                        bombChain.get(i).exploSound();
+                    }
+                    else {
+                        bombChain.get(i).getExplosionSound().getMediaPlayer().pause();
+                    }
                     if (bombChain.get(i).getBomb_explosion().get(0).getExplosion_frame() == Explosion.max_explosion_frame_time - 1) {
                         for (int j = 0; j < bombChain.get(i).getBomb_explosion().size(); j++) {
                             entities.remove(bombChain.get(i).getBomb_explosion().get(j));

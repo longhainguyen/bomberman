@@ -7,6 +7,7 @@ import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.itemType;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.sounds.musicItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public class Bomber extends Entity {
 
     private int bombpass_clock = 0;// use to count the time of bombpass.
 
+    private musicItem deadSound = new musicItem(1, 50);
+
     public boolean isBombpass = false;
     public boolean is_check_out_of_bomb = false;
     private ArrayList<itemType> storePower = new ArrayList<>();
@@ -71,6 +74,29 @@ public class Bomber extends Entity {
 
     private int heart;
 
+    public void setFlame_clock(int flame_clock) {
+        this.flame_clock = flame_clock;
+    }
+
+    public void setMultibomb_clock(int multibomb_clock) {
+        this.multibomb_clock = multibomb_clock;
+    }
+
+    public void setRemote_clock(int remote_clock) {
+        this.remote_clock = remote_clock;
+    }
+
+    public void setWallpass_clock(int wallpass_clock) {
+        this.wallpass_clock = wallpass_clock;
+    }
+
+    public void setSurvival_clock(int survival_clock) {
+        this.survival_clock = survival_clock;
+    }
+
+    public void setBombpass_clock(int bombpass_clock) {
+        this.bombpass_clock = bombpass_clock;
+    }
 
     public boolean isTurn_right() {
         return turn_right;
@@ -266,14 +292,14 @@ public class Bomber extends Entity {
     public void Controlbomb() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Remote)) {
-                if (multibomb_clock < 2 * acceleration_time) {
-                    multibomb_clock++;
+                if (remote_clock < 2 * acceleration_time) {
+                    remote_clock++;
                 } else {
                     System.out.println("end of period");
                     isRemote = false;
                     is_out_of_time_B = true;
                     BombermanGame.fake_player.is_press_B = false;
-                    multibomb_clock = 0;
+                    remote_clock = 0;
                     storePower.remove(i);
                     i--;
                 }
@@ -335,11 +361,17 @@ public class Bomber extends Entity {
         }
     }
 
+
+    public void deadSound(){
+        this.deadSound.playSound(musicItem.deadSound);
+    }
     @Override
     public void move() {
         if(!this.isSurvival) {
             if (entity_collision.checkCollisionsOfentities(entities_rect)) {
-                //this.setDie(true);
+                this.setDie(true);
+                BombermanGame.gameMusic.getMediaPlayer().pause();
+                deadSound();
             }
         }
         if (isDie) {

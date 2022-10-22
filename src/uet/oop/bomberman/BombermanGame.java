@@ -10,7 +10,13 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
@@ -19,7 +25,12 @@ import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.maps.Map;
 import uet.oop.bomberman.sounds.musicItem;
+import uet.oop.bomberman.sounds.musicSymbol;
+import uet.oop.bomberman.sounds.musicGame;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +41,12 @@ public class BombermanGame extends Application {
     private List<Item> powerup = new ArrayList<>();
 
     private List<Entity> grass = new ArrayList<>();
+
+    private List<ImageView> musicImgae = new ArrayList<>();
+
+    private List<Image> Imgae = new ArrayList<>();
+
+    private List<FileInputStream> fileInput = new ArrayList<>();
 
     private Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
@@ -52,25 +69,18 @@ public class BombermanGame extends Application {
     private Canvas canvas;
 
     private Map mapGame = new Map();
-    public static musicItem gameMusic = new musicItem(-1, 50);
+    public static musicGame gameMusic = new musicGame();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
 
-    public musicItem getGameMusic() {
-        return gameMusic;
-    }
-
-    public void setGameMusic(musicItem gameMusic) {
-        this.gameMusic = gameMusic;
-    }
 
     public void gameMusic() {
-        gameMusic.playSound(musicItem.youngMusic);
+        gameMusic.playMusic();
     }
 
-    public void stopMusic(){
+    public void stopMusic() {
         gameMusic.getMediaPlayer().pause();
     }
 
@@ -84,25 +94,104 @@ public class BombermanGame extends Application {
         other.setExplosion_time(0);
     }
 
+
+    public void setFileInput() throws FileNotFoundException {
+        for (int i = 0; i < 4; i++) {
+            FileInputStream input;
+            if (i == 0) {
+                input = new FileInputStream("res/something/pause.png");
+            } else if (i == 1) {
+                input = new FileInputStream("res/something/left.png");
+            } else if (i == 2) {
+                input = new FileInputStream("res/something/right.png");
+            } else {
+                input = new FileInputStream("res/something/play.png");
+            }
+            fileInput.add(input);
+        }
+    }
+
+    public void setImgae() {
+        for (int i = 0; i < 4; i++) {
+            Image image = new Image(fileInput.get(i));
+            Imgae.add(image);
+        }
+    }
+
+    public void setMusicImgae() {
+        for (int i = 0; i < 4; i++) {
+            ImageView view = new ImageView(Imgae.get(i));
+            if (i == 0) {
+                view.setX(50);
+                view.setY(448);
+                view.setFitWidth(30);
+                view.setFitHeight(30);
+            } else if (i == 1) {
+                view.setX(0);
+                view.setY(448);
+                view.setFitWidth(30);
+                view.setFitHeight(30);
+            } else if (i == 2) {
+                view.setX(100);
+                view.setY(448);
+                view.setFitWidth(30);
+                view.setFitHeight(30);
+            } else {
+                view.setX(50);
+                view.setY(448);
+                view.setFitWidth(30);
+                view.setFitHeight(30);
+            }
+            musicImgae.add(view);
+        }
+    }
+
+    public void addmusicImage(Group root) {
+        for (int i = 0; i < 3; i++) {
+            root.getChildren().add(musicImgae.get(i));
+        }
+    }
+
+    public boolean checkSymbol(ImageView view, int posx, int posy){
+        if(posx >= view.getX() && posx <= view.getX() + view.getFitWidth()
+                && posy >= view.getY() && posy <= view.getY() + view.getFitHeight()){
+            return true;
+        }
+        return false;
+    }
+
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) /*throws FileNotFoundException*/ {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+        try {
+            setFileInput();
+        }catch (FileNotFoundException e){
 
+        }
+        setImgae();
+        setMusicImgae();
+
+        Rectangle pointBand = new Rectangle(0, 416, 640, 64);
+        pointBand.setFill(Color.gray(0.5));
         // Tao root container
         Group root = new Group();
+        root.getChildren().add(pointBand);
+        addmusicImage(root);
         root.getChildren().add(canvas);
-
         // Tao scene
         Scene scene = new Scene(root);
-
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
         // music when play
         gameMusic();
+        initGame(scene, root);
+    }
 
+
+    public void initGame(Scene scene, Group root) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             update();
@@ -162,11 +251,13 @@ public class BombermanGame extends Application {
                 }
 
                 if (bombChain.get(i).isIs_explode()) {
-                    if(!player.isDie()) {
+                    if (!player.isDie()) {
                         bombChain.get(i).exploSound();
-                    }
-                    else {
-                        bombChain.get(i).getExplosionSound().getMediaPlayer().pause();
+                    } else {
+                        if (bombChain.get(i).getExplosionSound().isIs_playing()) {
+                            bombChain.get(i).getExplosionSound().getMediaPlayer().pause();
+                            bombChain.get(i).getExplosionSound().setIs_playing(false);
+                        }
                     }
                     if (bombChain.get(i).getBomb_explosion().get(0).getExplosion_frame() == Explosion.max_explosion_frame_time - 1) {
                         for (int j = 0; j < bombChain.get(i).getBomb_explosion().size(); j++) {
@@ -241,6 +332,9 @@ public class BombermanGame extends Application {
                             }
                         }
                         break;
+                    /*case P:
+                        gameMusic.changeMusic();
+                        break;*/
                 }
             }
         });
@@ -268,10 +362,45 @@ public class BombermanGame extends Application {
                         break;
                     case B:
                         break;
+                    /*case P:
+                        break;*/
+                }
+            }
+        });
+
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                for (int value = 0; value < musicImgae.size() - 1; value++) {
+                    if (checkSymbol(musicImgae.get(value),(int) event.getX(), (int) event.getY())) {
+                        if (value == 0) {
+                            if (gameMusic.isIs_playing()) {
+                                root.getChildren().remove(musicImgae.get(value));
+                                ImageView temp = musicImgae.get(value);
+                                musicImgae.set(value, musicImgae.get(3));
+                                musicImgae.set(3, temp);
+                                root.getChildren().add(musicImgae.get(value));
+                                gameMusic.pause();
+                            } else {
+                                root.getChildren().remove(musicImgae.get(value));
+                                ImageView temp = musicImgae.get(value);
+                                musicImgae.set(value, musicImgae.get(3));
+                                musicImgae.set(3, temp);
+                                root.getChildren().add(musicImgae.get(value));
+                                gameMusic.resumme();
+                            }
+                        }
+                        if (value == 1) {
+                            gameMusic.playLeft();
+                        } else if (value == 2) {
+                            gameMusic.playRight();
+                        }
+                    }
                 }
             }
         });
     }
+
 
     public void createMap() {
         for (int i = 0; i < WIDTH; i++) {

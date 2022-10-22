@@ -91,10 +91,6 @@ public class Map {
                         object = new Wall(j, i, Sprite.wall.getFxImage());
                         break;
                     case "*":
-
-                        //grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        //stillObjects.add(grass);
-                        //stillEntity.add(grass);
                         object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "x":
@@ -112,10 +108,6 @@ public class Map {
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
                         break;
                     case "2":
-
-                        //grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        //stillObjects.add(grass);
-                        //stillEntity.add(grass);
                         object = new Oneal(j, i, Sprite.oneal_right1.getFxImage());
                         break;
                     case "b":

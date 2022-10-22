@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class musicItem {
     private Media mediaItem;
@@ -30,7 +32,11 @@ public class musicItem {
 
     public static final String gameWin = "res/audio/win.wav";
 
-    public static final String youngMusic = "res/music/Never.mp3";
+    public static final String youngMusic = "res/music/I_Want_You_To_Know_Remix.mp3";
+
+    public static String currentMusic;
+
+    private List<String> Music = new ArrayList<>();
 
     private boolean is_playing;
 
@@ -42,6 +48,17 @@ public class musicItem {
         this.cycle = cycle;
         this.is_playing = false;
         this.volume = volume;
+        currentMusic = "res/music/On my way.mp3";
+        Music.add("res/music/On my way.mp3");
+        Music.add("res/music/Ignite.mp3");
+        Music.add("res/music/Lily.mp3");
+        Music.add("res/music/Bones.mp3");
+        Music.add("res/music/I_Want_You_To_Know_Remix.mp3");
+        Music.add("res/music/Natural.mp3");
+        Music.add("res/music/Lost_Sky.mp3");
+        Music.add("res/music/Never.mp3");
+        Music.add("res/music/Nightcore_Centuries.mp3");
+        Music.add("res/music/That_Girl_Remix.mp3");
     }
 
     public Media getMediaItem() {
@@ -140,6 +157,21 @@ public class musicItem {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+    }
+
+    public void changeMusic(){
+        for(int i = 0; i < Music.size(); i++){
+            if(this.currentMusic.equals(Music.get(i))){
+                if(i == Music.size() - 1){
+                    currentMusic = Music.get(0);
+                }else{
+                    currentMusic = Music.get(i + 1);
+                }
+                break;
+            }
+        }
+        this.mediaPlayer.pause();
+        playSound(currentMusic);
     }
 
 }

@@ -1,15 +1,17 @@
 package uet.oop.bomberman;
 
-import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.binding.MapExpression;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -18,11 +20,19 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.menu.MenuGame;
+import uet.oop.bomberman.menu.ButtonMenu;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
+    public boolean isPause = false;
+    private MenuGame menuGame;
+    private ButtonMenu menuMain;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
@@ -52,6 +62,8 @@ public class BombermanGame extends Application {
 
     private Map mapGame = new Map();
 
+    private Scene scene;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -68,6 +80,8 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        menuGame = new MenuGame();
+        menuGame.setBombermanGame(this);
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -75,17 +89,44 @@ public class BombermanGame extends Application {
         // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
+        root.getChildren().add(menuGame);
 
         // Tao scene
-        Scene scene = new Scene(root);
+        //Scene scene = new Scene(root);
+        scene = new Scene(root);
 
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
 
+
+//        scene.setOnKeyPressed(event -> {
+//            if(event.getCode() == KeyCode.ESCAPE) {
+//                if(!menuGame.isVisible()) {
+//                    FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
+//                    ft.setFromValue(0);
+//                    ft.setToValue(1);
+//                    menuGame.setVisible(true);
+//                    this.isPause = true;
+//                    ft.play();
+//                }else {
+//                    FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
+//                    ft.setFromValue(1);
+//                    ft.setToValue(0);
+//                    menuGame.setVisible(false);
+//                    this.isPause = false;
+//                    ft.play();
+//                }
+//            }
+//        });
+
+    }
+
+    public void initGame() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
-            update();
+            if(!this.isPause)
+                update();
             if (player.getIsDie_time() > Bomber.max_die_time - 1) {
                 entities.remove(player);
             }
@@ -170,6 +211,27 @@ public class BombermanGame extends Application {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
+                    case ESCAPE:
+                        isPause = !isPause;
+                        System.out.println(menuGame.isEnterGame);
+                        if(menuGame.isEnterGame) {
+                            menuGame.setMenuContinue();
+                        }
+                        menuGame.isEnterGame = false;
+                        if(!menuGame.isVisible()) {
+                            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
+                            ft.setFromValue(0);
+                            ft.setToValue(1);
+                            menuGame.setVisible(true);
+                            ft.play();
+                        }else {
+                            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
+                            ft.setFromValue(1);
+                            ft.setToValue(0);
+                            menuGame.setVisible(false);
+                            ft.play();
+                        }
+                        break;
                     case UP:
                         player.setGoUp(true);
                         Map.goDown = true;

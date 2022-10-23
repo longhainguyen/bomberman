@@ -172,6 +172,9 @@ public class Map {
                     case "m":
                         object = new MinVo(j,i,Sprite.minvo_right1.getFxImage());
                         break;
+                    case "k":
+                        object = new KonDoria(j,i,Sprite.kondoria_right1.getFxImage());
+                        break;
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                 }

@@ -10,6 +10,7 @@ import java.util.*;
 
 
 public class MoveIntelligent {
+    protected int speed_entity = 2;
     public boolean isCanMove;
     public List<Rect> listRectHaveToMove = null;
     public static int bomberX;
@@ -34,8 +35,8 @@ public class MoveIntelligent {
                 break;
             }
 
-            int[] dr = new int[]{-InfoEntity.ENEMY_SPEED, +InfoEntity.ENEMY_SPEED, 0, 0};
-            int[] dc = new int[]{0, 0, InfoEntity.ENEMY_SPEED, -InfoEntity.ENEMY_SPEED};
+            int[] dr = new int[]{-speed_entity, +speed_entity, 0, 0};
+            int[] dc = new int[]{0, 0, speed_entity, -speed_entity};
             for (int i = 0; i < 4; i++) {
 
                 int cc = start.getX() + dr[i];
@@ -71,20 +72,25 @@ public class MoveIntelligent {
             Rect rect1 = listRectHaveToMove.get(1);
             if(entity.getX() != rect1.getX()  || entity.getY() != rect1.getY()) {
                 if(rect1.getX() > entity.getX()) {
-                    entity.setX(entity.getX() + InfoEntity.ENEMY_SPEED);
+                    entity.setX(entity.getX() + speed_entity);
                 } else if (rect1.getX() < entity.getX()) {
-                    entity.setX(entity.getX() - InfoEntity.ENEMY_SPEED);
+                    entity.setX(entity.getX() - speed_entity);
                 }
 
                 if(rect1.getY() > entity.getY()) {
-                    entity.setY(entity.getY() + InfoEntity.ENEMY_SPEED);
+                    entity.setY(entity.getY() + speed_entity);
                 }else if(rect1.getY() < entity.getY()) {
-                    entity.setY(entity.getY() - InfoEntity.ENEMY_SPEED);
+                    entity.setY(entity.getY() - speed_entity);
                 }
             }
         }
     }
 
+    /**
+     * Check find bomber.
+     * @param start start
+     * @return true if find
+     */
     public boolean check(Rect start) {
         return (start.getX() <= bomberX + 2 && start.getX() >= bomberX - 2)
                 && (start.getY() <= bomberY + 2 && start.getY() >= bomberY - 2);

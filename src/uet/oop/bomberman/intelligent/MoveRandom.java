@@ -11,7 +11,11 @@ public class MoveRandom {
     public int xBeforeChange;
     public int yBeforeChange;
     private int randomMove = 1;
-    private int cellWalkPassed;
+    protected int cellWalkPassed;
+
+    protected int Speed_random = 2;
+
+    protected Rect rect_fake = null;
 
     private void setCellWalkPassed(int x, int y) {
         double distance = Math.sqrt(Math.pow(x - xBeforeChange, 2) + Math.pow(y - yBeforeChange, 2));
@@ -34,39 +38,38 @@ public class MoveRandom {
 
     public void moveRandom(Entity entity, Collision collision, Rect rect) {
         this.setCellWalkPassed(entity.getX(), entity.getY());
-        Rect rect_fake = null;
         int MAX_CELL_WALK_PASSED = 4;
         if (randomMove == 1) {
-            rect_fake = new Rect(rect.getX() - Entity.SPEED, rect.getY(), rect.getW(), rect.getH());
+            rect_fake = new Rect(rect.getX() - Speed_random, rect.getY(), rect.getW(), rect.getH());
             if(collision.checkCollisions(rect_fake) || cellWalkPassed >= MAX_CELL_WALK_PASSED) {
                 setRandomMove(entity.getX(), entity.getY());
             }else {
                 entity.setGoRight(false);
                 entity.setGoLeft(true);
-                entity.setX(entity.getX() - Entity.SPEED);
+                entity.setX(entity.getX() - Speed_random);
             }
         } else if (randomMove == 2) {
-            rect_fake = new Rect(rect.getX() + Entity.SPEED, rect.getY(), rect.getW(), rect.getH());
+            rect_fake = new Rect(rect.getX() + Speed_random, rect.getY(), rect.getW(), rect.getH());
             if(collision.checkCollisions(rect_fake)|| cellWalkPassed >= MAX_CELL_WALK_PASSED) {
                 setRandomMove(entity.getX(), entity.getY());
             }else {
                 entity.setGoRight(true);
                 entity.setGoLeft(false);
-                entity.setX(entity.getX() + Entity.SPEED);
+                entity.setX(entity.getX() + Speed_random);
             }
         } else if (randomMove == 3) {
-            rect_fake = new Rect(rect.getX() , rect.getY() + Entity.SPEED, rect.getW(), rect.getH());
+            rect_fake = new Rect(rect.getX() , rect.getY() + Speed_random, rect.getW(), rect.getH());
             if(collision.checkCollisions(rect_fake) || cellWalkPassed >= MAX_CELL_WALK_PASSED) {
                 setRandomMove(entity.getX(), entity.getY());
             }else {
-                entity.setY(entity.getY() + Entity.SPEED);
+                entity.setY(entity.getY() + Speed_random);
             }
         } else if (randomMove == 4){
-            rect_fake = new Rect(rect.getX() , rect.getY() - Entity.SPEED, rect.getW(), rect.getH());
+            rect_fake = new Rect(rect.getX() , rect.getY() - Speed_random, rect.getW(), rect.getH());
             if(collision.checkCollisions(rect_fake)|| cellWalkPassed >= MAX_CELL_WALK_PASSED) {
                 setRandomMove(entity.getX(), entity.getY());
             }else {
-                entity.setY(entity.getY() - Entity.SPEED);
+                entity.setY(entity.getY() - Speed_random);
             }
         }
     }

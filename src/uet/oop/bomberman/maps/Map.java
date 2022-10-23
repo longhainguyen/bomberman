@@ -166,6 +166,12 @@ public class Map {
                         powerMap.add(power);
                         object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
+                    case "d":
+                        object = new Doll(j, i, Sprite.doll_left1.getFxImage());
+                        break;
+                    case "m":
+                        object = new MinVo(j,i,Sprite.minvo_right1.getFxImage());
+                        break;
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                 }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Collision {
+    private List<Rect> collisionsOfBrick = new ArrayList<>();
     private List<Rect> collisions = new ArrayList<>();
     private List<Rect> collisionsOfentities = new ArrayList<>();
 
@@ -20,6 +21,26 @@ public class Collision {
     public static final int width = 32;
     public static final int height = 32;
 
+
+    public void setCollisionsOfBrick(List<Entity> stillObjects) {
+        List<Rect> temp = new ArrayList<>();
+        if (!BombermanGame.fake_player.isWallpass) {
+            for (int i = 0; i < stillObjects.size(); i++) {
+                if (stillObjects.get(i) instanceof Bomb) {
+                    if (!((Bomb) stillObjects.get(i)).is_out_of_bomber || BombermanGame.fake_player.isBombpass) {
+                        stillObjects.get(i).setEntities_rect(new Rect(stillObjects.get(i).getX(), stillObjects.get(i).getY(), width, height));
+                        continue;
+                    }
+                }
+                if (!stillObjects.get(i).getClass().equals(Brick.class)) {
+                    Entity object = stillObjects.get(i);
+                    temp.add(new Rect(object.getX(), object.getY(), width, height));
+                    stillObjects.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));
+                }
+            }
+        }
+        collisionsOfBrick = temp;
+    }
     public void setRectCollisions(List<Entity> stillObjects) {
         List<Rect> temp = new ArrayList<>();
         if (!BombermanGame.fake_player.isWallpass) {
@@ -80,6 +101,32 @@ public class Collision {
         return false;
     }
 
+    /**
+     * Only check collision with brick
+     * @param playerRect rect
+     * @return true or false
+     */
+    public boolean checkCollisionsOfBrick(Rect playerRect) {
+        int Left_player = playerRect.getX();
+        int Right_player = playerRect.getX() + playerRect.getW();
+        int Top_player = playerRect.getY();
+        int Bottom_player = playerRect.getY() + playerRect.getH();
+        for (Rect rect : collisionsOfBrick) {
+            int Left_object = rect.getX();
+            int Right_object = rect.getX() + rect.getW();
+            int Top_object = rect.getY();
+            int Bottom_object = rect.getY() + rect.getH();
+            if (!(Bottom_player <= Top_object
+                    || Top_player >= Bottom_object
+                    || Right_player <= Left_object
+                    || Left_player >= Right_object)) {
+                is_die_rect = (new Rect(Left_object, Top_object, width, height));
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean checkCollisionsOfentities(Rect playerRect) {
         int Left_player = playerRect.getX();
         int Right_player = playerRect.getX() + playerRect.getW();
@@ -129,6 +176,7 @@ public class Collision {
     public void update(List<Entity> stillObjects, List<Entity> entities) {
         setRectCollisions(stillObjects);
         setRectCollisionsOfentities(entities);
+        setCollisionsOfBrick(stillObjects);//Here, i add this collision to entity konDoria!
     }
 
     public List<Rect> getCollisions() {

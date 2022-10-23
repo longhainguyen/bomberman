@@ -2,14 +2,12 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.intelligent.MoveIntelligent;
-import uet.oop.bomberman.intelligent.MoveRandom;
+import uet.oop.bomberman.intelligent.MoveThough;
 import uet.oop.bomberman.maps.Map;
 
 public class KonDoria extends Entity{
-    private final MoveRandom moveRandom = new MoveRandom();
+    private final MoveThough moveThough = new MoveThough();
 
-    private final MoveIntelligent moveIntelligent = new MoveIntelligent();
 
     public KonDoria(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -58,18 +56,7 @@ public class KonDoria extends Entity{
                 }
             }
         }else {
-            double distance = Math.sqrt(Math.pow(this.getX() - MoveIntelligent.bomberX, 2)
-                    + Math.pow(this.getY() - MoveIntelligent.bomberY, 2));
-            if (distance <= 200) {
-                moveIntelligent.setIsCanMove(this.entities_rect, this.entity_collision);
-                if (moveIntelligent.isCanMove) {
-                    moveIntelligent.moveIntelligent(this);
-                } else {
-                    moveRandom.moveRandom(this, this.entity_collision, this.entities_rect);
-                }
-            } else {
-                moveRandom.moveRandom(this, this.entity_collision, this.entities_rect);
-            }
+            moveThough.moveRandom2(this, this.entity_collision, this.entities_rect);
         }
     }
 }

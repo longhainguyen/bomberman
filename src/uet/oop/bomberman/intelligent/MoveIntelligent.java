@@ -3,6 +3,8 @@ package uet.oop.bomberman.intelligent;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.KonDoria;
+import uet.oop.bomberman.entities.Oneal;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
 
@@ -10,6 +12,7 @@ import java.util.*;
 
 
 public class MoveIntelligent {
+    protected Rect rect_fake = null;
     protected int speed_entity = 2;
     public boolean isCanMove;
     public List<Rect> listRectHaveToMove = null;
@@ -67,22 +70,50 @@ public class MoveIntelligent {
     }
 
     public void moveIntelligent(Entity entity) {
+        boolean canMove = false;
         if(listRectHaveToMove.size() >= 2)
         {
             Rect rect1 = listRectHaveToMove.get(1);
             if(entity.getX() != rect1.getX()  || entity.getY() != rect1.getY()) {
                 if(rect1.getX() > entity.getX()) {
-                    entity.setX(entity.getX() + speed_entity);
+                    rect_fake = new Rect(entity.getX() + speed_entity,entity.getY(),Sprite.SCALED_SIZE,Sprite.SCALED_SIZE);
+                    setCanMove(canMove,entity);
+                    if(!canMove){
+                        entity.setGoLeft(false);
+                        entity.setGoRight(true);
+                        entity.setX(entity.getX() + speed_entity);
+                    }
                 } else if (rect1.getX() < entity.getX()) {
-                    entity.setX(entity.getX() - speed_entity);
+                    rect_fake = new Rect(entity.getX() - speed_entity,entity.getY(),Sprite.SCALED_SIZE,Sprite.SCALED_SIZE);
+                    setCanMove(canMove,entity);
+                    if(!canMove) {
+                        entity.setX(entity.getX() - speed_entity);
+                        entity.setGoLeft(true);
+                        entity.setGoRight(false);
+                    }
                 }
 
                 if(rect1.getY() > entity.getY()) {
-                    entity.setY(entity.getY() + speed_entity);
+                    rect_fake = new Rect(entity.getX() ,entity.getY() + speed_entity,Sprite.SCALED_SIZE,Sprite.SCALED_SIZE);
+                    setCanMove(canMove,entity);
+                    if(!canMove) {
+                        entity.setY(entity.getY() + speed_entity);
+                    }
                 }else if(rect1.getY() < entity.getY()) {
-                    entity.setY(entity.getY() - speed_entity);
+                    rect_fake = new Rect(entity.getX() ,entity.getY() - speed_entity,Sprite.SCALED_SIZE,Sprite.SCALED_SIZE);
+                    setCanMove(canMove,entity);
+                    if(!canMove)
+                        entity.setY(entity.getY() - speed_entity);
                 }
             }
+        }
+    }
+
+    private void setCanMove(boolean canMove,Entity entity) {
+        if(entity instanceof KonDoria) {
+            canMove = entity.getEntity_collision().checkCollisionsOfBrick(rect_fake);
+        }else {
+            canMove = entity.getEntity_collision().checkCollisions(rect_fake);
         }
     }
 

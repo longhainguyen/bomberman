@@ -61,7 +61,7 @@ public class KonDoria extends Entity{
         }else {
             double distance = Math.sqrt(Math.pow(this.getX() - MoveIntelligent.bomberX, 2)
                     + Math.pow(this.getY() - MoveIntelligent.bomberY, 2));
-            if(distance <= 250) {
+            if(distance <= 200) {
                 moveIntelligent.setIsCanMove(this.entities_rect, this.entity_collision);
                 if(moveIntelligent.isCanMove) {
                     moveIntelligent.moveIntelligent(this);

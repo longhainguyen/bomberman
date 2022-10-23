@@ -33,11 +33,11 @@ public class musicGame {
         Music.add("res/music/Ignite.mp3");
         Music.add("res/music/Lily.mp3");
         Music.add("res/music/Bones.mp3");
-        Music.add("res/music/I_Want_You_To_Know_Remix.mp3");
+        Music.add("res/music/I_want_you.mp3");
         Music.add("res/music/Natural.mp3");
         Music.add("res/music/Lost_Sky.mp3");
         Music.add("res/music/Never.mp3");
-        Music.add("res/music/Nightcore_Centuries.mp3");
+        Music.add("res/music/Centuries.mp3");
         Music.add("res/music/That_Girl_Remix.mp3");
 
     }
@@ -107,8 +107,10 @@ public class musicGame {
                 break;
             }
         }
+        boolean temp = this.mediaPlayer.isMute();
         this.mediaPlayer.pause();
         playMusic();
+        this.mediaPlayer.setMute(temp);
     }
 
 
@@ -123,8 +125,10 @@ public class musicGame {
                 break;
             }
         }
+        boolean temp = this.mediaPlayer.isMute();
         this.mediaPlayer.pause();
         playMusic();
+        this.mediaPlayer.setMute(temp);
     }
 
     public void pause(){

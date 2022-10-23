@@ -18,13 +18,13 @@ public class musicSymbol {
         this.musicRect = new Rect(x, y, 60, 60);
     }
 
-    public boolean checkSymbol(int posx, int posy) {
+   /* public boolean checkSymbol(int posx, int posy) {
         if(posx >= musicRect.getX() && posx <= musicRect.getX() + musicRect.getW()
                 && posy >= musicRect.getY() && posy <= musicRect.getY() + musicRect.getH()){
             return true;
         }
         return false;
-    }
+    }*/
 
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);

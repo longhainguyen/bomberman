@@ -17,6 +17,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
@@ -33,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
@@ -47,6 +51,16 @@ public class BombermanGame extends Application {
     private List<Image> Imgae = new ArrayList<>();
 
     private List<FileInputStream> fileInput = new ArrayList<>();
+
+    public static int countdownTime = 200;
+
+    public static Text musicText = null;
+
+    public static Text countdownText = null;
+
+    public static Text time = null;
+
+    public static Text heart = null;
 
     private Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
@@ -96,7 +110,7 @@ public class BombermanGame extends Application {
 
 
     public void setFileInput() throws FileNotFoundException {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             FileInputStream input;
             if (i == 0) {
                 input = new FileInputStream("res/something/pause.png");
@@ -104,25 +118,30 @@ public class BombermanGame extends Application {
                 input = new FileInputStream("res/something/left.png");
             } else if (i == 2) {
                 input = new FileInputStream("res/something/right.png");
-            } else {
+            } else if(i == 3) {
                 input = new FileInputStream("res/something/play.png");
+            }
+            else if(i == 4){
+                input = new FileInputStream("res/something/volume.png");
+            }else{
+                input = new FileInputStream("res/something/volume-mute.png");
             }
             fileInput.add(input);
         }
     }
 
     public void setImgae() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             Image image = new Image(fileInput.get(i));
             Imgae.add(image);
         }
     }
 
     public void setMusicImgae() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             ImageView view = new ImageView(Imgae.get(i));
             if (i == 0) {
-                view.setX(50);
+                view.setX(40);
                 view.setY(448);
                 view.setFitWidth(30);
                 view.setFitHeight(30);
@@ -132,12 +151,22 @@ public class BombermanGame extends Application {
                 view.setFitWidth(30);
                 view.setFitHeight(30);
             } else if (i == 2) {
-                view.setX(100);
+                view.setX(80);
                 view.setY(448);
                 view.setFitWidth(30);
                 view.setFitHeight(30);
-            } else {
-                view.setX(50);
+            } else if( i == 3){
+                view.setX(40);
+                view.setY(448);
+                view.setFitWidth(30);
+                view.setFitHeight(30);
+            } else if (i == 4) {
+                view.setX(120);
+                view.setY(448);
+                view.setFitWidth(30);
+                view.setFitHeight(30);
+            }else {
+                view.setX(120);
                 view.setY(448);
                 view.setFitWidth(30);
                 view.setFitHeight(30);
@@ -147,8 +176,27 @@ public class BombermanGame extends Application {
     }
 
     public void addmusicImage(Group root) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
+            if( i == 3){
+                continue;
+            }
             root.getChildren().add(musicImgae.get(i));
+        }
+    }
+
+    public void changeSymbol(Group root, int value){
+        if(value != 4) {
+            root.getChildren().remove(musicImgae.get(0));
+            ImageView temp = musicImgae.get(0);
+            musicImgae.set(0, musicImgae.get(3));
+            musicImgae.set(3, temp);
+            root.getChildren().add(musicImgae.get(0));
+        }else {
+            root.getChildren().remove(musicImgae.get(4));
+            ImageView temp = musicImgae.get(4);
+            musicImgae.set(4, musicImgae.get(5));
+            musicImgae.set(5, temp);
+            root.getChildren().add(musicImgae.get(4));
         }
     }
 
@@ -159,6 +207,38 @@ public class BombermanGame extends Application {
         }
         return false;
     }
+
+    public void setText(){
+        musicText = new Text(10, 430, musicGame.currentMusic.substring(10));
+        Font font =  Font.loadFont("res/font/INVASION2000.TTF", 20);
+        musicText.setFont(font);
+        musicText.setFill(Color.HONEYDEW);
+        musicText.setStroke(Color.YELLOW);
+        countdownText = new Text(200, 472,String.valueOf(countdownTime));
+        countdownText.setFont(Font.font(Font.getFamilies().get(0),FontWeight.BOLD, 30));
+        countdownText.setFill(Color.WHITE);
+        time = new Text(195, 440, "TIME");
+        time.setFont(Font.font(Font.getFamilies().get(0),FontWeight.BOLD, 30));
+        time.setFill(Color.WHITE);
+        heart = new Text(292, 472, String.valueOf(player.getHeart()));
+        heart.setFont(Font.font(Font.getFamilies().get(0),FontWeight.BOLD, 30));
+        heart.setFill(Color.WHITE);
+    }
+    public void setHeart(Group root) {
+        try {
+            FileInputStream input = new FileInputStream("res/something/heart.png");
+            Image img = new Image(input);
+            ImageView view = new ImageView(img);
+            view.setX(280);
+            view.setY(412);
+            view.setFitWidth(30);
+            view.setFitHeight(30);
+            root.getChildren().add(view);
+        }catch (FileNotFoundException e){
+
+        }
+    }
+
 
     @Override
     public void start(Stage stage) /*throws FileNotFoundException*/ {
@@ -172,12 +252,18 @@ public class BombermanGame extends Application {
         }
         setImgae();
         setMusicImgae();
-
+        setText();
         Rectangle pointBand = new Rectangle(0, 416, 640, 64);
         pointBand.setFill(Color.gray(0.5));
+
         // Tao root container
         Group root = new Group();
         root.getChildren().add(pointBand);
+        root.getChildren().add(musicText);
+        root.getChildren().add(countdownText);
+        root.getChildren().add(time);
+        root.getChildren().add(heart);
+        setHeart(root);
         addmusicImage(root);
         root.getChildren().add(canvas);
         // Tao scene
@@ -278,6 +364,17 @@ public class BombermanGame extends Application {
         timebomb.setCycleCount(-1);
         timebomb.play();
 
+        Timeline Countdownline;
+        Countdownline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if(countdownTime > 0) {
+                countdownTime--;
+                countdownText.setText(String.valueOf(countdownTime));
+            }
+        }));
+
+       Countdownline.setCycleCount(-1);
+       Countdownline.play();
+
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
         mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
 
@@ -371,29 +468,47 @@ public class BombermanGame extends Application {
         scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                for (int value = 0; value < musicImgae.size() - 1; value++) {
+                for (int value = 0; value < musicImgae.size(); value++) {
+                    if(value == 3 || value == 5){
+                        continue;
+                    }
                     if (checkSymbol(musicImgae.get(value),(int) event.getX(), (int) event.getY())) {
                         if (value == 0) {
                             if (gameMusic.isIs_playing()) {
-                                root.getChildren().remove(musicImgae.get(value));
-                                ImageView temp = musicImgae.get(value);
-                                musicImgae.set(value, musicImgae.get(3));
-                                musicImgae.set(3, temp);
-                                root.getChildren().add(musicImgae.get(value));
+                                changeSymbol(root, value);
                                 gameMusic.pause();
                             } else {
-                                root.getChildren().remove(musicImgae.get(value));
-                                ImageView temp = musicImgae.get(value);
-                                musicImgae.set(value, musicImgae.get(3));
-                                musicImgae.set(3, temp);
-                                root.getChildren().add(musicImgae.get(value));
+                               changeSymbol(root, value);
                                 gameMusic.resumme();
                             }
                         }
-                        if (value == 1) {
+                        else if (value == 1) {
+                            if(!gameMusic.isIs_playing()){
+                                changeSymbol(root,value);
+                            }
                             gameMusic.playLeft();
+                            root.getChildren().remove(musicText);
+                            musicText.setText(musicGame.currentMusic.substring(10));
+                            root.getChildren().add(musicText);
+
                         } else if (value == 2) {
+                            if(!gameMusic.isIs_playing()){
+                                changeSymbol(root,value);
+                            }
                             gameMusic.playRight();
+                            root.getChildren().remove(musicText);
+                            musicText.setText(musicGame.currentMusic.substring(10));
+                            root.getChildren().add(musicText);
+
+                        }
+                        else{
+                            if(!gameMusic.getMediaPlayer().isMute()){
+                                gameMusic.getMediaPlayer().setMute(true);
+                                changeSymbol(root, value);
+                            }else {
+                                gameMusic.getMediaPlayer().setMute(false);
+                                changeSymbol(root, value);
+                            }
                         }
                     }
                 }

@@ -76,6 +76,7 @@ public class Oneal extends Entity {
 
     @Override
     public void update() {
+        System.out.println(moveIntelligent.isCanMove);
         this.move();
         if(!this.isDie)
             this.updateAnimation();

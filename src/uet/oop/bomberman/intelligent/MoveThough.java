@@ -3,9 +3,12 @@ package uet.oop.bomberman.intelligent;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.maps.Map;
+
+import java.util.*;
 
 public class MoveThough extends MoveRandom{
-
     public MoveThough() {
         this.Speed_random = 1;
     }

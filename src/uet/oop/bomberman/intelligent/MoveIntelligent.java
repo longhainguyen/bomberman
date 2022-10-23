@@ -92,8 +92,8 @@ public class MoveIntelligent {
      * @return true if find
      */
     public boolean check(Rect start) {
-        return (start.getX() <= bomberX + 2 && start.getX() >= bomberX - 2)
-                && (start.getY() <= bomberY + 2 && start.getY() >= bomberY - 2);
+        return (start.getX() <= bomberX + 10 && start.getX() >= bomberX - 10)
+                && (start.getY() <= bomberY + 10 && start.getY() >= bomberY - 10);
     }
 
     public void setIsCanMove(Rect rect, Collision collision) {

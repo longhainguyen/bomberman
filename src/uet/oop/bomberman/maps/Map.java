@@ -106,9 +106,11 @@ public class Map {
                         break;
                     case "1":
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        BombermanGame.enemiesNumber++;
                         break;
                     case "2":
                         object = new Oneal(j, i, Sprite.oneal_right1.getFxImage());
+                        BombermanGame.enemiesNumber++;
                         break;
                     case "b":
                         power = new Multibomb(j, i, Sprite.powerup_bombs.getFxImage());
@@ -160,12 +162,15 @@ public class Map {
                         break;
                     case "d":
                         object = new Doll(j, i, Sprite.doll_left1.getFxImage());
+                        BombermanGame.enemiesNumber++;
                         break;
                     case "m":
                         object = new MinVo(j,i,Sprite.minvo_right1.getFxImage());
+                        BombermanGame.enemiesNumber++;
                         break;
                     case "k":
                         object = new KonDoria(j,i,Sprite.kondoria_right1.getFxImage());
+                        BombermanGame.enemiesNumber++;
                         break;
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());

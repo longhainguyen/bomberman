@@ -17,7 +17,7 @@ public class Multibomb extends Item {
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Multibomb);
             BombermanGame.fake_player.setMultibomb_clock(0);
-            if(BombermanGame.effectMute)
+            if(!BombermanGame.effectMute)
             this.itemSound.playSound(musicItem.collectItem);
             this.setAte(true);
         }

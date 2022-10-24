@@ -19,7 +19,7 @@ public class Speed extends Item {
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Speed);
             BombermanGame.fake_player.setSpeed_clock(0);
-            if(BombermanGame.effectMute)
+            if(!BombermanGame.effectMute)
             this.itemSound.playSound(musicItem.collectItem);
             this.setAte(true);
         }

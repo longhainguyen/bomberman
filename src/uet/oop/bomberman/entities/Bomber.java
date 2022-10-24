@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
@@ -44,6 +45,8 @@ public class Bomber extends Entity {
     private int bombpass_clock = 0;// use to count the time of bombpass.
 
     private musicItem deadSound = new musicItem(1, 50);
+
+    public boolean checkDie = false;
 
     public boolean isBombpass = false;
     public boolean is_check_out_of_bomb = false;
@@ -190,7 +193,7 @@ public class Bomber extends Entity {
         this.turn_right = false;
         this.isDie = false;
         this.isDie_time = 0;
-        this.heart = 1;
+        this.heart = 3;
         speed_clock = 0;
     }
 
@@ -201,7 +204,7 @@ public class Bomber extends Entity {
         entities_rect = new Rect(x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE, width, height);
         this.isDie = false;
         this.isDie_time = 0;
-        this.heart = 1;
+        this.heart = 3;
     }
 
     public Collision getEntity_collision() {
@@ -369,12 +372,32 @@ public class Bomber extends Entity {
     public void move() {
         if(!this.isSurvival) {
             if (entity_collision.checkCollisionsOfentities(entities_rect)) {
-                this.setDie(true);
-                BombermanGame.gameMusic.getMediaPlayer().pause();
-                BombermanGame.gameMusic.setIs_playing(true);
-                if(BombermanGame.effectMute) {
-                    deadSound();
+                heart--;
+                if (heart >= 0){
+                    BombermanGame.root.getChildren().remove(BombermanGame.heart);
+                BombermanGame.heart.setText(String.valueOf(heart));
+                BombermanGame.root.getChildren().add(BombermanGame.heart);
+            }
+               if(heart >= 1){
+                   this.addType(itemType.Firepass);
+                   this.isSurvival = true;
+               }
+                if(heart == 0) {
+                    this.setDie(true);
+                    BombermanGame.gameMusic.getMediaPlayer().pause();
+                    if(!BombermanGame.effectMute) {
+                        deadSound();
+                    }
+                    if(BombermanGame.gameMusic.isIs_playing()) {
+                        BombermanGame.root.getChildren().remove(BombermanGame.musicImgae.get(0));
+                        ImageView temp =BombermanGame.musicImgae.get(0);
+                        BombermanGame.musicImgae.set(0, BombermanGame.musicImgae.get(3));
+                        BombermanGame.musicImgae.set(3, temp);
+                        BombermanGame.root.getChildren().add(BombermanGame.musicImgae.get(0));
+                        BombermanGame.gameMusic.setIs_playing(false);
+                    }
                 }
+
             }
         }
         if (isDie) {

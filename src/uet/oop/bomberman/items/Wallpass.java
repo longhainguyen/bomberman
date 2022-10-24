@@ -18,7 +18,7 @@ public class Wallpass extends Item {
             BombermanGame.fake_player.addType(itemType.Wallpass);
             BombermanGame.fake_player.isWallpass = true;
             BombermanGame.fake_player.setWallpass_clock(0);
-            if(BombermanGame.effectMute)
+            if(!BombermanGame.effectMute)
             this.itemSound.playSound(musicItem.collectItem);
             this.setAte(true);
         }

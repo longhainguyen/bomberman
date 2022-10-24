@@ -32,7 +32,7 @@ public class musicItem {
 
     public static final String gameWin = "res/audio/win.wav";
 
-    public static final String youngMusic = "res/music/I_Want_You_To_Know_Remix.mp3";
+    public static final String clear = "res/audio/clear.wav";
 
     public static String currentMusic;
 

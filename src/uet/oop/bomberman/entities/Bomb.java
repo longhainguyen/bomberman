@@ -143,7 +143,7 @@ public class Bomb extends Entity {
     }
 
     public void exploSound() {
-        if (BombermanGame.effectMute) {
+        if (!BombermanGame.effectMute) {
             explosionSound.playSound(musicItem.explosionBomb);
         }
     }
@@ -165,7 +165,7 @@ public class Bomb extends Entity {
     }
 
     public void laySound() {
-        if (BombermanGame.effectMute) {
+        if (!BombermanGame.effectMute) {
             laybombSound.playSound(musicItem.layBomb);
         }
     }

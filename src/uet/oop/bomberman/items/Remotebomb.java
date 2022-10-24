@@ -19,7 +19,7 @@ public class Remotebomb extends Item {
             BombermanGame.fake_player.isRemote = true;
             BombermanGame.fake_player.is_out_of_time_B = false;
             BombermanGame.fake_player.setRemote_clock(0);
-            if(BombermanGame.effectMute)
+            if(!BombermanGame.effectMute)
             this.itemSound.playSound(musicItem.collectItem);
             this.setAte(true);
         }

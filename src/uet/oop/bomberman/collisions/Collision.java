@@ -93,7 +93,6 @@ public class Collision {
                     || Top_player >= Bottom_object
                     || Right_player <= Left_object
                     || Left_player >= Right_object)) {
-                /* System.out.println(Left_player  + " " + Top_player +  "---" + Left_object + " y: " + Top_object ); */
                 is_die_rect = (new Rect(Left_object, Top_object, width, height));
                 return true;
             }
@@ -194,4 +193,5 @@ public class Collision {
     public void setCollisionsOfentities(List<Rect> collisionsOfentities) {
         this.collisionsOfentities = collisionsOfentities;
     }
+
 }

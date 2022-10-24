@@ -17,6 +17,15 @@ public class SpriteSheet {
 	public BufferedImage image;
 
 	public static SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256);
+
+	public static SpriteSheet play = new SpriteSheet("/something/play.png", 30);
+
+	public static SpriteSheet pause = new SpriteSheet("/something/pause.png", 30);
+
+	public static SpriteSheet left = new SpriteSheet("/something/left.png", 30);
+
+	public static SpriteSheet right = new SpriteSheet("/something/right.png", 30);
+
 	
 	public SpriteSheet(String path, int size) {
 		_path = path;

@@ -2,6 +2,7 @@ package uet.oop.bomberman.items;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.sounds.musicItem;
 
 public class Wallpass extends Item {
     // bomber can walk through the wall
@@ -16,6 +17,8 @@ public class Wallpass extends Item {
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Wallpass);
             BombermanGame.fake_player.isWallpass = true;
+            BombermanGame.fake_player.setWallpass_clock(0);
+            this.itemSound.playSound(musicItem.collectItem);
             this.setAte(true);
         }
     }

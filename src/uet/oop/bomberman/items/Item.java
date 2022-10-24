@@ -8,6 +8,7 @@ import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.sounds.musicItem;
 
 
 public abstract class Item {
@@ -23,13 +24,17 @@ public abstract class Item {
 
     protected boolean isAte;
 
+    protected musicItem itemSound;
+
+
     public Item(int x, int y, Image img){
         this.x = x * Sprite.SCALED_SIZE;
         this.y = y * Sprite.SCALED_SIZE;
         this.img = img;
-        collisionItem = new Collision();
-        rectItem = new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
-        isAte = false;
+        this.collisionItem = new Collision();
+        this.rectItem = new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
+        this.isAte = false;
+        this.itemSound = new musicItem(1, 50);
     }
 
     public int getX() {

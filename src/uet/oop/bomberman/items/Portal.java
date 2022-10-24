@@ -19,6 +19,7 @@ public class Portal extends Item {
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Portal);
             BombermanGame.gameMusic.getMediaPlayer().pause();
+            if(BombermanGame.effectMute)
             this.itemSound.playSound(musicItem.gameWin);
             this.setAte(true);
         }

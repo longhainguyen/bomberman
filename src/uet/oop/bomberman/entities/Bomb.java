@@ -96,11 +96,10 @@ public class Bomb extends Entity {
         }
         this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
         if (checkinside || this.checkBombcollision(entities_rect)) {
-            if(other.isTurn_left() && !checkinside) {
+            if (other.isTurn_left() && !checkinside) {
                 this.x = positionOfwall + 32;
-            }
-            else if (other.isTurn_right() && !checkinside && virtual_distance != 0) {
-                this.x = positionOfwall  - 32;
+            } else if (other.isTurn_right() && !checkinside && virtual_distance != 0) {
+                this.x = positionOfwall - 32;
             } else this.x = posx + virtual_distance;
             this.y = posy;
             this.setEntities_rect(new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
@@ -143,8 +142,10 @@ public class Bomb extends Entity {
         this.bomb_frame = bomb_frame;
     }
 
-    public void exploSound(){
-        explosionSound.playSound(musicItem.explosionBomb);
+    public void exploSound() {
+        if (BombermanGame.effectMute) {
+            explosionSound.playSound(musicItem.explosionBomb);
+        }
     }
 
     public musicItem getExplosionSound() {
@@ -163,8 +164,10 @@ public class Bomb extends Entity {
         this.laybombSound = laybombSound;
     }
 
-    public void laySound(){
-        laybombSound.playSound(musicItem.layBomb);
+    public void laySound() {
+        if (BombermanGame.effectMute) {
+            laybombSound.playSound(musicItem.layBomb);
+        }
     }
 
     public void move() {

@@ -372,7 +372,9 @@ public class Bomber extends Entity {
                 this.setDie(true);
                 BombermanGame.gameMusic.getMediaPlayer().pause();
                 BombermanGame.gameMusic.setIs_playing(true);
-                deadSound();
+                if(BombermanGame.effectMute) {
+                    deadSound();
+                }
             }
         }
         if (isDie) {

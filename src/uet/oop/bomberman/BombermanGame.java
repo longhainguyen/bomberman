@@ -110,6 +110,8 @@ public class BombermanGame extends Application {
 
     private Group root;
 
+    public static boolean effectMute = true;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -266,7 +268,7 @@ public class BombermanGame extends Application {
             view.setFitHeight(30);
             root.getChildren().add(view);
         } catch (FileNotFoundException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -321,12 +323,13 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
         // music when play
-        gameMusic();
+
         //initGame();
     }
 
 
     public void initGame() {
+        gameMusic();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();

@@ -212,25 +212,7 @@ public class BombermanGame extends Application {
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
                     case ESCAPE:
-                        isPause = !isPause;
-                        System.out.println(menuGame.isEnterGame);
-                        if(menuGame.isEnterGame) {
-                            menuGame.setMenuContinue();
-                        }
-                        menuGame.isEnterGame = false;
-                        if(!menuGame.isVisible()) {
-                            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
-                            ft.setFromValue(0);
-                            ft.setToValue(1);
-                            menuGame.setVisible(true);
-                            ft.play();
-                        }else {
-                            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
-                            ft.setFromValue(1);
-                            ft.setToValue(0);
-                            menuGame.setVisible(false);
-                            ft.play();
-                        }
+                        menuGame.setMenuInGame2();
                         break;
                     case UP:
                         player.setGoUp(true);

@@ -39,6 +39,27 @@ public class MenuGame extends Parent {
 
     private Rectangle bg;
 
+    public void setMenuInGame2() {
+        bombermanGame.isPause = !bombermanGame.isPause;
+        if(this.isEnterGame) {
+            this.setMenuContinue();
+        }
+        this.isEnterGame = false;
+        if(!this.isVisible()) {
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            this.setVisible(true);
+            ft.play();
+        }else {
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
+            ft.setFromValue(1);
+            ft.setToValue(0);
+            this.setVisible(false);
+            ft.play();
+        }
+    }
+
     private void initBG() {
         bg = new Rectangle(640,480);
         bg.setFill(Color.GRAY);

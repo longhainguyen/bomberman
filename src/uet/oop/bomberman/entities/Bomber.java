@@ -376,9 +376,7 @@ public class Bomber extends Entity {
             if (entity_collision.checkCollisionsOfentities(entities_rect)) {
                 heart--;
                 if (heart >= 0) {
-                    BombermanGame.root.getChildren().remove(Band.heart);
                     Band.heart.setText(String.valueOf(heart));
-                    BombermanGame.root.getChildren().add(Band.heart);
                 }
                 if (heart >= 1) {
                     this.addType(itemType.Firepass);

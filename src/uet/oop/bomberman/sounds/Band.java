@@ -47,10 +47,10 @@ public class Band {
     public static int score = 0;
 
 
-    public Band(){
+    public Band() {
         try {
             setFileInput();
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         setImgae();
@@ -71,13 +71,11 @@ public class Band {
                 input = new FileInputStream("res/something/play.png");
             } else if (i == 4) {
                 input = new FileInputStream("res/something/volume.png");
-            } else if( i == 5){
+            } else if (i == 5) {
                 input = new FileInputStream("res/something/volume-mute.png");
-            }
-            else if( i == 6){
+            } else if (i == 6) {
                 input = new FileInputStream("res/something/effect.png");
-            }
-            else{
+            } else {
                 input = new FileInputStream("res/something/mute_effect.png");
             }
             fileInput.add(input);
@@ -119,19 +117,17 @@ public class Band {
                 view.setY(448);
                 view.setFitWidth(30);
                 view.setFitHeight(30);
-            } else if( i == 5){
+            } else if (i == 5) {
                 view.setX(120);
                 view.setY(448);
                 view.setFitWidth(30);
                 view.setFitHeight(30);
-            }
-            else if(i == 6) {
+            } else if (i == 6) {
                 view.setX(160);
                 view.setY(448);
                 view.setFitWidth(30);
                 view.setFitHeight(30);
-            }
-            else {
+            } else {
                 view.setX(160);
                 view.setY(448);
                 view.setFitWidth(30);
@@ -181,11 +177,9 @@ public class Band {
     }
 
 
-    public void setPoint(Group root) {
-        //root.getChildren().remove(Point);
+    public void setPoint() {
         Point.setText(String.valueOf(score));
         musicSymbol.setBlanced(Point, point.getX() + point.getBoundsInLocal().getWidth() / 2);
-        //root.getChildren().add(Point);
     }
 
     public void addmusicImage(Group root) {
@@ -228,21 +222,20 @@ public class Band {
         }
     }
 
-public void coutdown(){
-    Timeline Countdownline;
-    Countdownline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-        if (countdownTime > 0) {
-            countdownTime--;
-            countdownText.setText(String.valueOf(countdownTime));
-            musicSymbol.setBlanced(countdownText, time.getX() + time.getBoundsInLocal().getWidth() / 2);
-        }
-    }));
-    Countdownline.setCycleCount(-1);
-    Countdownline.play();
+    public void coutdown() {
+            Timeline Countdownline;
+            Countdownline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                if (countdownTime > 0 && !BombermanGame.isPause) {
+                    countdownTime--;
+                    countdownText.setText(String.valueOf(countdownTime));
+                    musicSymbol.setBlanced(countdownText, time.getX() + time.getBoundsInLocal().getWidth() / 2);
+                }
+            }));
+            Countdownline.setCycleCount(-1);
+            Countdownline.play();
+    }
 
-}
-
-    public void display(Scene scene){
+    public void display(Scene scene) {
         scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent event) {
@@ -256,7 +249,7 @@ public void coutdown(){
                                 changeSymbol(BombermanGame.root, value);
                                 BombermanGame.gameMusic.pause();
                             } else {
-                                changeSymbol(BombermanGame.root,value);
+                                changeSymbol(BombermanGame.root, value);
                                 BombermanGame.gameMusic.resumme();
                             }
                         } else if (value == 1) {
@@ -275,18 +268,18 @@ public void coutdown(){
 
                         } else if (value == 4) {
                             if (!BombermanGame.gameMusic.getMediaPlayer().isMute()) {
-                                changeSymbol(BombermanGame.root,value);
+                                changeSymbol(BombermanGame.root, value);
                                 BombermanGame.gameMusic.getMediaPlayer().setMute(true);
                             } else {
-                                changeSymbol(BombermanGame.root,value);
+                                changeSymbol(BombermanGame.root, value);
                                 BombermanGame.gameMusic.getMediaPlayer().setMute(false);
                             }
                         } else {
                             if (!BombermanGame.effectMute) {
-                                changeSymbol(BombermanGame.root,value);
+                                changeSymbol(BombermanGame.root, value);
                                 BombermanGame.effectMute = true;
                             } else {
-                                changeSymbol(BombermanGame.root,value);
+                                changeSymbol(BombermanGame.root, value);
                                 BombermanGame.effectMute = false;
                             }
                         }
@@ -296,7 +289,7 @@ public void coutdown(){
         });
     }
 
-    public void update(){
+    public void update() {
         display(BombermanGame.scene);
     }
 

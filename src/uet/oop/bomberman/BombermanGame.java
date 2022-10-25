@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class BombermanGame extends Application {
-    public boolean isPause = false;
+    public static boolean isPause = false;
     private MenuGame menuGame;
     private ButtonMenu menuMain;
     private List<Entity> entities = new ArrayList<>();
@@ -200,7 +200,7 @@ public class BombermanGame extends Application {
                         } else {
                             band.score += kondoriaScore;
                         }
-                        band.setPoint(root);
+                        band.setPoint();
                         entities.get(i).setDie(false);
                         Map.entitiesEntity.remove(entities.get(i));
                         entities.remove(i);

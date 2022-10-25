@@ -1,12 +1,15 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.collisions.Collision;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.itemType;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.sounds.musicItem;
+import uet.oop.bomberman.sounds.Band;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,10 @@ public class Bomber extends Entity {
 
     private int bombpass_clock = 0;// use to count the time of bombpass.
 
+    private musicItem deadSound = new musicItem(1, 50);
+
+    public boolean checkDie = false;
+
     public boolean isBombpass = false;
     public boolean is_check_out_of_bomb = false;
     private ArrayList<itemType> storePower = new ArrayList<>();
@@ -71,6 +78,29 @@ public class Bomber extends Entity {
 
     private int heart;
 
+    public void setFlame_clock(int flame_clock) {
+        this.flame_clock = flame_clock;
+    }
+
+    public void setMultibomb_clock(int multibomb_clock) {
+        this.multibomb_clock = multibomb_clock;
+    }
+
+    public void setRemote_clock(int remote_clock) {
+        this.remote_clock = remote_clock;
+    }
+
+    public void setWallpass_clock(int wallpass_clock) {
+        this.wallpass_clock = wallpass_clock;
+    }
+
+    public void setSurvival_clock(int survival_clock) {
+        this.survival_clock = survival_clock;
+    }
+
+    public void setBombpass_clock(int bombpass_clock) {
+        this.bombpass_clock = bombpass_clock;
+    }
 
     public boolean isTurn_right() {
         return turn_right;
@@ -164,7 +194,7 @@ public class Bomber extends Entity {
         this.turn_right = false;
         this.isDie = false;
         this.isDie_time = 0;
-        this.heart = 1;
+        this.heart = 3;
         speed_clock = 0;
     }
 
@@ -175,7 +205,7 @@ public class Bomber extends Entity {
         entities_rect = new Rect(x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE, width, height);
         this.isDie = false;
         this.isDie_time = 0;
-        this.heart = 1;
+        this.heart = 3;
     }
 
     public Collision getEntity_collision() {
@@ -266,13 +296,14 @@ public class Bomber extends Entity {
     public void Controlbomb() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Remote)) {
-                if (multibomb_clock < 2 * acceleration_time) {
-                    multibomb_clock++;
+                if (remote_clock < 2 * acceleration_time) {
+                    remote_clock++;
                 } else {
+                    System.out.println("end of period");
                     isRemote = false;
                     is_out_of_time_B = true;
                     BombermanGame.fake_player.is_press_B = false;
-                    multibomb_clock = 0;
+                    remote_clock = 0;
                     storePower.remove(i);
                     i--;
                 }
@@ -283,7 +314,7 @@ public class Bomber extends Entity {
     /**
      * check wallpass.
      */
-    public void Wallpass(){
+    public void Wallpass() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Wallpass)) {
                 if (wallpass_clock < acceleration_time) {
@@ -301,11 +332,11 @@ public class Bomber extends Entity {
     /**
      * check survival of bomber.
      */
-    public void Survival(){
+    public void Survival() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Firepass)) {
                 if (survival_clock < 2 * acceleration_time) {
-                    survival_clock ++;
+                    survival_clock++;
                 } else {
                     survival_clock = 0;
                     isSurvival = false;
@@ -317,15 +348,14 @@ public class Bomber extends Entity {
     }
 
     /**
-     *check bombpass.
+     * check bombpass.
      */
-    public void Bombpass(){
+    public void Bombpass() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Bombpass)) {
                 if (bombpass_clock < 2 * acceleration_time) {
-                    bombpass_clock ++;
+                    bombpass_clock++;
                 } else {
-                    System.out.println("end of period");
                     bombpass_clock = 0;
                     isBombpass = false;
                     storePower.remove(i);
@@ -335,11 +365,39 @@ public class Bomber extends Entity {
         }
     }
 
+
+    public void deadSound() {
+        this.deadSound.playSound(musicItem.deadSound);
+    }
+
     @Override
     public void move() {
-        if(!this.isSurvival) {
+        if (!this.isSurvival) {
             if (entity_collision.checkCollisionsOfentities(entities_rect)) {
-                //this.setDie(true);
+                heart--;
+                if (heart >= 0) {
+                    Band.heart.setText(String.valueOf(heart));
+                }
+                if (heart >= 1) {
+                    this.addType(itemType.Firepass);
+                    this.isSurvival = true;
+                }
+                if (heart == 0) {
+                    this.setDie(true);
+                    BombermanGame.gameMusic.getMediaPlayer().pause();
+                    if (!BombermanGame.effectMute) {
+                        deadSound();
+                    }
+                    if (BombermanGame.gameMusic.isIs_playing()) {
+                        BombermanGame.root.getChildren().remove(Band.musicImgae.get(0));
+                        ImageView temp = Band.musicImgae.get(0);
+                        Band.musicImgae.set(0, Band.musicImgae.get(3));
+                        Band.musicImgae.set(3, temp);
+                        BombermanGame.root.getChildren().add(Band.musicImgae.get(0));
+                        BombermanGame.gameMusic.setIs_playing(false);
+                    }
+                }
+
             }
         }
         if (isDie) {

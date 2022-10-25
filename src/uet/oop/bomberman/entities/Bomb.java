@@ -5,6 +5,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.sounds.musicItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,10 @@ public class Bomb extends Entity {
     public int press_B_number = 0;
 
     private List<Explosion> bomb_explosion = new ArrayList<>();
+
+    private musicItem explosionSound = new musicItem(1, 50);
+
+    private musicItem laybombSound = new musicItem(1, 50);
     private int explosion_time;
     private boolean is_explode;
     private boolean go;
@@ -55,7 +60,6 @@ public class Bomb extends Entity {
                     || Top_player >= Bottom_object
                     || Right_player <= Left_object
                     || Left_player >= Right_object)) {
-                System.out.println("fwt" + Left_object);
                 this.positionOfwall = Left_object;
                 return true;
             }
@@ -91,16 +95,16 @@ public class Bomb extends Entity {
         }
         this.getEntity_collision().update(Map.stillEntity, Map.entitiesEntity);
         if (checkinside || this.checkBombcollision(entities_rect)) {
-            System.out.println(other.getX());
-            if(other.isTurn_left() && !checkinside ) {
-                this.x = posx + virtual_distance + 32;
+            if (other.isTurn_left() && !checkinside) {
+                this.x = positionOfwall + 32;
             } else if (other.isTurn_right() && !checkinside && virtual_distance != 0) {
-                this.x = positionOfwall  - 32;
+                this.x = positionOfwall - 32;
             } else this.x = posx + virtual_distance;
             this.y = posy;
             this.setEntities_rect(new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE));
         }
         this.is_out_of_bomber = false;
+        laySound();
         this.img = img;
     }
 
@@ -135,6 +139,34 @@ public class Bomb extends Entity {
 
     public void setBomb_frame(int bomb_frame) {
         this.bomb_frame = bomb_frame;
+    }
+
+    public void exploSound() {
+        if (!BombermanGame.effectMute) {
+            explosionSound.playSound(musicItem.explosionBomb);
+        }
+    }
+
+    public musicItem getExplosionSound() {
+        return explosionSound;
+    }
+
+    public void setExplosionSound(musicItem explosionSound) {
+        this.explosionSound = explosionSound;
+    }
+
+    public musicItem getLaybombSound() {
+        return laybombSound;
+    }
+
+    public void setLaybombSound(musicItem laybombSound) {
+        this.laybombSound = laybombSound;
+    }
+
+    public void laySound() {
+        if (!BombermanGame.effectMute) {
+            laybombSound.playSound(musicItem.layBomb);
+        }
     }
 
     public void move() {

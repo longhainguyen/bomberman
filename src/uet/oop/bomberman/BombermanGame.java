@@ -12,7 +12,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
@@ -26,11 +35,21 @@ import uet.oop.bomberman.menu.ButtonMenu;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import uet.oop.bomberman.sounds.musicItem;
+import uet.oop.bomberman.sounds.musicSymbol;
+import uet.oop.bomberman.sounds.musicGame;
+import uet.oop.bomberman.sounds.Band;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class BombermanGame extends Application {
-    public boolean isPause = false;
+    public static boolean isPause = false;
     private MenuGame menuGame;
     private ButtonMenu menuMain;
     private List<Entity> entities = new ArrayList<>();
@@ -39,6 +58,18 @@ public class BombermanGame extends Application {
     private List<Item> powerup = new ArrayList<>();
 
     private List<Entity> grass = new ArrayList<>();
+
+    public static int enemiesNumber = 0;
+
+    public static final int balloonScore = 2000;
+
+    public static final int onealScore = 4000;
+
+    public static final int kondoriaScore = 6000;
+
+    public static final int minvoScore = 6000;
+
+    public static final int dollScore = 6000;
 
     private Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
@@ -61,11 +92,29 @@ public class BombermanGame extends Application {
     private Canvas canvas;
 
     private Map mapGame = new Map();
+    public static musicGame gameMusic = new musicGame();
 
-    private Scene scene;
+    private musicItem clearAll = new musicItem(2, 50);
+
+    public static Scene scene;
+
+    public static Group root;
+
+    public static boolean effectMute = false;
+
+    public static Band band = new Band();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
+    }
+
+
+    public void gameMusic() {
+        gameMusic.playMusic();
+    }
+
+    public void stopMusic() {
+        gameMusic.getMediaPlayer().pause();
     }
 
     public void setupBomb(Bomb other) {
@@ -78,54 +127,52 @@ public class BombermanGame extends Application {
         other.setExplosion_time(0);
     }
 
-    @Override
     public void start(Stage stage) {
+        // Tao Canvas
         menuGame = new MenuGame();
         menuGame.setBombermanGame(this);
-        // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+        Rectangle pointBand = new Rectangle(0, 416, 640, 64);
+        pointBand.setFill(Color.gray(0.5));
 
         // Tao root container
-        Group root = new Group();
+        root = new Group();
+        root.getChildren().add(pointBand);
+        root.getChildren().add(Band.musicText);
+        root.getChildren().add(Band.countdownText);
+        root.getChildren().add(Band.time);
+        root.getChildren().add(Band.heart);
+        root.getChildren().add(Band.point);
+        root.getChildren().add(Band.Point);
+        band.setHeart(root);
+        band.addmusicImage(root);
+
         root.getChildren().add(canvas);
+
         root.getChildren().add(menuGame);
 
         // Tao scene
         //Scene scene = new Scene(root);
         scene = new Scene(root);
 
+        // Tao scene
+
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
+        // music when play
 
-
-//        scene.setOnKeyPressed(event -> {
-//            if(event.getCode() == KeyCode.ESCAPE) {
-//                if(!menuGame.isVisible()) {
-//                    FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
-//                    ft.setFromValue(0);
-//                    ft.setToValue(1);
-//                    menuGame.setVisible(true);
-//                    this.isPause = true;
-//                    ft.play();
-//                }else {
-//                    FadeTransition ft = new FadeTransition(Duration.seconds(0.5),menuGame);
-//                    ft.setFromValue(1);
-//                    ft.setToValue(0);
-//                    menuGame.setVisible(false);
-//                    this.isPause = false;
-//                    ft.play();
-//                }
-//            }
-//        });
-
+        //initGame();
     }
 
+
     public void initGame() {
+        gameMusic();
+
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
-            if(!this.isPause)
+            if (!this.isPause)
                 update();
             if (player.getIsDie_time() > Bomber.max_die_time - 1) {
                 entities.remove(player);
@@ -146,9 +193,21 @@ public class BombermanGame extends Application {
                         entities.get(i) instanceof Bomb ||
                         entities.get(i) instanceof Explosion)) {
                     if (entities.get(i).getEntity_frame() > entities.get(i).getMax_long_time() - 1 && entities.get(i).isDie()) {
+                        if (entities.get(i) instanceof Balloon) {
+                            band.score += balloonScore;
+                        } else if (entities.get(i) instanceof Oneal) {
+                            band.score += onealScore;
+                        } else {
+                            band.score += kondoriaScore;
+                        }
+                        band.setPoint();
                         entities.get(i).setDie(false);
                         Map.entitiesEntity.remove(entities.get(i));
                         entities.remove(i);
+                        enemiesNumber--;
+                        if (enemiesNumber == 0 && !effectMute) {
+                            clearAll.playSound(musicItem.clear);
+                        }
                         i--;
                     }
                 }
@@ -169,6 +228,7 @@ public class BombermanGame extends Application {
                     bombChain.get(i).setGo(false);
                     setupBomb(bombChain.get(i));
                 } else if (player.is_out_of_time_B && !bombChain.get(i).isGo() && !player.is_press_B) {
+                    player.is_out_of_time_B = false;
                     bombChain.get(i).setGo(true);
                     setupBomb(bombChain.get(i));
                 } else {
@@ -182,6 +242,14 @@ public class BombermanGame extends Application {
                 }
 
                 if (bombChain.get(i).isIs_explode()) {
+                    if (!player.isDie()) {
+                        bombChain.get(i).exploSound();
+                    } else {
+                        if (bombChain.get(i).getExplosionSound().isIs_playing()) {
+                            bombChain.get(i).getExplosionSound().getMediaPlayer().pause();
+                            bombChain.get(i).getExplosionSound().setIs_playing(false);
+                        }
+                    }
                     if (bombChain.get(i).getBomb_explosion().get(0).getExplosion_frame() == Explosion.max_explosion_frame_time - 1) {
                         for (int j = 0; j < bombChain.get(i).getBomb_explosion().size(); j++) {
                             entities.remove(bombChain.get(i).getBomb_explosion().get(j));
@@ -200,6 +268,8 @@ public class BombermanGame extends Application {
         }));
         timebomb.setCycleCount(-1);
         timebomb.play();
+
+        band.coutdown();
 
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
         mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
@@ -231,7 +301,7 @@ public class BombermanGame extends Application {
                         Map.goRight = true;
                         break;
                     case SPACE:
-                        if (bombChain.size() < bomb_max && player.getHeart() != 0) {
+                        if (bombChain.size() < bomb_max && !player.isDie()) {
                             Bomb temp = new Bomb(0, 0, Sprite.bomb.getFxImage());
                             if (Math.abs(stillObjects.get(0).getX()) % Sprite.SCALED_SIZE != 0) {
                                 temp.setBomb(player, Sprite.bomb.getFxImage(), Sprite.SCALED_SIZE -
@@ -311,6 +381,7 @@ public class BombermanGame extends Application {
         stillObjects.forEach(Entity::update);
         mapGame.update();
         MoveIntelligent.setBomberXY(player.getX(), player.getY());
+        band.update();
     }
 
     public void render() {

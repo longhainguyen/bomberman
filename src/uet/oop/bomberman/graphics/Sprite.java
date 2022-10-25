@@ -187,6 +187,22 @@ public class Sprite {
 
     public static Sprite powerup_secret = new Sprite(DEFAULT_SIZE, 7, 10, SpriteSheet.tiles, 16, 16);
 
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Music Symbol
+    |--------------------------------------------------------------------------
+     */
+
+    public static Sprite Music_play = new Sprite(30, 0, 0, SpriteSheet.play, 30, 30);
+
+    public static Sprite Music_pause = new Sprite(30, 0, 0, SpriteSheet.pause, 30, 30);
+
+    public static Sprite Music_left = new Sprite(30, 0, 0, SpriteSheet.left, 30, 30);
+
+    public static Sprite Music_right = new Sprite(30, 0, 0, SpriteSheet.right, 30, 30);
+
     public Sprite(int size, int x, int y, SpriteSheet sheet, int rw, int rh) {
         SIZE = size;
         _pixels = new int[SIZE * SIZE];

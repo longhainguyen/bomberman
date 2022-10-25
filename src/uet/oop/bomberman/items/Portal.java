@@ -7,6 +7,7 @@ import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
 import uet.oop.bomberman.sounds.musicItem;
+import uet.oop.bomberman.sounds.Band;
 
 public class Portal extends Item {
     public Portal(int x, int y, Image img) {
@@ -24,11 +25,11 @@ public class Portal extends Item {
                 checkout = true;
                 BombermanGame.gameMusic.getMediaPlayer().pause();
                 this.itemSound.playSound(musicItem.gameWin);
-                BombermanGame.root.getChildren().remove(BombermanGame.musicImgae.get(0));
-                ImageView temp =BombermanGame.musicImgae.get(0);
-                BombermanGame.musicImgae.set(0, BombermanGame.musicImgae.get(3));
-                BombermanGame.musicImgae.set(3, temp);
-                BombermanGame.root.getChildren().add(BombermanGame.musicImgae.get(0));
+                BombermanGame.root.getChildren().remove(Band.musicImgae.get(0));
+                ImageView temp = Band.musicImgae.get(0);
+                Band.musicImgae.set(0, Band.musicImgae.get(3));
+                Band.musicImgae.set(3, temp);
+                BombermanGame.root.getChildren().add(Band.musicImgae.get(0));
                 BombermanGame.gameMusic.setIs_playing(false);
             }
         }

@@ -17,7 +17,7 @@ public class Secret extends Item{
                 && !isBrickcovered()){
             BombermanGame.fake_player.addType(itemType.Secret);
             if(!BombermanGame.effectMute)
-            this.itemSound.playSound(musicItem.collectItem);
+            this.itemSound.playSound();
             this.setAte(true);
         }
     }

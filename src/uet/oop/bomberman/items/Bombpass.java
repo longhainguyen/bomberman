@@ -19,7 +19,7 @@ public class Bombpass extends Item {
             BombermanGame.fake_player.setBombpass_clock(0);
             BombermanGame.fake_player.isBombpass = true;
             if(!BombermanGame.effectMute)
-            this.itemSound.playSound(musicItem.collectItem);
+            this.itemSound.playSound();
             this.setAte(true);
         }
     }

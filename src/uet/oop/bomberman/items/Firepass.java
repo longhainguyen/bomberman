@@ -19,7 +19,7 @@ public class Firepass extends Item {
             BombermanGame.fake_player.setSurvival_clock(0);
             BombermanGame.fake_player.isSurvival = true;
             if(!BombermanGame.effectMute)
-            this.itemSound.playSound(musicItem.collectItem);
+            this.itemSound.playSound();
             this.setAte(true);
         }
     }

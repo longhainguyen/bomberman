@@ -45,7 +45,7 @@ public class Bomber extends Entity {
 
     private int bombpass_clock = 0;// use to count the time of bombpass.
 
-    private musicItem deadSound = new musicItem(1, 50);
+    private musicItem deadSound = new musicItem(1, 50, musicItem.deadSound);
 
     public boolean checkDie = false;
 
@@ -367,7 +367,7 @@ public class Bomber extends Entity {
 
 
     public void deadSound() {
-        this.deadSound.playSound(musicItem.deadSound);
+        this.deadSound.playSound();
     }
 
     @Override

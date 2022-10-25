@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.sounds.musicItem;
+import uet.oop.bomberman.sounds.musicGame;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +40,8 @@ public class MenuGame extends Parent {
     private ImageView background;
 
     private Rectangle bg;
+
+    private musicItem clickMouse = new musicItem(1, 50, musicItem.click);
 
     public void setMenuInGame2() {
         bombermanGame.isPause = !bombermanGame.isPause;
@@ -85,6 +89,7 @@ public class MenuGame extends Parent {
 
     public void setEventAll() {
         btnResume.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             this.bombermanGame.isPause = false;
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
             ft.setFromValue(1);
@@ -95,8 +100,8 @@ public class MenuGame extends Parent {
 
 
         btnOptions.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             getChildren().add(menu1);
-
             TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25),menu0);
             tt.setToX(menu0.getTranslateX() - offset);
             TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5),menu1);
@@ -115,6 +120,7 @@ public class MenuGame extends Parent {
         });
 
         btnPlay.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             this.isEnterGame = true;
             this.bombermanGame.initGame();
             if(this.getChildren().contains(background)) {
@@ -129,11 +135,13 @@ public class MenuGame extends Parent {
         });
 
         btnContinue.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             this.bombermanGame.isPause = false;
             setVisible(false);
         });
 
         btnBack.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             getChildren().add(menu0);
 
             TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25),menu1);

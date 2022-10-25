@@ -24,12 +24,14 @@ public class Portal extends Item {
             if(!BombermanGame.effectMute && !checkout && BombermanGame.enemiesNumber == 0) {
                 checkout = true;
                 BombermanGame.gameMusic.getMediaPlayer().pause();
-                this.itemSound.playSound(musicItem.gameWin);
-                BombermanGame.root.getChildren().remove(Band.musicImgae.get(0));
-                ImageView temp = Band.musicImgae.get(0);
-                Band.musicImgae.set(0, Band.musicImgae.get(3));
-                Band.musicImgae.set(3, temp);
-                BombermanGame.root.getChildren().add(Band.musicImgae.get(0));
+                this.itemSound.soundclick(musicItem.gameWin);
+                if(BombermanGame.gameMusic.isIs_playing()) {
+                    BombermanGame.root.getChildren().remove(Band.musicImgae.get(0));
+                    ImageView temp = Band.musicImgae.get(0);
+                    Band.musicImgae.set(0, Band.musicImgae.get(3));
+                    Band.musicImgae.set(3, temp);
+                    BombermanGame.root.getChildren().add(Band.musicImgae.get(0));
+                }
                 BombermanGame.gameMusic.setIs_playing(false);
             }
         }

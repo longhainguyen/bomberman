@@ -18,7 +18,7 @@ public class Multibomb extends Item {
             BombermanGame.fake_player.addType(itemType.Multibomb);
             BombermanGame.fake_player.setMultibomb_clock(0);
             if(!BombermanGame.effectMute)
-            this.itemSound.playSound(musicItem.collectItem);
+            this.itemSound.playSound();
             this.setAte(true);
         }
     }

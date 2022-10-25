@@ -28,7 +28,8 @@ public class musicGame {
     }
 
     public void init() {
-        currentMusic = "res/music/On my way.mp3";
+        currentMusic = "res/music/gameaudio.wav";
+        Music.add("res/music/gameaudio.wav");
         Music.add("res/music/On my way.mp3");
         Music.add("res/music/Ignite.mp3");
         Music.add("res/music/Lily.mp3");
@@ -84,7 +85,6 @@ public class musicGame {
 
     public void playMusic() {
         try {
-            JFXPanel x = new JFXPanel();
             String path = new File(currentMusic).toURI().toString();
             this.mediaItem = new Media(path);
             this.mediaPlayer = new MediaPlayer(this.mediaItem);

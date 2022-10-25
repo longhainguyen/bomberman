@@ -34,7 +34,7 @@ public abstract class Item {
         this.collisionItem = new Collision();
         this.rectItem = new Rect(this.x, this.y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
         this.isAte = false;
-        this.itemSound = new musicItem(1, 50);
+        this.itemSound = new musicItem(1, 50, musicItem.collectItem);
     }
 
     public int getX() {
@@ -78,6 +78,13 @@ public abstract class Item {
         rectItem.setY(this.y);
     }
 
+    public musicItem getItemSound() {
+        return itemSound;
+    }
+
+    public void setItemSound(musicItem itemSound) {
+        this.itemSound = itemSound;
+    }
 
     public boolean isAte() {
         return isAte;

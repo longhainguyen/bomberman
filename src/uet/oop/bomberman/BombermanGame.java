@@ -1,6 +1,5 @@
 package uet.oop.bomberman;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -9,19 +8,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import uet.oop.bomberman.entities.*;
@@ -31,22 +20,11 @@ import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.maps.Map;
 import uet.oop.bomberman.menu.MenuGame;
 import uet.oop.bomberman.menu.ButtonMenu;
-
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import uet.oop.bomberman.sounds.musicItem;
-import uet.oop.bomberman.sounds.musicSymbol;
 import uet.oop.bomberman.sounds.musicGame;
 import uet.oop.bomberman.sounds.Band;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class BombermanGame extends Application {
     public static boolean isPause = false;
@@ -94,7 +72,7 @@ public class BombermanGame extends Application {
     private Map mapGame = new Map();
     public static musicGame gameMusic = new musicGame();
 
-    private musicItem clearAll = new musicItem(2, 50);
+    private musicItem clearAll = new musicItem(2, 50, musicItem.clear);
 
     public static Scene scene;
 
@@ -206,7 +184,7 @@ public class BombermanGame extends Application {
                         entities.remove(i);
                         enemiesNumber--;
                         if (enemiesNumber == 0 && !effectMute) {
-                            clearAll.playSound(musicItem.clear);
+                            clearAll.playSound();
                         }
                         i--;
                     }
@@ -268,9 +246,7 @@ public class BombermanGame extends Application {
         }));
         timebomb.setCycleCount(-1);
         timebomb.play();
-
         band.coutdown();
-
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
         mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
 

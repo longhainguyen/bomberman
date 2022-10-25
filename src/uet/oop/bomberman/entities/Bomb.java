@@ -21,9 +21,9 @@ public class Bomb extends Entity {
 
     private List<Explosion> bomb_explosion = new ArrayList<>();
 
-    private musicItem explosionSound = new musicItem(1, 50);
+    private musicItem explosionSound = new musicItem(1, 50, musicItem.explosionBomb);
 
-    private musicItem laybombSound = new musicItem(1, 50);
+    private musicItem laybombSound = new musicItem(1, 50, musicItem.layBomb);
     private int explosion_time;
     private boolean is_explode;
     private boolean go;
@@ -144,7 +144,7 @@ public class Bomb extends Entity {
 
     public void exploSound() {
         if (!BombermanGame.effectMute) {
-            explosionSound.playSound(musicItem.explosionBomb);
+            explosionSound.playSound();
         }
     }
 
@@ -166,7 +166,7 @@ public class Bomb extends Entity {
 
     public void laySound() {
         if (!BombermanGame.effectMute) {
-            laybombSound.playSound(musicItem.layBomb);
+            laybombSound.playSound();
         }
     }
 

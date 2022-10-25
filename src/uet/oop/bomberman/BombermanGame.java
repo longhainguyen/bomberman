@@ -51,9 +51,8 @@ import java.util.concurrent.Callable;
 public class BombermanGame extends Application {
     public static boolean isPause = false;
     private MenuGame menuGame;
-    private ButtonMenu menuMain;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    public List<Entity> entities = new ArrayList<>();
+    public List<Entity> stillObjects = new ArrayList<>();
 
     private List<Item> powerup = new ArrayList<>();
 
@@ -71,7 +70,7 @@ public class BombermanGame extends Application {
 
     public static final int dollScore = 6000;
 
-    private Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
+    public Bomber player = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
     public static Bomber fake_player = new Bomber(1, 1, Sprite.player_right.getFxImage());
     public static final int WIDTH = 20;
@@ -172,7 +171,7 @@ public class BombermanGame extends Application {
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
-            if (!this.isPause)
+            if (!isPause)
                 update();
             if (player.getIsDie_time() > Bomber.max_die_time - 1) {
                 entities.remove(player);
@@ -272,7 +271,7 @@ public class BombermanGame extends Application {
         band.coutdown();
 
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
-        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
+        mapGame.creatMap2("res/levels/Level1Fake.txt", entities, stillObjects, powerup, grass, player);
 
         player.setBomberRectCollisions(stillObjects);
 
@@ -375,13 +374,20 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
-        grass.forEach(Entity::update);
-        powerup.forEach(Item::update);
-        entities.forEach(Entity::update);
-        stillObjects.forEach(Entity::update);
-        mapGame.update();
-        MoveIntelligent.setBomberXY(player.getX(), player.getY());
-        band.update();
+        if(entities.contains(player) && entities.size() > 1) {
+            grass.forEach(Entity::update);
+            powerup.forEach(Item::update);
+            entities.forEach(Entity::update);
+            stillObjects.forEach(Entity::update);
+            mapGame.update();
+            MoveIntelligent.setBomberXY(player.getX(), player.getY());
+            band.update();
+        }else if(entities.size() == 1){
+            menuGame.setMenuWhenWin();
+        }else {
+            menuGame.setMenuWhenLose();
+        }
+        System.out.println(entities.size());
     }
 
     public void render() {

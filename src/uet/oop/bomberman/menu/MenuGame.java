@@ -3,8 +3,6 @@ package uet.oop.bomberman.menu;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.MenuButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -13,7 +11,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import uet.oop.bomberman.BombermanGame;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,14 +18,19 @@ import java.nio.file.Paths;
 
 public class MenuGame extends Parent {
     private final int offset = 400;
-    private VBox menu0 = new VBox(10);
-    private VBox menu1 = new VBox(10);
+    private final VBox menu0 = new VBox(10);
+    private final VBox menu1 = new VBox(10);
 
-    private ButtonMenu btnResume = new ButtonMenu("RESUME");
-    private ButtonMenu btnOptions = new ButtonMenu("OPTIONS");
-    private ButtonMenu btnExit = new ButtonMenu("EXIT");
-    private ButtonMenu btnPlay = new ButtonMenu("PLAY");
-    private ButtonMenu btnContinue = new ButtonMenu("CONTINUE");
+    private final VBox menuLose = new VBox(10);
+    private final VBox menuWin = new VBox(10);
+
+    private final ButtonMenu btnWin = new ButtonMenu("You WIN");
+    private final ButtonMenu btnLose = new ButtonMenu("YOU LOSE");
+    private final ButtonMenu btnResume = new ButtonMenu("RESUME");
+    private final ButtonMenu btnOptions = new ButtonMenu("OPTIONS");
+    private final ButtonMenu btnExit = new ButtonMenu("EXIT");
+    private final ButtonMenu btnPlay = new ButtonMenu("NEW GAME");
+    private final ButtonMenu btnContinue = new ButtonMenu("CONTINUE");
 
     private ButtonMenu btnSound = new ButtonMenu("SOUND");
     private ButtonMenu btnVideo = new ButtonMenu("VIDEO");
@@ -39,24 +41,71 @@ public class MenuGame extends Parent {
 
     private Rectangle bg;
 
-    public void setMenuInGame2() {
-        bombermanGame.isPause = !bombermanGame.isPause;
-        if(this.isEnterGame) {
-            this.setMenuContinue();
-        }
+    private void initButton() {
+        btnSound.setEvent();
+        btnVideo.setEvent();
+        btnBack.setEvent();
+        btnOptions.setEvent();
+        btnPlay.setEvent();
+        btnExit.setEvent();
+        btnContinue.setEvent();
+        btnResume.setEvent();
+        btnLose.setDropShadow();
+        btnWin.setDropShadow();
+    }
+
+    public void setMenuWhenWin() {
+        BombermanGame.isPause = true;
         this.isEnterGame = false;
-        if(!this.isVisible()) {
-            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            this.setVisible(true);
-            ft.play();
-        }else {
-            FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
-            ft.setFromValue(1);
-            ft.setToValue(0);
-            this.setVisible(false);
-            ft.play();
+        this.getChildren().add(menuWin);
+        this.getChildren().remove(menuLose);
+        if(!menu0.getChildren().contains(btnPlay)) {
+            menu0.getChildren().add(0,btnPlay);
+        }
+        menu0.getChildren().remove(btnResume);
+        FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        this.setVisible(true);
+        ft.play();
+    }
+    public void setMenuWhenLose() {
+        this.isEnterGame = false;
+        this.getChildren().add(menuLose);
+        this.getChildren().remove(menuWin);
+        if(!menu0.getChildren().contains(btnPlay)) {
+            menu0.getChildren().add(0,btnPlay);
+        }
+        BombermanGame.isPause = true;
+        menu0.getChildren().remove(btnResume);
+        FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        this.setVisible(true);
+        ft.play();
+    }
+
+    public void setMenuInGame2() {
+        if(bombermanGame.entities.contains(bombermanGame.player))
+        {
+            BombermanGame.isPause = !BombermanGame.isPause;
+            if(this.isEnterGame) {
+                this.setMenuContinue();
+            }
+            this.isEnterGame = false;
+            if(!this.isVisible()) {
+                FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
+                ft.setFromValue(0);
+                ft.setToValue(1);
+                this.setVisible(true);
+                ft.play();
+            }else {
+                FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
+                ft.setFromValue(1);
+                ft.setToValue(0);
+                this.setVisible(false);
+                ft.play();
+            }
         }
     }
 
@@ -77,6 +126,7 @@ public class MenuGame extends Parent {
         this.initMenu();
         this.setEventAll();
         this.initBG();
+        this.initButton();
 
         menu0.getChildren().addAll(btnPlay,btnOptions,btnExit);
         menu1.getChildren().addAll(btnBack,btnSound,btnVideo);
@@ -85,7 +135,7 @@ public class MenuGame extends Parent {
 
     public void setEventAll() {
         btnResume.setOnMouseClicked(event -> {
-            this.bombermanGame.isPause = false;
+            BombermanGame.isPause = false;
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
             ft.setFromValue(1);
             ft.setToValue(0);
@@ -117,9 +167,7 @@ public class MenuGame extends Parent {
         btnPlay.setOnMouseClicked(event -> {
             this.isEnterGame = true;
             this.bombermanGame.initGame();
-            if(this.getChildren().contains(background)) {
-                this.getChildren().remove(background);
-            }
+            this.getChildren().remove(background);
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
             ft.setFromValue(1);
             ft.setToValue(0);
@@ -129,7 +177,7 @@ public class MenuGame extends Parent {
         });
 
         btnContinue.setOnMouseClicked(event -> {
-            this.bombermanGame.isPause = false;
+            BombermanGame.isPause = false;
             setVisible(false);
         });
 
@@ -160,6 +208,14 @@ public class MenuGame extends Parent {
         menu1.setTranslateY(200);
 
         menu1.setTranslateX(offset);
+
+        menuLose.setTranslateX(50);
+        menuLose.setTranslateY(50);
+        menuLose.getChildren().add(btnLose);
+
+        menuWin.setTranslateX(50);
+        menuWin.setTranslateY(50);
+        menuWin.getChildren().add(btnWin);
     }
 
     public void setMenuContinue() {

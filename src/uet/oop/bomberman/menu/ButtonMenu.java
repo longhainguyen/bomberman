@@ -13,11 +13,27 @@ import javafx.scene.text.Text;
 
 public class ButtonMenu extends StackPane {
     private Text text;
+    private DropShadow drop;
+
+    private Rectangle bg;
+
+    public Text getText() {
+        return text;
+    }
+
+    public void setText(Text text) {
+        this.text = text;
+    }
+
     public ButtonMenu(String name) {
         text = new Text(name);
         text.setFont(Font.font(20));
 
-        Rectangle bg = new Rectangle(200,30);
+        drop = new DropShadow(50,Color.WHITE);
+        drop.setInput(new Glow());
+
+
+        bg = new Rectangle(200,30);
         bg.setOpacity(0.6);
         bg.setFill(Color.BLACK);
         bg.setEffect(new GaussianBlur(3.5));
@@ -25,7 +41,9 @@ public class ButtonMenu extends StackPane {
         setAlignment(Pos.CENTER);
         setRotate(-0.5);
         getChildren().addAll(bg,text);
+    }
 
+    public void setEvent() {
         setOnMouseEntered(event -> {
             bg.setTranslateX(10);
             text.setTranslateX(10);
@@ -39,11 +57,16 @@ public class ButtonMenu extends StackPane {
             bg.setFill(Color.BLACK);
             text.setFill(Color.WHITE);
         });
-
-        DropShadow drop = new DropShadow(50,Color.WHITE);
-        drop.setInput(new Glow());
-
         setOnMousePressed(event -> setEffect(drop));
         setOnMouseReleased(event -> setEffect(null));
     }
+
+    public void setDropShadow() {
+        bg.setTranslateX(10);
+        text.setTranslateX(10);
+        bg.setFill(Color.WHITE);
+        text.setFill(Color.BLACK);
+        setEffect(drop);
+    }
+
 }

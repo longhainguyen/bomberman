@@ -105,7 +105,7 @@ public class BombermanGame extends Application {
 
     public static boolean effectMute = false;
 
-    public static Band band = new Band();
+    public static Band band;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -171,6 +171,7 @@ public class BombermanGame extends Application {
 
 
     public void initGame() {
+        band = new Band();
         root.getChildren().add(pointBand);
         root.getChildren().add(Band.musicText);
         root.getChildren().add(Band.countdownText);
@@ -180,6 +181,7 @@ public class BombermanGame extends Application {
         root.getChildren().add(Band.Point);
         band.setHeart(root);
         band.addmusicImage(root);
+
         gameMusic();
         timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
@@ -416,7 +418,8 @@ public class BombermanGame extends Application {
         timebomb.stop();
         timeline.stop();
         band.Countdownline.stop();
-        Band.countdownTime = 200;
+        player.setHeart(3);
+        effectMute = false;
     }
 
     public void render() {

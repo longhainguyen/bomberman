@@ -297,5 +297,10 @@ public class Band {
         for(ImageView image: musicImgae) {
             BombermanGame.root.getChildren().remove(image);
         }
+        fileInput.removeAll(fileInput);
+        Imgae.removeAll(Imgae);
+        musicImgae.removeAll(musicImgae);
+        countdownTime = 200;
+        score = 0;
     }
 }

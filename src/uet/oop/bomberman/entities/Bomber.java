@@ -194,7 +194,7 @@ public class Bomber extends Entity {
         this.turn_right = false;
         this.isDie = false;
         this.isDie_time = 0;
-        this.heart = 1;
+        this.heart = 3;
         speed_clock = 0;
     }
 
@@ -205,7 +205,7 @@ public class Bomber extends Entity {
         entities_rect = new Rect(x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE, width, height);
         this.isDie = false;
         this.isDie_time = 0;
-        this.heart = 1;
+        this.heart = 3;
     }
 
     public Collision getEntity_collision() {

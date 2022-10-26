@@ -181,7 +181,6 @@ public class BombermanGame extends Application {
         band.setHeart(root);
         band.addmusicImage(root);
         gameMusic();
-
         timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             if (!isPause)

@@ -24,7 +24,7 @@ public class Map {
     public static int col;
     public static int row;
     public String level;
-    private List<String> readFile;
+    private List<String> readFile = new ArrayList<>();
     public static String[][] mapCode;
 
     public static List<Entity> stillEntity = new ArrayList<>();//Store of stillEntity in Map.
@@ -251,5 +251,13 @@ public class Map {
         for (Item entity : powerMap) {
             entity.setX(entity.getX() - distance);
         }
+    }
+
+    public void deleteMap() {
+        this.readFile.removeAll(readFile);
+        entitiesEntity.removeAll(entitiesEntity);
+        stillEntity.removeAll(stillEntity);
+        grassMap.removeAll(grassMap);
+        powerMap.removeAll(powerMap);
     }
 }

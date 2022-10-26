@@ -56,12 +56,16 @@ public class MenuGame extends Parent {
 
     public void setMenuWhenWin() {
         BombermanGame.isPause = true;
-        this.isEnterGame = false;
-        this.getChildren().add(menuWin);
-        this.getChildren().remove(menuLose);
+        if(this.getChildren().contains(menuLose)) {
+            this.getChildren().remove(menuLose);
+        }
         if(!menu0.getChildren().contains(btnPlay)) {
             menu0.getChildren().add(0,btnPlay);
         }
+        if(!this.getChildren().contains(menuWin)) {
+            this.getChildren().add(menuWin);
+        }
+        this.isEnterGame = false;
         menu0.getChildren().remove(btnResume);
         FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
         ft.setFromValue(0);
@@ -71,8 +75,12 @@ public class MenuGame extends Parent {
     }
     public void setMenuWhenLose() {
         this.isEnterGame = false;
-        this.getChildren().add(menuLose);
-        this.getChildren().remove(menuWin);
+        if(!this.getChildren().contains(menuLose)) {
+            this.getChildren().add(menuLose);
+        }
+        if(this.getChildren().contains(menuWin)) {
+            this.getChildren().remove(menuWin);
+        }
         if(!menu0.getChildren().contains(btnPlay)) {
             menu0.getChildren().add(0,btnPlay);
         }
@@ -166,6 +174,12 @@ public class MenuGame extends Parent {
 
         btnPlay.setOnMouseClicked(event -> {
             this.isEnterGame = true;
+            bombermanGame.isPause = false;
+            if (bombermanGame.isEndGame){
+                this.bombermanGame.deleteGame();
+                bombermanGame.isEndGame = false;
+
+            }
             this.bombermanGame.initGame();
             this.getChildren().remove(background);
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);

@@ -49,6 +49,10 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class BombermanGame extends Application {
+    public boolean isEndGame = false;
+    private Rectangle pointBand;
+    private Timeline timeline;
+    private Timeline timebomb;
     public static boolean isPause = false;
     private MenuGame menuGame;
     public List<Entity> entities = new ArrayList<>();
@@ -132,20 +136,20 @@ public class BombermanGame extends Application {
         menuGame.setBombermanGame(this);
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        Rectangle pointBand = new Rectangle(0, 416, 640, 64);
+        pointBand = new Rectangle(0, 416, 640, 64);
         pointBand.setFill(Color.gray(0.5));
 
         // Tao root container
         root = new Group();
-        root.getChildren().add(pointBand);
-        root.getChildren().add(Band.musicText);
-        root.getChildren().add(Band.countdownText);
-        root.getChildren().add(Band.time);
-        root.getChildren().add(Band.heart);
-        root.getChildren().add(Band.point);
-        root.getChildren().add(Band.Point);
-        band.setHeart(root);
-        band.addmusicImage(root);
+//        root.getChildren().add(pointBand);
+//        root.getChildren().add(Band.musicText);
+//        root.getChildren().add(Band.countdownText);
+//        root.getChildren().add(Band.time);
+//        root.getChildren().add(Band.heart);
+//        root.getChildren().add(Band.point);
+//        root.getChildren().add(Band.Point);
+//        band.setHeart(root);
+//        band.addmusicImage(root);
 
         root.getChildren().add(canvas);
 
@@ -167,9 +171,18 @@ public class BombermanGame extends Application {
 
 
     public void initGame() {
+        root.getChildren().add(pointBand);
+        root.getChildren().add(Band.musicText);
+        root.getChildren().add(Band.countdownText);
+        root.getChildren().add(Band.time);
+        root.getChildren().add(Band.heart);
+        root.getChildren().add(Band.point);
+        root.getChildren().add(Band.Point);
+        band.setHeart(root);
+        band.addmusicImage(root);
         gameMusic();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             if (!isPause)
                 update();
@@ -221,7 +234,7 @@ public class BombermanGame extends Application {
         }));
         timeline.setCycleCount(-1);
         timeline.play();
-        Timeline timebomb = new Timeline(new KeyFrame(Duration.millis(200), e -> {
+        timebomb = new Timeline(new KeyFrame(Duration.millis(200), e -> {
             for (int i = 0; i < bombChain.size(); i++) {
                 if (player.is_press_B && bombChain.get(i).isGo()) {
                     bombChain.get(i).setGo(false);
@@ -271,7 +284,7 @@ public class BombermanGame extends Application {
         band.coutdown();
 
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
-        mapGame.creatMap2("res/levels/Level1Fake.txt", entities, stillObjects, powerup, grass, player);
+        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
 
         player.setBomberRectCollisions(stillObjects);
 
@@ -375,6 +388,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         if(entities.contains(player) && entities.size() > 1) {
+            isEndGame = false;
             grass.forEach(Entity::update);
             powerup.forEach(Item::update);
             entities.forEach(Entity::update);
@@ -383,11 +397,27 @@ public class BombermanGame extends Application {
             MoveIntelligent.setBomberXY(player.getX(), player.getY());
             band.update();
         }else if(entities.size() == 1){
+            isEndGame = true;
             menuGame.setMenuWhenWin();
         }else {
+            isEndGame = true;
             menuGame.setMenuWhenLose();
         }
-        System.out.println(entities.size());
+    }
+
+    public void deleteGame() {
+        this.entities.removeAll(entities);
+        this.grass.removeAll(grass);
+        this.stillObjects.removeAll(stillObjects);
+        this.powerup.removeAll(powerup);
+        this.mapGame.deleteMap();
+        root.getChildren().removeAll(pointBand,Band.countdownText,
+                Band.Point,Band.point,Band.musicText,Band.heart,Band.time);
+        band.deleteMusicAndImage();
+        timebomb.stop();
+        timeline.stop();
+        band.Countdownline.stop();
+        Band.countdownTime = 200;
     }
 
     public void render() {

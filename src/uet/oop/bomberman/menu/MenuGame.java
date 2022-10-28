@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import uet.oop.bomberman.BombermanGame;
 
@@ -21,8 +22,12 @@ public class MenuGame extends Parent {
     private final VBox menu0 = new VBox(10);
     private final VBox menu1 = new VBox(10);
 
+    private final VBox menuHighScore = new VBox(10);
+
     private final VBox menuLose = new VBox(10);
     private final VBox menuWin = new VBox(10);
+
+    private final VBox menuHowToPlay = new VBox(10);
 
     private final ButtonMenu btnWin = new ButtonMenu("You WIN");
     private final ButtonMenu btnLose = new ButtonMenu("YOU LOSE");
@@ -35,6 +40,14 @@ public class MenuGame extends Parent {
     private ButtonMenu btnSound = new ButtonMenu("SOUND");
     private ButtonMenu btnVideo = new ButtonMenu("VIDEO");
     private ButtonMenu btnBack = new ButtonMenu("BACK");
+
+    private ButtonMenu btnHighScore = new ButtonMenu("HIGH SCORE");
+    private ButtonMenu btnHowToPlay = new ButtonMenu("HOW TO PLAY");
+
+    private ButtonMenu btnMenuHighScore = new ButtonMenu("HIGH SCORE");
+    private ButtonMenu btnMenuHowToPlay= new ButtonMenu("");
+    private ButtonMenu btnBack2 = new ButtonMenu("Back");
+    private ButtonMenu btnBack3 = new ButtonMenu("Back");
     public boolean isEnterGame = false;
     private BombermanGame bombermanGame;
     private ImageView background;
@@ -42,6 +55,10 @@ public class MenuGame extends Parent {
     private Rectangle bg;
 
     private void initButton() {
+        btnBack3.setEvent();
+        btnBack2.setEvent();
+        btnHowToPlay.setEvent();
+        btnHighScore.setEvent();
         btnSound.setEvent();
         btnVideo.setEvent();
         btnBack.setEvent();
@@ -52,6 +69,8 @@ public class MenuGame extends Parent {
         btnResume.setEvent();
         btnLose.setDropShadow();
         btnWin.setDropShadow();
+        btnMenuHighScore.setMenuHighScore();
+        btnMenuHowToPlay.setMenuHowToPlay();
     }
 
     public void setMenuWhenWin() {
@@ -128,16 +147,20 @@ public class MenuGame extends Parent {
     }
 
     public MenuGame() {
-        this.setBackGround();
+        this.setBackGround("res/imageMenu/bg.jpg");
         getChildren().add(background);
 
         this.initMenu();
         this.setEventAll();
         this.initBG();
         this.initButton();
+        this.setEventForBtnHighScore();
+        this.setEvenForBtnHowToPlay();
 
         menu0.getChildren().addAll(btnPlay,btnOptions,btnExit);
-        menu1.getChildren().addAll(btnBack,btnSound,btnVideo);
+        menu1.getChildren().addAll(btnHighScore,btnHowToPlay,btnBack);
+        menuHighScore.getChildren().addAll(btnMenuHighScore,btnBack2);
+        menuHowToPlay.getChildren().addAll(btnMenuHowToPlay,btnBack3);
         getChildren().addAll(bg,menu0);
     }
 
@@ -153,19 +176,7 @@ public class MenuGame extends Parent {
 
 
         btnOptions.setOnMouseClicked(event -> {
-            getChildren().add(menu1);
-
-            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25),menu0);
-            tt.setToX(menu0.getTranslateX() - offset);
-            TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5),menu1);
-            tt1.setToX(menu0.getTranslateX());
-
-            tt.play();
-            tt1.play();
-
-            tt.setOnFinished(event2 -> {
-                getChildren().remove(menu0);
-            });
+            changeMenuRight(menu0,menu1);
         });
 
         btnExit.setOnMouseClicked(event -> {
@@ -196,25 +207,71 @@ public class MenuGame extends Parent {
         });
 
         btnBack.setOnMouseClicked(event -> {
-            getChildren().add(menu0);
-
-            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25),menu1);
-            tt.setToX(menu1.getTranslateX() + offset);
-
-            TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5),menu0);
-            tt1.setToX(menu1.getTranslateX());
-
-            tt.play();
-            tt1.play();
-
-            tt.setOnFinished(event1 -> {
-                getChildren().remove(menu1);
-            });
+            changeMenu(menu1,menu0);
         });
 
     }
 
+    private void changeMenu(VBox menuCur, VBox menuNext) {
+        getChildren().add(menuNext);
+
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25),menuCur);
+        tt.setToX(menuCur.getTranslateX() + offset);
+
+        TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5),menuNext);
+        tt1.setToX(menuCur.getTranslateX());
+
+        tt.play();
+        tt1.play();
+
+        tt.setOnFinished(event1 -> {
+            getChildren().remove(menuCur);
+        });
+    }
+
+    public void setEventForBtnHighScore() {
+        btnHighScore.setOnMouseClicked(event -> {
+            changeMenuRight(menu1, menuHighScore);
+        });
+
+        btnBack2.setOnMouseClicked(event -> {
+            changeMenu(menuHighScore,menu1);
+        });
+    }
+
+    public void setEvenForBtnHowToPlay() {
+        btnHowToPlay.setOnMouseClicked(event -> {
+            changeMenuRight(menu1,menuHowToPlay);
+        });
+
+        btnBack3.setOnMouseClicked(event -> {
+            changeMenu(menuHowToPlay,menu1);
+        });
+    }
+
+    private void changeMenuRight(VBox menuCur, VBox menuNext) {
+        getChildren().add(menuNext);
+
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25),menuCur);
+        tt.setToX(menuCur.getTranslateX() - offset);
+        TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5),menuNext);
+        tt1.setToX(menuCur.getTranslateX());
+
+        tt.play();
+        tt1.play();
+
+        tt.setOnFinished(event2 -> {
+            getChildren().remove(menuCur);
+        });
+    }
+
     public void initMenu() {
+        menuHowToPlay.setTranslateX(50);
+        menuHowToPlay.setTranslateY(100);
+
+        menuHighScore.setTranslateX(50);
+        menuHighScore.setTranslateY(100);
+
         menu0.setTranslateX(50);
         menu0.setTranslateY(200);
 
@@ -240,11 +297,11 @@ public class MenuGame extends Parent {
 
     }
 
-    public void setBackGround(){
+    public void setBackGround(String path){
         ImageView imageView = null;
 
         try {
-            InputStream is = Files.newInputStream(Paths.get("res/imageMenu/bg.jpg"));
+            InputStream is = Files.newInputStream(Paths.get(path));
             Image image = new Image(is);
             is.close();
 
@@ -256,5 +313,11 @@ public class MenuGame extends Parent {
         }
 
         background = imageView;
+    }
+
+    public void updateHighScore() {
+        MenuStage.setHighScore();
+        String text = "HIGH SCORE \n" + MenuStage.highScore;
+        btnMenuHighScore.text.setText(text);
     }
 }

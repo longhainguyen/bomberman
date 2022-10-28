@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 
 
 public class ButtonMenu extends StackPane {
-    private Text text;
+    public Text text;
     private DropShadow drop;
 
     private Rectangle bg;
@@ -64,6 +64,22 @@ public class ButtonMenu extends StackPane {
     public void setDropShadow() {
         bg.setTranslateX(10);
         text.setTranslateX(10);
+        bg.setFill(Color.WHITE);
+        text.setFill(Color.BLACK);
+        setEffect(drop);
+    }
+
+    public void setMenuHighScore() {
+        bg.setHeight(200);
+        bg.setWidth(200);
+        bg.setFill(Color.WHITE);
+        text.setFill(Color.BLACK);
+        setEffect(drop);
+    }
+
+    public void setMenuHowToPlay() {
+        bg.setHeight(200);
+        bg.setWidth(550);
         bg.setFill(Color.WHITE);
         text.setFill(Color.BLACK);
         setEffect(drop);

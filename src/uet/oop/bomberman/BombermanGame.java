@@ -32,7 +32,8 @@ import uet.oop.bomberman.maps.Map;
 import uet.oop.bomberman.menu.MenuGame;
 import uet.oop.bomberman.menu.ButtonMenu;
 
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -41,9 +42,6 @@ import uet.oop.bomberman.sounds.musicSymbol;
 import uet.oop.bomberman.sounds.musicGame;
 import uet.oop.bomberman.sounds.Band;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -141,15 +139,6 @@ public class BombermanGame extends Application {
 
         // Tao root container
         root = new Group();
-//        root.getChildren().add(pointBand);
-//        root.getChildren().add(Band.musicText);
-//        root.getChildren().add(Band.countdownText);
-//        root.getChildren().add(Band.time);
-//        root.getChildren().add(Band.heart);
-//        root.getChildren().add(Band.point);
-//        root.getChildren().add(Band.Point);
-//        band.setHeart(root);
-//        band.addmusicImage(root);
 
         root.getChildren().add(canvas);
 
@@ -371,6 +360,9 @@ public class BombermanGame extends Application {
                 }
             }
         });
+
+        player.posYInMap = player.getY();
+        player.posXInMap = player.getX();
     }
 
     public void createMap() {
@@ -400,6 +392,8 @@ public class BombermanGame extends Application {
         }else if(entities.size() == 1){
             isEndGame = true;
             menuGame.setMenuWhenWin();
+            writeHighScoreToFileTxt();
+            menuGame.updateHighScore();
         }else {
             isEndGame = true;
             menuGame.setMenuWhenLose();
@@ -428,5 +422,33 @@ public class BombermanGame extends Application {
         powerup.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+    }
+
+    public void writeHighScoreToFileTxt() {
+        String score = "";
+        File f = new File("res/highScore/highScore.txt");
+        try {
+            BufferedReader br = Files.newBufferedReader(f.toPath(), StandardCharsets.UTF_8);
+            String line = null;
+            while(true) {
+                line = br.readLine();
+                if(line==null) {
+                    break;
+                }else {
+                    score += line + "\n";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        score += "" + Band.countdownTime;
+        try {
+            FileWriter fw = new FileWriter("res/highScore/highScore.txt");
+            fw.write(score);
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

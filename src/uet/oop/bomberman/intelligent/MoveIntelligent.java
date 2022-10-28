@@ -25,8 +25,8 @@ public class MoveIntelligent {
     }
 
     public void find_road(Rect rect, Collision collision) {
-        boolean[][] visited = new boolean[Map.widthOfMap][Map.heightOfMap];
         Queue<Rect> pos = new LinkedList<>();
+        boolean[][] visited = new boolean[Map.widthOfMap][Map.heightOfMap];
         pos.add(rect);
         visited[rect.getX()][rect.getY()] = true;
         java.util.Map<Rect, Rect> parentMap = new HashMap<>();

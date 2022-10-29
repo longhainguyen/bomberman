@@ -28,6 +28,7 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.intelligent.MoveIntelligent;
+import uet.oop.bomberman.items.Portal;
 import uet.oop.bomberman.maps.Map;
 import uet.oop.bomberman.menu.MenuGame;
 import uet.oop.bomberman.menu.ButtonMenu;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class BombermanGame extends Application {
+    public static Item portal = null;
     public boolean isEndGame = false;
     private Rectangle pointBand;
     private Timeline timeline;
@@ -380,7 +382,10 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
-        if(entities.contains(player) && entities.size() > 1) {
+
+        if(entities.contains(player)
+                && !(player.getY() <= portal.rectItem.getY() + 20 && portal.rectItem.getX() + 20 >= player.getX()
+                && portal.rectItem.getY() <= player.getY()  && portal.rectItem.getX()  <= player.getX() ) ) {
             isEndGame = false;
             grass.forEach(Entity::update);
             powerup.forEach(Item::update);
@@ -389,11 +394,15 @@ public class BombermanGame extends Application {
             mapGame.update();
             MoveIntelligent.setBomberXY(player.getX(), player.getY());
             band.update();
-        }else if(entities.size() == 1){
+        }else if((player.getY() <= portal.rectItem.getY() + 20 && portal.rectItem.getX() + 20 >= player.getX()
+                && portal.rectItem.getY() <= player.getY()  && portal.rectItem.getX()  <= player.getX() )){
+                isEndGame = true;
+                menuGame.setMenuWhenWin();
+                writeHighScoreToFileTxt();
+                menuGame.updateHighScore();
+        }else if(Band.countdownTime <= 0){
             isEndGame = true;
-            menuGame.setMenuWhenWin();
-            writeHighScoreToFileTxt();
-            menuGame.updateHighScore();
+            menuGame.setMenuWhenLose();
         }else {
             isEndGame = true;
             menuGame.setMenuWhenLose();

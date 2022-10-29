@@ -232,6 +232,7 @@ public class MenuGame extends Parent {
     public void setEventForBtnHighScore() {
         btnHighScore.setOnMouseClicked(event -> {
             changeMenuRight(menu1, menuHighScore);
+            updateHighScore();
         });
 
         btnBack2.setOnMouseClicked(event -> {

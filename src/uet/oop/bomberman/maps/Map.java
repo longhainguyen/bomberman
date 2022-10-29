@@ -97,6 +97,7 @@ public class Map {
                         power = new Portal(j, i, Sprite.portal.getFxImage());
                         powerup.add(power);
                         powerMap.add(power);
+                        BombermanGame.portal = power;
                         object = new Brick(j, i, Sprite.brick.getFxImage());
                         break;
                     case "p":

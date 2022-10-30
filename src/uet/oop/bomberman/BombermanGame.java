@@ -141,6 +141,7 @@ public class BombermanGame extends Application {
         // Tao scene
 
         // Them scene vao stage
+        stage.setTitle("Bomberman 2.0");
         stage.setScene(scene);
         stage.show();
         // music when play

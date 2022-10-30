@@ -34,6 +34,8 @@ public class musicItem {
 
     public static final String click = "res/audio/press.wav";
 
+    public static final String lobby = "res/audio/lobby.mp3";
+
 
     private List<String> Music = new ArrayList<>();
 

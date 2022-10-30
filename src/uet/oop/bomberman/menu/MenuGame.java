@@ -59,10 +59,8 @@ public class MenuGame extends Parent {
 
     private musicItem clickMouse = new musicItem(1, 50, musicItem.click);
 
-    /*public void setMenuInGame2() {
-        bombermanGame.isPause = !bombermanGame.isPause;
-        if(this.isEnterGame) {
-            this.setMenuContinue();*/
+    private musicItem lobbyMusic = new musicItem(-1, 50, musicItem.lobby);
+
 
     private void initButton() {
         btnBack3.setEvent();
@@ -169,6 +167,8 @@ public class MenuGame extends Parent {
         this.setEventForBtnHighScore();
         this.setEvenForBtnHowToPlay();
 
+        this.lobbyMusic.playSound();
+
         menu0.getChildren().addAll(btnPlay, btnOptions, btnExit);
         menu1.getChildren().addAll(btnHighScore, btnHowToPlay, btnBack);
         menuHighScore.getChildren().addAll(btnMenuHighScore, btnBack2);
@@ -213,6 +213,7 @@ public class MenuGame extends Parent {
         });
 
         btnExit.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             System.exit(0);
         });
 
@@ -225,6 +226,7 @@ public class MenuGame extends Parent {
                 bombermanGame.isEndGame = false;
 
             }
+            this.lobbyMusic.getMediaPlayer().stop();
             this.bombermanGame.initGame();
             this.getChildren().remove(background);
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
@@ -288,22 +290,28 @@ public class MenuGame extends Parent {
     }
 
     public void setEventForBtnHighScore() {
+
         btnHighScore.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             changeMenuRight(menu1, menuHighScore);
             updateHighScore();
         });
 
         btnBack2.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             changeMenu(menuHighScore, menu1);
         });
     }
 
     public void setEvenForBtnHowToPlay() {
+
         btnHowToPlay.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             changeMenuRight(menu1, menuHowToPlay);
         });
 
         btnBack3.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
             changeMenu(menuHowToPlay, menu1);
         });
     }

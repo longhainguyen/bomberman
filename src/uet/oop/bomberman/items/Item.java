@@ -18,9 +18,9 @@ public abstract class Item {
 
     protected Image img;
 
-    protected Collision collisionItem;
+    public Collision collisionItem;
 
-    protected Rect rectItem;
+    public Rect rectItem;
 
     protected boolean isAte;
 

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Band {
+    public Timeline Countdownline;
 
     public static List<ImageView> musicImgae = new ArrayList<>();
 
@@ -223,7 +224,6 @@ public class Band {
     }
 
     public void coutdown() {
-            Timeline Countdownline;
             Countdownline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 if (countdownTime > 0 && !BombermanGame.isPause) {
                     countdownTime--;
@@ -293,4 +293,14 @@ public class Band {
         display(BombermanGame.scene);
     }
 
+    public void deleteMusicAndImage() {
+        for(ImageView image: musicImgae) {
+            BombermanGame.root.getChildren().remove(image);
+        }
+        fileInput.removeAll(fileInput);
+        Imgae.removeAll(Imgae);
+        musicImgae.removeAll(musicImgae);
+        countdownTime = 200;
+        score = 0;
+    }
 }

@@ -1,7 +1,6 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;

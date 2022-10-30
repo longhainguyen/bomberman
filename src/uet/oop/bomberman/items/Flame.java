@@ -5,6 +5,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.sounds.Band;
 import uet.oop.bomberman.sounds.musicItem;
 
 
@@ -21,6 +22,7 @@ public class Flame extends Item {
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Flame);
             BombermanGame.fake_player.setFlame_clock(0);
+            addTextItem("Flame ");
             if(!BombermanGame.effectMute)
             this.itemSound.playSound();
             this.setAte(true);

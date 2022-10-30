@@ -243,6 +243,8 @@ public class Bomber extends Entity {
                     speed_clock++;
                     SPEED = 4;
                 } else {
+                    Band.textPower = Band.textPower.replace("Speed ", "");
+                    Band.detailPower.setText(Band.textPower);
                     speed_clock = 0;
                     SPEED = 2;
                     storePower.remove(i);
@@ -262,6 +264,8 @@ public class Bomber extends Entity {
                     flame_clock++;
                     Bomb.max_length_explosion = 5;
                 } else {
+                    Band.textPower = Band.textPower.replace("Flame ", "");
+                    Band.detailPower.setText(Band.textPower);
                     flame_clock = 0;
                     Bomb.max_length_explosion = 3;
                     storePower.remove(i);
@@ -281,6 +285,8 @@ public class Bomber extends Entity {
                     multibomb_clock++;
                     BombermanGame.bomb_max = 2;
                 } else {
+                    Band.textPower = Band.textPower.replace("Bombs ", "");
+                    Band.detailPower.setText(Band.textPower);
                     multibomb_clock = 0;
                     BombermanGame.bomb_max = 1;
                     storePower.remove(i);
@@ -300,6 +306,8 @@ public class Bomber extends Entity {
                     remote_clock++;
                 } else {
                     System.out.println("end of period");
+                    Band.textPower = Band.textPower.replace("Remote ", "");
+                    Band.detailPower.setText(Band.textPower);
                     isRemote = false;
                     is_out_of_time_B = true;
                     BombermanGame.fake_player.is_press_B = false;
@@ -320,6 +328,8 @@ public class Bomber extends Entity {
                 if (wallpass_clock < acceleration_time) {
                     wallpass_clock++;
                 } else {
+                    Band.textPower = Band.textPower.replace("Wallpass ", "");
+                    Band.detailPower.setText(Band.textPower);
                     wallpass_clock = 0;
                     isWallpass = false;
                     storePower.remove(i);
@@ -338,6 +348,8 @@ public class Bomber extends Entity {
                 if (survival_clock < 2 * acceleration_time) {
                     survival_clock++;
                 } else {
+                    Band.textPower = Band.textPower.replace("Firepass ", "");
+                    Band.detailPower.setText(Band.textPower);
                     survival_clock = 0;
                     isSurvival = false;
                     storePower.remove(i);
@@ -356,6 +368,8 @@ public class Bomber extends Entity {
                 if (bombpass_clock < 2 * acceleration_time) {
                     bombpass_clock++;
                 } else {
+                    Band.textPower = Band.textPower.replace("Bombpass " , "");
+                    Band.detailPower.setText(Band.textPower);
                     bombpass_clock = 0;
                     isBombpass = false;
                     storePower.remove(i);

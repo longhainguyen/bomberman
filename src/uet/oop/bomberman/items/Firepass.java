@@ -2,6 +2,7 @@ package uet.oop.bomberman.items;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.sounds.Band;
 import uet.oop.bomberman.sounds.musicItem;
 
 public class Firepass extends Item {
@@ -18,6 +19,7 @@ public class Firepass extends Item {
             BombermanGame.fake_player.addType(itemType.Firepass);
             BombermanGame.fake_player.setSurvival_clock(0);
             BombermanGame.fake_player.isSurvival = true;
+            addTextItem("Firepass ");
             if(!BombermanGame.effectMute)
             this.itemSound.playSound();
             this.setAte(true);

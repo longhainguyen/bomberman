@@ -45,6 +45,12 @@ public class Band {
 
     public static Text Point = null;
 
+    public static Text Power = null;
+
+    public static Text detailPower = null;
+
+    public static String textPower = "";
+
     public static int score = 0;
 
 
@@ -160,6 +166,14 @@ public class Band {
         musicSymbol.setBlanced(Point, point.getX() + point.getBoundsInLocal().getWidth() / 2);
         Point.setFont(Font.font(Font.getFamilies().get(0), FontWeight.BOLD, 30));
         Point.setFill(Color.WHITE);
+        Power = new Text(450, 445, "Power");
+        Power.setFont((Font.font(Font.getFamilies().get(0), FontWeight.BOLD, 30)));
+        Power.setFill(Color.WHITE);
+
+        detailPower = new Text(450, 472, "");
+        detailPower.setFont((Font.font(Font.getFamilies().get(0), FontWeight.BOLD, 20)));
+        detailPower.setFill(Color.YELLOW);
+
     }
 
     public void setHeart(Group root) {

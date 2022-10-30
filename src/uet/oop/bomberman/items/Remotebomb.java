@@ -2,6 +2,7 @@ package uet.oop.bomberman.items;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.sounds.Band;
 import uet.oop.bomberman.sounds.musicItem;
 
 public class Remotebomb extends Item {
@@ -19,6 +20,7 @@ public class Remotebomb extends Item {
             BombermanGame.fake_player.isRemote = true;
             BombermanGame.fake_player.is_out_of_time_B = false;
             BombermanGame.fake_player.setRemote_clock(0);
+            addTextItem("Remote ");
             if(!BombermanGame.effectMute)
             this.itemSound.playSound();
             this.setAte(true);

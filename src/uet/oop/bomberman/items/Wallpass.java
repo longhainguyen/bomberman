@@ -2,6 +2,7 @@ package uet.oop.bomberman.items;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.sounds.Band;
 import uet.oop.bomberman.sounds.musicItem;
 
 public class Wallpass extends Item {
@@ -18,6 +19,7 @@ public class Wallpass extends Item {
             BombermanGame.fake_player.addType(itemType.Wallpass);
             BombermanGame.fake_player.isWallpass = true;
             BombermanGame.fake_player.setWallpass_clock(0);
+            addTextItem("Wallpass ");
             if (!BombermanGame.effectMute)
                 this.itemSound.playSound();
             this.setAte(true);

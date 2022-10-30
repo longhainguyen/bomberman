@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sounds.Band;
 import uet.oop.bomberman.sounds.musicItem;
 
 public class Speed extends Item {
@@ -19,7 +20,8 @@ public class Speed extends Item {
                 && !isBrickcovered()) {
             BombermanGame.fake_player.addType(itemType.Speed);
             BombermanGame.fake_player.setSpeed_clock(0);
-            if(!BombermanGame.effectMute)
+            addTextItem("Speed ");
+            if(!BombermanGame.effectMute);
             this.itemSound.playSound();
             this.setAte(true);
         }

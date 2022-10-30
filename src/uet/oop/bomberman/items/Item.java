@@ -8,6 +8,7 @@ import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.maps.Map;
+import uet.oop.bomberman.sounds.Band;
 import uet.oop.bomberman.sounds.musicItem;
 
 
@@ -102,6 +103,13 @@ public abstract class Item {
 
     public void move() {
 
+    }
+
+    public void addTextItem(String text){
+        if(!Band.textPower.contains(text)) {
+            Band.textPower += text + " ";
+            Band.detailPower.setText(Band.textPower);
+        }
     }
 
     public boolean isBrickcovered(){

@@ -24,14 +24,17 @@ Các *Item* cũng được giấu phía sau Brick và chỉ hiện ra khi Brick 
 - ![](res/sprites/powerup_speed.png) *SpeedItem* Khi sử dụng Item này, Bomber sẽ được tăng vận tốc di chuyển thêm một giá trị thích hợp
 - ![](res/sprites/powerup_flames.png) *FlameItem* Item này giúp tăng phạm vi ảnh hưởng của Bomb khi nổ (độ dài các Flame lớn hơn)
 - ![](res/sprites/powerup_bombs.png) *BombItem* Thông thường, nếu không có đối tượng Bomb nào đang trong trạng thái kích hoạt, Bomber sẽ được đặt và kích hoạt duy nhất một đối tượng Bomb. Item này giúp tăng số lượng Bomb có thể đặt thêm một.
-
+- ![](res/sprites/powerup_wallpass.png) *Wallpass* Khi sử dụng Item này, Bomber sẽ được đi xuyên qua các tường gạch trong thời gian nhất định
+- ![](res/sprites/powerup_bombpass.png) *Bombpass* Khi sử dụng Item này, Bomber sẽ được đi qua bomb trong thời gian nhất định
+- ![](res/sprites/powerup_detonator.png) *Control* Khi sử dụng Item này, Bomber sẽ điểu khiển được bomb nổ bất cứ lúc nào, khi hết hiệu lực bomb sẽ tự nổ
+- ![](res/sprites/powerup_flamepass.png) *Survival* Khi sử dụng Item này, Bomber sẽ sống sót qua vụ nổ bomb và tấn công của enemies
 Thông tin về các loại *Enemy* được liệt kê như dưới đây:
 
 - ![](res/sprites/balloom_left1.png) *Balloom* là Enemy đơn giản nhất, di chuyển ngẫu nhiên với vận tốc 32 pixels / 64 khung hình, không thể đi xuyên bomb.
-- ![](res/sprites/oneal_left1.png) *Oneal* có tốc độ di chuyển đuổi theo bomber gần nhất (sử dụng [thuật toán A*](https://en.wikipedia.org/wiki/A*_search_algorithm)) với vận tốc 32 pixels / 32 khung hình, không định vị được bomb và đi xuyên bomb.
-- ![](res/sprites/doll_left1.png) *Doll* Là Enemy di chuyển ngẫu nhiên với vận tốc 32 pixels / 24 khung hình và có thể đi xuyên qua mọi object.
-- ![](res/sprites/kondoria_left1.png) *Nightmare* Là Enemy có tốc độ di chuyển đuổi theo bomber gần nhất (sử dụng [thuật toán A*](https://en.wikipedia.org/wiki/A*_search_algorithm)) với vận tốc 32 pixels / 32 khung hình, định vị được bomb và lửa của bomb đồng thời né được bomb nếu đủ thời gian chạy.
-- ![](res/sprites/minvo_left1.png) *Duplicate* Là Enemy có tốc độ di chuyển đuổi theo bomber gần nhất (sử dụng [thuật toán A*](https://en.wikipedia.org/wiki/A*_search_algorithm)) với vận tốc 32 pixels / 32 khung hình, không định vị được bomb và đi xuyên bomb. Khi chết thì Enemy này sẽ sinh ra 2 Balloom enemy ngay tại vị trí bị tiêu diệt
+- ![](res/sprites/oneal_left1.png) *Oneal* có tốc độ di chuyển đuổi theo bomber (sử dụng thuật toán AI) khi bomber nằm trong phạm vi của nó.
+- ![](res/sprites/doll_left1.png) *Doll* Là Enemy di chuyển ngẫu nhiên lúc nhanh lúc chậm.
+- ![](res/sprites/kondoria_right1.png) *Kondoria* Là Enemy có tốc độ di chuyển đuổi theo bomber (sử dụng thuật toán AI) và có khả năng đi qua gạch nhưng di chuyển chậm.
+- ![](res/sprites/minvo_left1.png) *Minvo* là Enemy đơn giản , có lúc di chuyển có lúc dừng lại.
 
 ## Mô tả game
 ### Điều khiển

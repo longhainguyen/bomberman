@@ -51,6 +51,12 @@ public class Bomber extends Entity {
 
     public boolean isBombpass = false;
     public boolean is_check_out_of_bomb = false;
+
+    public boolean is_almost_die = false;
+
+    public int almost_die_time = 21;
+
+    public int current_almost_die_time = 0;
     private ArrayList<itemType> storePower = new ArrayList<>();
 
     public int animate = 0;
@@ -368,7 +374,7 @@ public class Bomber extends Entity {
                 if (bombpass_clock < 2 * acceleration_time) {
                     bombpass_clock++;
                 } else {
-                    Band.textPower = Band.textPower.replace("Bombpass " , "");
+                    Band.textPower = Band.textPower.replace("Bombpass ", "");
                     Band.detailPower.setText(Band.textPower);
                     bombpass_clock = 0;
                     isBombpass = false;
@@ -395,6 +401,7 @@ public class Bomber extends Entity {
                 if (heart >= 1) {
                     this.addType(itemType.Firepass);
                     this.isSurvival = true;
+                    this.is_almost_die = true;
                 }
                 if (heart == 0) {
                     this.setDie(true);
@@ -414,7 +421,7 @@ public class Bomber extends Entity {
 
             }
         }
-        if (isDie) {
+        if (isDie && !is_almost_die) {
             isDie_time++;
             if (this.getIsDie_time() == 1) {
                 this.setHeart(0);
@@ -426,6 +433,17 @@ public class Bomber extends Entity {
                     Sprite.player_dead2,
                     Sprite.player_dead3, isDie_time, max_die_time).getFxImage();
             this.setImg(die_image);
+        } else if (!isDie && is_almost_die) {
+            current_almost_die_time ++;
+            Image die_image = Sprite.movingSprite(Sprite.player_dead1,
+                    Sprite.player_dead2,
+                    Sprite.player_dead3, isDie_time, max_die_time).getFxImage();
+            this.setImg(die_image);
+            if (current_almost_die_time > almost_die_time - 1) {
+                is_almost_die = false;
+                current_almost_die_time = 0;
+                this.setImg(image_current);
+            }
         } else {
             this.animate++;
             if (animate > animation_time - 1) {

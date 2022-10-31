@@ -32,7 +32,7 @@ public class Band {
 
     public static int enemiesNumber = 0;
 
-    public static int countdownTime = 200;
+    public static int countdownTime = 5;
 
     public static Text musicText = null;
 
@@ -244,6 +244,25 @@ public class Band {
                     countdownTime--;
                     countdownText.setText(String.valueOf(countdownTime));
                     musicSymbol.setBlanced(countdownText, time.getX() + time.getBoundsInLocal().getWidth() / 2);
+                }
+                if(countdownTime == 0){
+                    BombermanGame.gameMusic.getMediaPlayer().pause();
+                    if (!BombermanGame.effectMute) {
+                        BombermanGame.fake_player.deadSound();
+                    }
+                    if (BombermanGame.gameMusic.isIs_playing()) {
+                        BombermanGame.is_want_pause_game = true;
+                        BombermanGame.root.getChildren().remove(Band.musicImgae.get(0));
+                        ImageView temp = Band.musicImgae.get(0);
+                        Band.musicImgae.set(0, Band.musicImgae.get(3));
+                        Band.musicImgae.set(3, temp);
+                        BombermanGame.root.getChildren().add(Band.musicImgae.get(0));
+                        BombermanGame.gameMusic.setIs_playing(false);
+                    }
+                    else{
+                        BombermanGame.is_want_pause_game = false;
+                    }
+                    Countdownline.stop();
                 }
             }));
             Countdownline.setCycleCount(-1);

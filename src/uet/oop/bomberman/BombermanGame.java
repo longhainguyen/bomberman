@@ -86,6 +86,8 @@ public class BombermanGame extends Application {
     public Map mapGame = new Map();
     public static musicGame gameMusic = new musicGame();
 
+    public static boolean is_want_pause_game = false;
+
     public static boolean justonetime = false;
 
     public static boolean repeat = false;
@@ -163,7 +165,6 @@ public class BombermanGame extends Application {
             gameMusic.resumme();
             menuGame.isBackMenu = false;
         }
-
         root.getChildren().add(pointBand);
         root.getChildren().add(Band.musicText);
         root.getChildren().add(Band.countdownText);
@@ -175,6 +176,12 @@ public class BombermanGame extends Application {
         root.getChildren().add(Band.detailPower);
         band.setHeart(root);
         band.addmusicImage(root);
+
+        if(is_want_pause_game){
+            band.changeSymbol(root, 0);
+            gameMusic.resumme();
+        }
+
         if(!justonetime) {
             gameMusic();
             justonetime = true;
@@ -389,6 +396,9 @@ public class BombermanGame extends Application {
                  && portal.rectItem.getY() <= player.getY()  && portal.rectItem.getX()  <= player.getX()
                  && enemiesNumber == 0)){
              isEndGame = true;
+              if(gameMusic.isIs_playing()){
+                  is_want_pause_game = true;
+              }
              menuGame.setMenuWhenWin();
              writeHighScoreToFileTxt();
              menuGame.updateHighScore();
@@ -396,6 +406,9 @@ public class BombermanGame extends Application {
         else if(Band.countdownTime <= 0 || player.getHeart() == 0){
                 isEndGame = true;
                 menuGame.setMenuWhenLose();
+                if(gameMusic.isIs_playing()){
+                    is_want_pause_game = true;
+                }
         }
         else {
             isEndGame = false;

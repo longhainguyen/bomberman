@@ -268,7 +268,7 @@ public class Bomber extends Entity {
     public void Flame() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Flame)) {
-                if (flame_clock < acceleration_time) {
+                if (flame_clock < 2 * acceleration_time) {
                     flame_clock++;
                     Bomb.max_length_explosion = 5;
                 } else {
@@ -333,7 +333,7 @@ public class Bomber extends Entity {
     public void Wallpass() {
         for (int i = 0; i < storePower.size(); i++) {
             if (storePower.get(i).equals(itemType.Wallpass)) {
-                if (wallpass_clock < acceleration_time) {
+                if (wallpass_clock < 2 * acceleration_time) {
                     wallpass_clock++;
                 } else {
                     Band.textPower = Band.textPower.replace("Wallpass ", "");
@@ -417,12 +417,16 @@ public class Bomber extends Entity {
                         deadSound();
                     }
                     if (BombermanGame.gameMusic.isIs_playing()) {
+                        BombermanGame.is_want_pause_game = true;
                         BombermanGame.root.getChildren().remove(Band.musicImgae.get(0));
                         ImageView temp = Band.musicImgae.get(0);
                         Band.musicImgae.set(0, Band.musicImgae.get(3));
                         Band.musicImgae.set(3, temp);
                         BombermanGame.root.getChildren().add(Band.musicImgae.get(0));
                         BombermanGame.gameMusic.setIs_playing(false);
+                    }
+                    else{
+                        BombermanGame.is_want_pause_game = false;
                     }
                 }
 

@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 
 
 public class MenuGame extends Parent {
+    private boolean isClickedSoundMenu = false;
     public boolean isBackMenu = false;
     public String level = "res/levels/Level1.txt";
     private final int offset = 400;
@@ -37,6 +38,7 @@ public class MenuGame extends Parent {
 
     private final VBox menuHowToPlay = new VBox(10);
 
+    private final ButtonMenu btnSoundMenu = new ButtonMenu("SOUND MENU");
     private final ButtonMenu btnBackMenu = new ButtonMenu("BACK MENU");
     private final ButtonMenu btnLevel = new ButtonMenu("LEVEL");
     private final ButtonMenu btnWin = new ButtonMenu("You WIN");
@@ -75,6 +77,7 @@ public class MenuGame extends Parent {
 
 
     private void initButton() {
+        btnSoundMenu.setDropShadow();
         btnBackMenu.setEvent();
         btnBack4.setEvent();
         btnLevel.setEvent();
@@ -107,7 +110,10 @@ public class MenuGame extends Parent {
         }
         if (!this.getChildren().contains(menuWin)) {
             this.getChildren().add(menuWin);
-
+        }
+        menu0.getChildren().remove(btnExit);
+        if(!menu0.getChildren().contains(btnBackMenu)) {
+            menu0.getChildren().add(btnBackMenu);
         }
         BombermanGame.isPause = true;
         menu0.getChildren().remove(btnResume);
@@ -129,8 +135,14 @@ public class MenuGame extends Parent {
         if (!menu0.getChildren().contains(btnPlay)) {
             menu0.getChildren().add(0, btnPlay);
         }
-        BombermanGame.isPause = true;
+
+        if(!menu0.getChildren().contains(btnBackMenu)) {
+            menu0.getChildren().add(btnBackMenu);
+        }
+        menu0.getChildren().remove(btnExit);
+
         menu0.getChildren().remove(btnResume);
+        BombermanGame.isPause = true;
         FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -187,21 +199,39 @@ public class MenuGame extends Parent {
         this.setEventFroBtnLevel();
         this.setEventForBtnLevelType();
         this.setEventForBtnBackMenu();
+        this.setEvenForBtnSoundMenu();
 
         this.lobbyMusic.playSound();
+        isClickedSoundMenu = true;
 
-        menu0.getChildren().addAll(btnPlay, btnOptions, btnExit);
-        menu1.getChildren().addAll(btnHighScore, btnLevel,btnHowToPlay, btnBack);
+        menu0.getChildren().addAll(btnPlay, btnOptions,btnExit);
+        menu1.getChildren().addAll(btnHighScore, btnLevel,btnHowToPlay,btnSoundMenu, btnBack);
         menuLevel.getChildren().addAll(btnLevel1,btnLevel2,btnLevel3,btnBack4);
         menuHighScore.getChildren().addAll(btnMenuHighScore, btnBack2);
         menuHowToPlay.getChildren().addAll(btnMenuHowToPlay, btnBack3);
         getChildren().addAll(bg, menu0);
     }
 
+    private void setEvenForBtnSoundMenu() {
+        btnSoundMenu.setOnMouseClicked(event -> {
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
+            isClickedSoundMenu = !isClickedSoundMenu;
+            if(isClickedSoundMenu) {
+                btnSoundMenu.setDropShadow();
+                if(!isEnterGame)
+                    lobbyMusic.getMediaPlayer().play();
+            }else {
+                btnSoundMenu.setBackShadow();
+                lobbyMusic.getMediaPlayer().stop();
+            }
+        });
+    }
+
     public void setEventAll() {
         btnResume.setOnMouseClicked(event -> {
 
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu)
+                this.clickMouse.soundclick(musicItem.click);
             this.bombermanGame.isPause = false;
 
             BombermanGame.isPause = false;
@@ -216,7 +246,8 @@ public class MenuGame extends Parent {
 
         btnOptions.setOnMouseClicked(event -> {
 
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu)
+                this.clickMouse.soundclick(musicItem.click);
             getChildren().add(menu1);
             TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
             tt.setToX(menu0.getTranslateX() - offset);
@@ -240,7 +271,7 @@ public class MenuGame extends Parent {
         });
 
         btnPlay.setOnMouseClicked(event -> {
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             this.isEnterGame = true;
             bombermanGame.isPause = false;
 
@@ -262,7 +293,7 @@ public class MenuGame extends Parent {
 
         btnContinue.setOnMouseClicked(event -> {
 
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             this.bombermanGame.isPause = false;
 
             BombermanGame.isPause = false;
@@ -272,7 +303,7 @@ public class MenuGame extends Parent {
 
         btnBack.setOnMouseClicked(event -> {
 
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             getChildren().add(menu0);
 
             TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu1);
@@ -315,13 +346,13 @@ public class MenuGame extends Parent {
     public void setEventForBtnHighScore() {
 
         btnHighScore.setOnMouseClicked(event -> {
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             changeMenuRight(menu1, menuHighScore);
             updateHighScore();
         });
 
         btnBack2.setOnMouseClicked(event -> {
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             changeMenu(menuHighScore, menu1);
         });
     }
@@ -329,39 +360,42 @@ public class MenuGame extends Parent {
     public void setEvenForBtnHowToPlay() {
 
         btnHowToPlay.setOnMouseClicked(event -> {
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             changeMenuRight(menu1, menuHowToPlay);
         });
 
         btnBack3.setOnMouseClicked(event -> {
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             changeMenu(menuHowToPlay, menu1);
         });
     }
 
     public void setEventFroBtnLevel() {
         btnLevel.setOnMouseClicked(event -> {
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             changeMenuRight(menu1, menuLevel);
         });
         btnBack4.setOnMouseClicked(event -> {
-            this.clickMouse.soundclick(musicItem.click);
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             changeMenu(menuLevel, menu1);
         });
     }
 
     public void setEventForBtnLevelType() {
         btnLevel1.setOnMouseClicked(event -> {
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             level = "res/levels/Level1.txt";
             changeLevel(btnLevel1,btnLevel2,btnLevel3);
         });
 
         btnLevel2.setOnMouseClicked(event -> {
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             level = "res/levels/Level2.txt";
             changeLevel(btnLevel2,btnLevel1,btnLevel3);
         });
 
         btnLevel3.setOnMouseClicked(event -> {
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             level = "res/levels/Level3.txt";
             changeLevel(btnLevel3,btnLevel2,btnLevel1);
         });
@@ -456,6 +490,7 @@ public class MenuGame extends Parent {
 
     public void setEventForBtnBackMenu() {
         btnBackMenu.setOnMouseClicked(event -> {
+            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
             bombermanGame.deleteGame();
             bombermanGame.isEndGame = true;
             BombermanGame.isPause = true;
@@ -467,11 +502,15 @@ public class MenuGame extends Parent {
             menu0.getChildren().remove(btnResume);
             menu0.getChildren().remove(btnBackMenu);
             BombermanGame.root.getChildren().remove(bombermanGame.pointBand);
-            lobbyMusic.getMediaPlayer().play();
+            if(isClickedSoundMenu)
+                lobbyMusic.getMediaPlayer().play();
             if(BombermanGame.gameMusic.isIs_playing()) {
                 BombermanGame.gameMusic.pause();
                 isBackMenu = true;
             }
+            this.getChildren().remove(menuWin);
+            this.getChildren().remove(menuLose);
+
         });
     }
 }

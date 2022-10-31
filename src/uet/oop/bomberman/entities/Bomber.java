@@ -389,6 +389,7 @@ public class Bomber extends Entity {
 
 
     public void deadSound() {
+        deadSound = new musicItem(1, 50, musicItem.deadSound);
         this.deadSound.playSound();
     }
 
@@ -402,7 +403,9 @@ public class Bomber extends Entity {
                     Band.heart.setText(String.valueOf(heart));
                 }
                 if (heart >= 1) {
-                    this.almostDieSound.playSound();
+                    if(!BombermanGame.effectMute) {
+                        this.almostDieSound.playSound();
+                    }
                     this.addType(itemType.Firepass);
                     this.isSurvival = true;
                     this.is_almost_die = true;

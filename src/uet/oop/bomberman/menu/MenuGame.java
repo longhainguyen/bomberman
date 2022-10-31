@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 
 
 public class MenuGame extends Parent {
+    public boolean isBackMenu = false;
     public String level = "res/levels/Level1.txt";
     private final int offset = 400;
     private final VBox menu0 = new VBox(10);
@@ -467,6 +468,10 @@ public class MenuGame extends Parent {
             menu0.getChildren().remove(btnBackMenu);
             BombermanGame.root.getChildren().remove(bombermanGame.pointBand);
             lobbyMusic.getMediaPlayer().play();
+            if(BombermanGame.gameMusic.isIs_playing()) {
+                BombermanGame.gameMusic.pause();
+                isBackMenu = true;
+            }
         });
     }
 }

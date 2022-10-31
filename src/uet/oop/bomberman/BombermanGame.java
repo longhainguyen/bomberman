@@ -85,6 +85,10 @@ public class BombermanGame extends Application {
     public Map mapGame = new Map();
     public static musicGame gameMusic = new musicGame();
 
+    public static boolean justonetime = false;
+
+    public static boolean repeat = false;
+
     private musicItem clearAll = new musicItem(2, 50, musicItem.clear);
 
     public static Scene scene;
@@ -106,6 +110,7 @@ public class BombermanGame extends Application {
 
     public void stopMusic() {
         gameMusic.getMediaPlayer().pause();
+        gameMusic.setIs_playing(false);
     }
 
     public void setupBomb(Bomb other) {
@@ -126,7 +131,7 @@ public class BombermanGame extends Application {
         gc = canvas.getGraphicsContext2D();
         pointBand = new Rectangle(0, 416, 640, 64);
         pointBand.setFill(Color.gray(0.5));
-
+        band = new Band();
         // Tao root container
         root = new Group();
 
@@ -151,7 +156,11 @@ public class BombermanGame extends Application {
 
 
     public void initGame() {
-        band = new Band();
+        if(menuGame.isBackMenu) {
+            gameMusic.resumme();
+            menuGame.isBackMenu = false;
+        }
+
         root.getChildren().add(pointBand);
         root.getChildren().add(Band.musicText);
         root.getChildren().add(Band.countdownText);
@@ -163,8 +172,10 @@ public class BombermanGame extends Application {
         root.getChildren().add(Band.detailPower);
         band.setHeart(root);
         band.addmusicImage(root);
-
-        gameMusic();
+        if(!justonetime) {
+            gameMusic();
+            justonetime = true;
+        }
         timeline = new Timeline(new KeyFrame(Duration.millis(30), e -> {
             render();
             if (!isPause)
@@ -397,7 +408,7 @@ public class BombermanGame extends Application {
     }
 
     public void deleteGame() {
-        this.stopMusic();
+        repeat = true;
         portal = null;
         clearAll.getMediaPlayer().stop();
         enemiesNumber = 0;
@@ -407,13 +418,13 @@ public class BombermanGame extends Application {
         this.powerup.removeAll(powerup);
         this.mapGame.deleteMap();
         root.getChildren().removeAll(pointBand,Band.countdownText,
-                Band.Point,Band.point,Band.musicText,Band.heart,Band.time,Band.Power);
+                Band.Point,Band.point,Band.musicText,Band.heart,Band.time, Band.Power, Band.detailPower);
         band.deleteMusicAndImage();
         timebomb.stop();
         timeline.stop();
         band.Countdownline.stop();
         player.setHeart(3);
-        effectMute = false;
+        Band.heart.setText("3");
         clearAll.getMediaPlayer().stop();
         enemiesNumber = 0;
     }

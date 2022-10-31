@@ -3,6 +3,8 @@ package uet.oop.bomberman.menu;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Parent;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -14,15 +16,18 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.sounds.musicItem;
 import uet.oop.bomberman.sounds.musicGame;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 
 public class MenuGame extends Parent {
+    public String level = "res/levels/Level1.txt";
     private final int offset = 400;
     private final VBox menu0 = new VBox(10);
     private final VBox menu1 = new VBox(10);
+    private final VBox menuLevel = new VBox(10);
 
     private final VBox menuHighScore = new VBox(10);
 
@@ -31,6 +36,8 @@ public class MenuGame extends Parent {
 
     private final VBox menuHowToPlay = new VBox(10);
 
+    private final ButtonMenu btnBackMenu = new ButtonMenu("EXIT");
+    private final ButtonMenu btnLevel = new ButtonMenu("LEVEL");
     private final ButtonMenu btnWin = new ButtonMenu("You WIN");
     private final ButtonMenu btnLose = new ButtonMenu("YOU LOSE");
     private final ButtonMenu btnResume = new ButtonMenu("RESUME");
@@ -48,8 +55,12 @@ public class MenuGame extends Parent {
 
     private ButtonMenu btnMenuHighScore = new ButtonMenu("HIGH SCORE");
     private ButtonMenu btnMenuHowToPlay = new ButtonMenu("");
-    private ButtonMenu btnBack2 = new ButtonMenu("Back");
-    private ButtonMenu btnBack3 = new ButtonMenu("Back");
+    private ButtonMenu btnBack2 = new ButtonMenu("BACK");
+    private ButtonMenu btnBack3 = new ButtonMenu("BACK");
+    private ButtonMenu btnBack4 = new ButtonMenu("BACK");
+    private ButtonMenu btnLevel1 = new ButtonMenu("LEVEL1");
+    private ButtonMenu btnLevel2 = new ButtonMenu("LEVEL2");
+    private ButtonMenu btnLevel3 = new ButtonMenu("LEVEL3");
     public boolean isEnterGame = false;
     private BombermanGame bombermanGame;
     private ImageView background;
@@ -59,10 +70,13 @@ public class MenuGame extends Parent {
 
     private musicItem clickMouse = new musicItem(1, 50, musicItem.click);
 
-    private musicItem lobbyMusic = new musicItem(-1, 50, musicItem.lobby);
+    public musicItem lobbyMusic = new musicItem(-1, 50, musicItem.lobby);
 
 
     private void initButton() {
+        btnBackMenu.setEvent();
+        btnBack4.setEvent();
+        btnLevel.setEvent();
         btnBack3.setEvent();
         btnBack2.setEvent();
         btnHowToPlay.setEvent();
@@ -125,7 +139,10 @@ public class MenuGame extends Parent {
 
     public void setMenuInGame2() {
         if (bombermanGame.entities.contains(bombermanGame.player)) {
+            getChildren().remove(menuWin);
+            getChildren().remove(menuLose);
             BombermanGame.isPause = !BombermanGame.isPause;
+            bombermanGame.isEndGame = true;
             if (this.isEnterGame) {
                 this.setMenuContinue();
             }
@@ -166,11 +183,14 @@ public class MenuGame extends Parent {
         this.initButton();
         this.setEventForBtnHighScore();
         this.setEvenForBtnHowToPlay();
+        this.setEventFroBtnLevel();
+        this.setEventForBtnLevelType();
 
         this.lobbyMusic.playSound();
 
         menu0.getChildren().addAll(btnPlay, btnOptions, btnExit);
-        menu1.getChildren().addAll(btnHighScore, btnHowToPlay, btnBack);
+        menu1.getChildren().addAll(btnHighScore, btnLevel,btnHowToPlay, btnBack);
+        menuLevel.getChildren().addAll(btnLevel1,btnLevel2,btnLevel3,btnBack4);
         menuHighScore.getChildren().addAll(btnMenuHighScore, btnBack2);
         menuHowToPlay.getChildren().addAll(btnMenuHowToPlay, btnBack3);
         getChildren().addAll(bg, menu0);
@@ -221,12 +241,13 @@ public class MenuGame extends Parent {
             this.clickMouse.soundclick(musicItem.click);
             this.isEnterGame = true;
             bombermanGame.isPause = false;
+
             if (bombermanGame.isEndGame) {
                 this.bombermanGame.deleteGame();
                 bombermanGame.isEndGame = false;
-
             }
             this.lobbyMusic.getMediaPlayer().stop();
+            this.bombermanGame.mapGame.fileName = level;
             this.bombermanGame.initGame();
             this.getChildren().remove(background);
             FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
@@ -273,7 +294,7 @@ public class MenuGame extends Parent {
 
     private void changeMenu(VBox menuCur, VBox menuNext) {
         if(!getChildren().contains(menuNext))
-        getChildren().add(menuNext);
+            getChildren().add(menuNext);
 
         TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menuCur);
         tt.setToX(menuCur.getTranslateX() + offset);
@@ -316,6 +337,41 @@ public class MenuGame extends Parent {
         });
     }
 
+    public void setEventFroBtnLevel() {
+        btnLevel.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
+            changeMenuRight(menu1, menuLevel);
+        });
+        btnBack4.setOnMouseClicked(event -> {
+            this.clickMouse.soundclick(musicItem.click);
+            changeMenu(menuLevel, menu1);
+        });
+    }
+
+    public void setEventForBtnLevelType() {
+        btnLevel1.setOnMouseClicked(event -> {
+            level = "res/levels/Level1.txt";
+            changeLevel(btnLevel1,btnLevel2,btnLevel3);
+        });
+
+        btnLevel2.setOnMouseClicked(event -> {
+            level = "res/levels/Level2.txt";
+            changeLevel(btnLevel2,btnLevel1,btnLevel3);
+        });
+
+        btnLevel3.setOnMouseClicked(event -> {
+            level = "res/levels/Level3.txt";
+            changeLevel(btnLevel3,btnLevel2,btnLevel1);
+        });
+    }
+
+    public void changeLevel(ButtonMenu cur, ButtonMenu btn2, ButtonMenu btn3) {
+        cur.setDropShadow();
+        btn2.setBackShadow();
+        btn3.setBackShadow();
+    }
+
+
     private void changeMenuRight(VBox menuCur, VBox menuNext) {
         if (!getChildren().contains(menuNext))
             getChildren().add(menuNext);
@@ -334,6 +390,9 @@ public class MenuGame extends Parent {
     }
 
     public void initMenu() {
+        menuLevel.setTranslateX(50);
+        menuLevel.setTranslateY(200);
+
         menuHowToPlay.setTranslateX(50);
         menuHowToPlay.setTranslateY(100);
 
@@ -358,10 +417,10 @@ public class MenuGame extends Parent {
     }
 
     public void setMenuContinue() {
-        if (menu0.getChildren().contains(btnPlay)) {
-            menu0.getChildren().removeAll(btnPlay);
-        }
-        menu0.getChildren().add(0, btnResume);
+//        if(menu0.getChildren().contains(btnPlay))
+//            menu0.getChildren().removeAll(btnPlay);
+        if(!menu0.getChildren().contains(btnResume))
+            menu0.getChildren().add(1, btnResume);
 
     }
 

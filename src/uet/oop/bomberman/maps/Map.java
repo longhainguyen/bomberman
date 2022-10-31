@@ -24,6 +24,7 @@ public class Map {
     public static int col;
     public static int row;
     public String level;
+    public String fileName;
     private List<String> readFile = new ArrayList<>();
     public static String[][] mapCode;
 
@@ -32,6 +33,9 @@ public class Map {
     public static List<Entity> grassMap = new ArrayList<>();//Store of grass in Map.
     public static List<Item> powerMap = new ArrayList<>();//Store of powerup in Map.
     public static List<Entity> entitiesEntity = new ArrayList<>();//Store of entitiesEntity in Map.
+
+    public Map() {
+    }
 
     private void setReadFile(String fileName) {
         File f2 = new File(fileName);
@@ -65,14 +69,13 @@ public class Map {
     /**
      * Create entity of map and initialization for stillEntity, entitiesEntity of map.
      *
-     * @param fileName     file name
      * @param entities     entities
      * @param stillObjects stillObjects
      * @param player       player
      */
 
 // Set map and character
-    public void creatMap2(String fileName, List<Entity> entities
+    public void creatMap2(List<Entity> entities
             , List<Entity> stillObjects, List<Item> powerup,
                           List<Entity> grass, Bomber player) {
         setAndGetMapCode(fileName);

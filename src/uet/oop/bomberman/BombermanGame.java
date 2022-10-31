@@ -82,7 +82,7 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private Canvas canvas;
 
-    private Map mapGame = new Map();
+    public Map mapGame = new Map();
     public static musicGame gameMusic = new musicGame();
 
     private musicItem clearAll = new musicItem(2, 50, musicItem.clear);
@@ -265,7 +265,7 @@ public class BombermanGame extends Application {
         timebomb.play();
         band.coutdown();
         //mapGame.creatMap2("res/levels/Level2.txt", entities, stillObjects, powerup, grass, player);
-        mapGame.creatMap2("res/levels/Level1.txt", entities, stillObjects, powerup, grass, player);
+        mapGame.creatMap2(entities, stillObjects, powerup, grass, player);
 
         player.setBomberRectCollisions(stillObjects);
 
@@ -397,6 +397,8 @@ public class BombermanGame extends Application {
     }
 
     public void deleteGame() {
+        this.stopMusic();
+        portal = null;
         clearAll.getMediaPlayer().stop();
         enemiesNumber = 0;
         this.entities.removeAll(entities);

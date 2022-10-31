@@ -36,6 +36,10 @@ Các *Item* cũng được giấu phía sau Brick và chỉ hiện ra khi Brick 
 - ![](res/sprites/doll_left1.png) *Doll* Là Enemy di chuyển ngẫu nhiên lúc nhanh lúc chậm.
 - ![](res/sprites/kondoria_right1.png) *Kondoria* Là Enemy có tốc độ di chuyển đuổi theo bomber (sử dụng thuật toán AI) và có khả năng đi qua gạch nhưng di chuyển chậm.
 - ![](res/sprites/minvo_left1.png) *Minvo* là Enemy đơn giản , có lúc di chuyển có lúc dừng lại.
+- ![](res/sprites/Ovape.png) *Ovape* là Enemy tốc độ thay đổi liên tục.
+- ![](res/sprites/Pontan.png) *Pontan* là Enemy có khả năng đi xuyên tường.
+- ![](res/sprites/Pass.png) *Pass* là Enemy lúc di chuyển lúc đứng yên.
+- ![](res/sprites/Minva.png) *Minva* là Enemy có nhiều khả năng khi gần bomber sẽ tìm và đi xuyên tường, không sẽ di chuyển ngẫu nhiên.
 
 ## Mô tả game
 ### Điều khiển

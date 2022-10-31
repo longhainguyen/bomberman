@@ -272,6 +272,8 @@ public class MenuGame extends Parent {
 
         btnPlay.setOnMouseClicked(event -> {
             if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
+            isClickedSoundMenu = false;
+            btnSoundMenu.setBackShadow();
             this.isEnterGame = true;
             bombermanGame.isPause = false;
 

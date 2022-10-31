@@ -383,9 +383,7 @@ public class BombermanGame extends Application {
                 isEndGame = true;
                 menuGame.setMenuWhenLose();
         }
-        else /*(entities.contains(player)
-                && !(player.getY() <= portal.rectItem.getY() + 20 && portal.rectItem.getX() + 20 >= player.getX()
-                && portal.rectItem.getY() <= player.getY()  && portal.rectItem.getX()  <= player.getX()) ) */{
+        else {
             isEndGame = false;
             grass.forEach(Entity::update);
             powerup.forEach(Item::update);
@@ -399,6 +397,8 @@ public class BombermanGame extends Application {
     }
 
     public void deleteGame() {
+        clearAll.getMediaPlayer().stop();
+        enemiesNumber = 0;
         this.entities.removeAll(entities);
         this.grass.removeAll(grass);
         this.stillObjects.removeAll(stillObjects);

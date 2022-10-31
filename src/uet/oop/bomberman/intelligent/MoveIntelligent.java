@@ -13,7 +13,7 @@ import java.util.*;
 
 public class MoveIntelligent {
     protected Rect rect_fake = null;
-    protected int speed_entity = 2;
+    public int speed_entity = 2;
     public boolean isCanMove;
     public List<Rect> listRectHaveToMove = null;
     public static int bomberX;

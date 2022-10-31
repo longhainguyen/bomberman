@@ -19,7 +19,49 @@ public class Sprite {
     protected int _realWidth;
     protected int _realHeight;
     private SpriteSheet _sheet;
+    /*
+    MinVo Green
+     */
+    public static Sprite minVoGreenRight = new Sprite(DEFAULT_SIZE,15,5,SpriteSheet.tiles,16,16);
+    public static Sprite minVoGreenRight1 = new Sprite(DEFAULT_SIZE,15,6,SpriteSheet.tiles,16,16);
+    public static Sprite minVoGreenRight2 = new Sprite(DEFAULT_SIZE,15,7,SpriteSheet.tiles,16,16);
+    public static Sprite minVoGreenLeft = new Sprite(DEFAULT_SIZE,14,5,SpriteSheet.tiles,16,16);
+    public static Sprite minVoGreenLeft1 = new Sprite(DEFAULT_SIZE,14,6,SpriteSheet.tiles,16,16);
+    public static Sprite minVoGreenLeft2 = new Sprite(DEFAULT_SIZE,14,7,SpriteSheet.tiles,16,16);
+    public static Sprite minVoGreenDead = new Sprite(DEFAULT_SIZE,14,8,SpriteSheet.tiles,16,16);
 
+    /*
+    MinVo Black
+     */
+    public static Sprite minVoBlackRight = new Sprite(DEFAULT_SIZE,13,5,SpriteSheet.tiles,16,16);
+    public static Sprite minVoBlackRight1 = new Sprite(DEFAULT_SIZE,13,6,SpriteSheet.tiles,16,16);
+    public static Sprite minVoBlackRight2 = new Sprite(DEFAULT_SIZE,13,7,SpriteSheet.tiles,16,16);
+    public static Sprite minVoBlackLeft = new Sprite(DEFAULT_SIZE,12,5,SpriteSheet.tiles,16,16);
+    public static Sprite minVoBlackLeft1 = new Sprite(DEFAULT_SIZE,12,6,SpriteSheet.tiles,16,16);
+    public static Sprite minVoBlackLeft2 = new Sprite(DEFAULT_SIZE,12,7,SpriteSheet.tiles,16,16);
+    public static Sprite mivVoBlackDead = new Sprite(DEFAULT_SIZE,12,8,SpriteSheet.tiles,16,16);
+
+    /*
+        pass
+     */
+    public static Sprite passRight = new Sprite(DEFAULT_SIZE,5,5,SpriteSheet.tiles,16,16);
+    public static Sprite passRight1 = new Sprite(DEFAULT_SIZE,5,6,SpriteSheet.tiles,16,16);
+    public static Sprite passRight2 = new Sprite(DEFAULT_SIZE,5,7,SpriteSheet.tiles,16,16);
+    public static Sprite passLeft = new Sprite(DEFAULT_SIZE,4,5,SpriteSheet.tiles,16,16);
+    public static Sprite passLeft1 = new Sprite(DEFAULT_SIZE,4,6,SpriteSheet.tiles,16,16);
+    public static Sprite passLeft2 = new Sprite(DEFAULT_SIZE,4,7,SpriteSheet.tiles,16,16);
+    public static Sprite passDead = new Sprite(DEFAULT_SIZE,4,8,SpriteSheet.tiles,16,16);
+
+    /*
+        oVape
+     */
+    public static Sprite oVapeRight = new Sprite(DEFAULT_SIZE,7,5,SpriteSheet.tiles,16,16);
+    public static Sprite oVapeRight1 = new Sprite(DEFAULT_SIZE,7,6,SpriteSheet.tiles,16,16);
+    public static Sprite oVapeRight2 = new Sprite(DEFAULT_SIZE,7,7,SpriteSheet.tiles,16,16);
+    public static Sprite oVapeLeft = new Sprite(DEFAULT_SIZE,6,5,SpriteSheet.tiles,16,16);
+    public static Sprite oVapeLeft1 = new Sprite(DEFAULT_SIZE,6,6,SpriteSheet.tiles,16,16);
+    public static Sprite oVapeLeft2 = new Sprite(DEFAULT_SIZE,6,7,SpriteSheet.tiles,16,16);
+    public static Sprite oVapeDead = new Sprite(DEFAULT_SIZE,6,8,SpriteSheet.tiles,16,16);
     /*
     |--------------------------------------------------------------------------
     | Board sprites

@@ -7,12 +7,14 @@ import uet.oop.bomberman.collisions.Rect;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.intelligent.MoveRandom;
+import uet.oop.bomberman.intelligent.MoveSpeed;
 import uet.oop.bomberman.maps.Map;
 
 import java.util.*;
 
 public class Oneal extends Entity {
 
+    private MoveSpeed moveSpeed = new MoveSpeed();
     private MoveRandom moveRandom = new MoveRandom();
     private MoveIntelligent moveIntelligent = new MoveIntelligent();
 
@@ -51,10 +53,10 @@ public class Oneal extends Entity {
                 if(moveIntelligent.isCanMove) {
                     moveIntelligent.moveIntelligent(this);
                 }else {
-                    moveRandom.moveRandom(this,this.entity_collision,this.entities_rect);
+                    moveSpeed.moveRandom(this,this.entity_collision,this.entities_rect);
                 }
             }else {
-                moveRandom.moveRandom(this,this.entity_collision,this.entities_rect);
+                moveSpeed.moveRandom(this,this.entity_collision,this.entities_rect);
             }
         }
     }

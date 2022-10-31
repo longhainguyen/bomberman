@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 
 
 public class MenuGame extends Parent {
+    public boolean isBackMenu = false;
     public String level = "res/levels/Level1.txt";
     private final int offset = 400;
     private final VBox menu0 = new VBox(10);
@@ -36,7 +37,7 @@ public class MenuGame extends Parent {
 
     private final VBox menuHowToPlay = new VBox(10);
 
-    private final ButtonMenu btnBackMenu = new ButtonMenu("EXIT");
+    private final ButtonMenu btnBackMenu = new ButtonMenu("BACK MENU");
     private final ButtonMenu btnLevel = new ButtonMenu("LEVEL");
     private final ButtonMenu btnWin = new ButtonMenu("You WIN");
     private final ButtonMenu btnLose = new ButtonMenu("YOU LOSE");
@@ -185,6 +186,7 @@ public class MenuGame extends Parent {
         this.setEvenForBtnHowToPlay();
         this.setEventFroBtnLevel();
         this.setEventForBtnLevelType();
+        this.setEventForBtnBackMenu();
 
         this.lobbyMusic.playSound();
 
@@ -421,6 +423,10 @@ public class MenuGame extends Parent {
 //            menu0.getChildren().removeAll(btnPlay);
         if(!menu0.getChildren().contains(btnResume))
             menu0.getChildren().add(1, btnResume);
+        menu0.getChildren().removeAll(btnExit);
+        if(!menu0.getChildren().contains(btnBackMenu)) {
+            menu0.getChildren().add(btnBackMenu);
+        }
 
     }
 
@@ -446,5 +452,26 @@ public class MenuGame extends Parent {
         MenuStage.setHighScore();
         String text = "HIGH SCORE \n" + MenuStage.highScore;
         btnMenuHighScore.text.setText(text);
+    }
+
+    public void setEventForBtnBackMenu() {
+        btnBackMenu.setOnMouseClicked(event -> {
+            bombermanGame.deleteGame();
+            bombermanGame.isEndGame = true;
+            BombermanGame.isPause = true;
+            this.isEnterGame = false;
+            if(!this.getChildren().contains(background))
+                this.getChildren().add(0,background);
+            if(!menu0.getChildren().contains(btnExit))
+                menu0.getChildren().add(btnExit);
+            menu0.getChildren().remove(btnResume);
+            menu0.getChildren().remove(btnBackMenu);
+            BombermanGame.root.getChildren().remove(bombermanGame.pointBand);
+            lobbyMusic.getMediaPlayer().play();
+            if(BombermanGame.gameMusic.isIs_playing()) {
+                BombermanGame.gameMusic.pause();
+                isBackMenu = true;
+            }
+        });
     }
 }

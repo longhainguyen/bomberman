@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Band {
+    public ImageView view; //image heart;
     public Timeline Countdownline;
 
     public static List<ImageView> musicImgae = new ArrayList<>();
@@ -162,7 +163,7 @@ public class Band {
         point = new Text(340, 445, "Point");
         point.setFont(Font.font(Font.getFamilies().get(0), FontWeight.BOLD, 30));
         point.setFill(Color.WHITE);
-        Point = new Text(340, 472, String.valueOf(score));
+        Point = new Text(340, 472, "0");
         musicSymbol.setBlanced(Point, point.getX() + point.getBoundsInLocal().getWidth() / 2);
         Point.setFont(Font.font(Font.getFamilies().get(0), FontWeight.BOLD, 30));
         Point.setFill(Color.WHITE);
@@ -180,7 +181,7 @@ public class Band {
         try {
             FileInputStream input = new FileInputStream("res/something/heart.png");
             Image img = new Image(input);
-            ImageView view = new ImageView(img);
+            view = new ImageView(img);
             view.setX(280);
             view.setY(415);
             view.setFitWidth(30);
@@ -311,9 +312,10 @@ public class Band {
         for(ImageView image: musicImgae) {
             BombermanGame.root.getChildren().remove(image);
         }
-        fileInput.removeAll(fileInput);
-        Imgae.removeAll(Imgae);
-        musicImgae.removeAll(musicImgae);
+        BombermanGame.root.getChildren().remove(view);
+//        fileInput.removeAll(fileInput);
+//        Imgae.removeAll(Imgae);
+//        musicImgae.removeAll(musicImgae);
         countdownTime = 200;
         score = 0;
     }

@@ -38,7 +38,7 @@ import java.util.List;
 public class BombermanGame extends Application {
     public static Item portal = null;
     public boolean isEndGame = false;
-    private Rectangle pointBand;
+    public Rectangle pointBand;
     private Timeline timeline;
     private Timeline timebomb;
     public static boolean isPause = false;
@@ -407,7 +407,7 @@ public class BombermanGame extends Application {
         this.powerup.removeAll(powerup);
         this.mapGame.deleteMap();
         root.getChildren().removeAll(pointBand,Band.countdownText,
-                Band.Point,Band.point,Band.musicText,Band.heart,Band.time);
+                Band.Point,Band.point,Band.musicText,Band.heart,Band.time,Band.Power);
         band.deleteMusicAndImage();
         timebomb.stop();
         timeline.stop();

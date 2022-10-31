@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Band {
+    public ImageView view; //image heart;
     public Timeline Countdownline;
 
     public static List<ImageView> musicImgae = new ArrayList<>();
@@ -180,7 +181,7 @@ public class Band {
         try {
             FileInputStream input = new FileInputStream("res/something/heart.png");
             Image img = new Image(input);
-            ImageView view = new ImageView(img);
+            view = new ImageView(img);
             view.setX(280);
             view.setY(415);
             view.setFitWidth(30);
@@ -311,6 +312,7 @@ public class Band {
         for(ImageView image: musicImgae) {
             BombermanGame.root.getChildren().remove(image);
         }
+        BombermanGame.root.getChildren().remove(view);
         fileInput.removeAll(fileInput);
         Imgae.removeAll(Imgae);
         musicImgae.removeAll(musicImgae);

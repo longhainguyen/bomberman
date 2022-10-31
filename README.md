@@ -28,7 +28,8 @@ Các *Item* cũng được giấu phía sau Brick và chỉ hiện ra khi Brick 
 - ![](res/sprites/powerup_bombpass.png) *Bombpass* Khi sử dụng Item này, Bomber sẽ được đi qua bomb trong thời gian nhất định
 - ![](res/sprites/powerup_detonator.png) *Control* Khi sử dụng Item này, Bomber sẽ điểu khiển được bomb nổ bất cứ lúc nào, khi hết hiệu lực bomb sẽ tự nổ
 - ![](res/sprites/powerup_flamepass.png) *Survival* Khi sử dụng Item này, Bomber sẽ sống sót qua vụ nổ bomb và tấn công của enemies
-Thông tin về các loại *Enemy* được liệt kê như dưới đây:
+
+**Thông tin về các loại *Enemy* được liệt kê như dưới đây:**
 
 - ![](res/sprites/balloom_left1.png) *Balloom* là Enemy đơn giản nhất, di chuyển ngẫu nhiên với vận tốc 32 pixels / 64 khung hình, không thể đi xuyên bomb.
 - ![](res/sprites/oneal_left1.png) *Oneal* có tốc độ di chuyển đuổi theo bomber (sử dụng thuật toán AI) khi bomber nằm trong phạm vi của nó.

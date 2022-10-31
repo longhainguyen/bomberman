@@ -18,6 +18,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.Item;
 import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.items.Portal;
+import uet.oop.bomberman.items.itemType;
 import uet.oop.bomberman.maps.Map;
 import uet.oop.bomberman.menu.MenuGame;
 import uet.oop.bomberman.menu.ButtonMenu;
@@ -151,11 +152,13 @@ public class BombermanGame extends Application {
         stage.show();
         // music when play
 
+
         //initGame();
     }
 
 
     public void initGame() {
+
         if(menuGame.isBackMenu) {
             gameMusic.resumme();
             menuGame.isBackMenu = false;

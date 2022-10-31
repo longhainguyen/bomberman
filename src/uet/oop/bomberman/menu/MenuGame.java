@@ -214,7 +214,7 @@ public class MenuGame extends Parent {
 
     private void setEvenForBtnSoundMenu() {
         btnSoundMenu.setOnMouseClicked(event -> {
-            if(isClickedSoundMenu) this.clickMouse.soundclick(musicItem.click);
+            this.clickMouse.soundclick(musicItem.click);
             isClickedSoundMenu = !isClickedSoundMenu;
             if(isClickedSoundMenu) {
                 btnSoundMenu.setDropShadow();

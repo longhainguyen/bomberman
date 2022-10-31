@@ -47,6 +47,8 @@ public class Bomber extends Entity {
 
     private musicItem deadSound = new musicItem(1, 50, musicItem.deadSound);
 
+    private musicItem almostDieSound;
+
     public boolean checkDie = false;
 
     public boolean isBombpass = false;
@@ -394,11 +396,13 @@ public class Bomber extends Entity {
     public void move() {
         if (!this.isSurvival) {
             if (entity_collision.checkCollisionsOfentities(entities_rect)) {
+                almostDieSound = new musicItem(1, 50, musicItem.roblox);
                 heart--;
                 if (heart >= 0) {
                     Band.heart.setText(String.valueOf(heart));
                 }
                 if (heart >= 1) {
+                    this.almostDieSound.playSound();
                     this.addType(itemType.Firepass);
                     this.isSurvival = true;
                     this.is_almost_die = true;

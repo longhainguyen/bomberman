@@ -54,3 +54,6 @@ Các *Item* cũng được giấu phía sau Brick và chỉ hiện ra khi Brick 
 - Bomber được buff nhiều loại sức mạnh khác nhau khi ăn các `Item` bằng việc phá hủy công trình.
 - Người chơi `thắng` khi giết được tất cả các enemies và tìm đường vào `portal`.
 - Người chơi `thua` khi số mạng về `0` hoặc `hết thời gian`.
+### Cây thừa kế
+- ![](res/UML/bomberman.drawio.png) 
+ 

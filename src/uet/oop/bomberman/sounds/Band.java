@@ -162,7 +162,7 @@ public class Band {
         point = new Text(340, 445, "Point");
         point.setFont(Font.font(Font.getFamilies().get(0), FontWeight.BOLD, 30));
         point.setFill(Color.WHITE);
-        Point = new Text(340, 472, String.valueOf(score));
+        Point = new Text(340, 472, "3");
         musicSymbol.setBlanced(Point, point.getX() + point.getBoundsInLocal().getWidth() / 2);
         Point.setFont(Font.font(Font.getFamilies().get(0), FontWeight.BOLD, 30));
         Point.setFill(Color.WHITE);
@@ -311,9 +311,6 @@ public class Band {
         for(ImageView image: musicImgae) {
             BombermanGame.root.getChildren().remove(image);
         }
-        fileInput.removeAll(fileInput);
-        Imgae.removeAll(Imgae);
-        musicImgae.removeAll(musicImgae);
         countdownTime = 200;
         score = 0;
     }

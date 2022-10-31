@@ -173,6 +173,22 @@ public class Map {
                         object = new KonDoria(j,i,Sprite.kondoria_right1.getFxImage());
                         BombermanGame.enemiesNumber++;
                         break;
+                    case "o":
+                        object = new OVape(j,i,Sprite.oVapeRight.getFxImage());
+                        BombermanGame.enemiesNumber++;
+                        break;
+                    case "a":
+                        object = new Pass(j,i,Sprite.passRight.getFxImage());
+                        BombermanGame.enemiesNumber++;
+                        break;
+                    case "i":
+                        object = new MinVoBlack(j,i,Sprite.minVoBlackRight.getFxImage());
+                        BombermanGame.enemiesNumber++;
+                        break;
+                    case "j":
+                        object = new MinVoGreen(j,i,Sprite.minVoGreenRight.getFxImage());
+                        BombermanGame.enemiesNumber++;
+                        break;
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                 }

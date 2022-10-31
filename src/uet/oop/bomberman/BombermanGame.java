@@ -380,9 +380,7 @@ public class BombermanGame extends Application {
                 isEndGame = true;
                 menuGame.setMenuWhenLose();
         }
-        else /*(entities.contains(player)
-                && !(player.getY() <= portal.rectItem.getY() + 20 && portal.rectItem.getX() + 20 >= player.getX()
-                && portal.rectItem.getY() <= player.getY()  && portal.rectItem.getX()  <= player.getX()) ) */{
+        else {
             isEndGame = false;
             grass.forEach(Entity::update);
             powerup.forEach(Item::update);
@@ -392,34 +390,12 @@ public class BombermanGame extends Application {
             MoveIntelligent.setBomberXY(player.getX(), player.getY());
             band.update();
         }
-       /* if(entities.contains(player)
-                && !(player.getY() <= portal.rectItem.getY() + 20 && portal.rectItem.getX() + 20 >= player.getX()
-                && portal.rectItem.getY() <= player.getY()  && portal.rectItem.getX()  <= player.getX() ) ) {
-            isEndGame = false;
-            grass.forEach(Entity::update);
-            powerup.forEach(Item::update);
-            entities.forEach(Entity::update);
-            stillObjects.forEach(Entity::update);
-            mapGame.update();
-            MoveIntelligent.setBomberXY(player.getX(), player.getY());
-            band.update();
-        }else if((player.getY() <= portal.rectItem.getY() + 20 && portal.rectItem.getX() + 20 >= player.getX()
-                && portal.rectItem.getY() <= player.getY()  && portal.rectItem.getX()  <= player.getX() && enemiesNumber == 0)){
-            isEndGame = true;
-            menuGame.setMenuWhenWin();
-            writeHighScoreToFileTxt();
-            menuGame.updateHighScore();
-        }else if(Band.countdownTime <= 0){
-            isEndGame = true;
-            menuGame.setMenuWhenLose();
-        }else {
-            isEndGame = true;
-            menuGame.setMenuWhenLose();
-        }*/
 
     }
 
     public void deleteGame() {
+        clearAll.getMediaPlayer().stop();
+        enemiesNumber = 0;
         this.entities.removeAll(entities);
         this.grass.removeAll(grass);
         this.stillObjects.removeAll(stillObjects);

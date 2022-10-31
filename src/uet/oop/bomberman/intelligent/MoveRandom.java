@@ -13,7 +13,7 @@ public class MoveRandom {
     protected int randomMove = 1;
     protected int cellWalkPassed;
 
-    protected int Speed_random = 2;
+    public int Speed_random = 2;
 
     protected Rect rect_fake = null;
 

@@ -21,7 +21,7 @@ public class Doll extends Entity{
         }
         if (goRight) {
             Image image_goRight = Sprite.movingSprite(Sprite.doll_right1,
-                    Sprite.doll_right2, Sprite.doll_right2, entity_frame, max_long_time).getFxImage();
+                    Sprite.doll_right2, Sprite.doll_right3, entity_frame, max_long_time).getFxImage();
             this.setImg(image_goRight);
         } else if (goLeft) {
             Image image_goLeft = Sprite.movingSprite(Sprite.doll_left1,

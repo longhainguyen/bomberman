@@ -2,11 +2,14 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.intelligent.MoveIntelligent;
 import uet.oop.bomberman.intelligent.MoveNo;
+import uet.oop.bomberman.intelligent.MoveSpeed;
 import uet.oop.bomberman.maps.Map;
 
 public class OVape extends Entity{
     private MoveNo moveNo = new MoveNo();
+    private MoveSpeed moveSpeed = new MoveSpeed();
     public OVape(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         this.max_long_time = 12;
@@ -53,6 +56,12 @@ public class OVape extends Entity{
                 }
             }
         } else {
+            double distance = Math.sqrt(Math.pow(this.getX() - MoveIntelligent.bomberX, 2)
+                    + Math.pow(this.getY() - MoveIntelligent.bomberY, 2));
+            if(distance <= 200) {
+                moveNo.Speed_random = 3;
+            }else moveNo.Speed_random = 2;
+
             moveNo.moveRandom(this, this.entity_collision, this.entities_rect);
         }
     }

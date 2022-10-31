@@ -32,7 +32,7 @@ public class Band {
 
     public static int enemiesNumber = 0;
 
-    public static int countdownTime = 5;
+    public static int countdownTime = 200;
 
     public static Text musicText = null;
 

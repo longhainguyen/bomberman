@@ -309,6 +309,7 @@ public class Band {
                                 BombermanGame.gameMusic.getMediaPlayer().setMute(false);
                             }
                         } else {
+                            System.out.println(BombermanGame.effectMute);
                             if (!BombermanGame.effectMute) {
                                 changeSymbol(BombermanGame.root, value);
                                 BombermanGame.effectMute = true;

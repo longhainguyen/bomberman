@@ -403,7 +403,7 @@ public class Bomber extends Entity {
                     Band.heart.setText(String.valueOf(heart));
                 }
                 if (heart >= 1) {
-                    if(!BombermanGame.effectMute) {
+                    if (!BombermanGame.effectMute) {
                         this.almostDieSound.playSound();
                     }
                     this.addType(itemType.Firepass);
@@ -424,8 +424,7 @@ public class Bomber extends Entity {
                         Band.musicImgae.set(3, temp);
                         BombermanGame.root.getChildren().add(Band.musicImgae.get(0));
                         BombermanGame.gameMusic.setIs_playing(false);
-                    }
-                    else{
+                    } else {
                         BombermanGame.is_want_pause_game = false;
                     }
                 }
@@ -445,7 +444,7 @@ public class Bomber extends Entity {
                     Sprite.player_dead3, isDie_time, max_die_time).getFxImage();
             this.setImg(die_image);
         } else if (!isDie && is_almost_die) {
-            current_almost_die_time ++;
+            current_almost_die_time++;
             Image die_image = Sprite.movingSprite(Sprite.player_dead1,
                     Sprite.player_dead2,
                     Sprite.player_dead3, isDie_time, max_die_time).getFxImage();
@@ -464,7 +463,7 @@ public class Bomber extends Entity {
                 posYInMap -= SPEED;
                 y -= SPEED;
                 entities_rect.setY(y);
-                if (entity_collision.checkCollisions(entities_rect)) {
+                if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                     y += SPEED;
                     posYInMap += SPEED;
                 }
@@ -476,7 +475,7 @@ public class Bomber extends Entity {
                 if (posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
                         && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                     y += SPEED;
-                    if (entity_collision.checkCollisions(entities_rect)) {
+                    if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                         y -= SPEED;
                         entities_rect.setY(y + SPEED);
                     } else entities_rect.setY(y);
@@ -501,7 +500,7 @@ public class Bomber extends Entity {
                 posYInMap += SPEED;
                 y += SPEED;
                 entities_rect.setY(y);
-                if (entity_collision.checkCollisions(entities_rect)) {
+                if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                     y -= SPEED;
                     posYInMap -= SPEED;
                 }
@@ -512,7 +511,7 @@ public class Bomber extends Entity {
                 if (posYInMap >= BombermanGame.WINDOW_HEIGHT / 2
                         && posYInMap <= Map.heightOfMap - BombermanGame.WINDOW_HEIGHT / 2) {
                     y -= SPEED;
-                    if (entity_collision.checkCollisions(entities_rect)) {
+                    if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                         y += SPEED;
                         entities_rect.setY(y - SPEED);
                     } else
@@ -537,7 +536,7 @@ public class Bomber extends Entity {
                 posXInMap -= SPEED;
                 x -= SPEED;
                 entities_rect.setX(x);
-                if (entity_collision.checkCollisions(entities_rect)) {
+                if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                     x += SPEED;
                     posXInMap += SPEED;
                 }
@@ -549,7 +548,7 @@ public class Bomber extends Entity {
                 if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                         && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                     x += SPEED;
-                    if (entity_collision.checkCollisions(entities_rect)) {
+                    if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                         x -= SPEED;
                         entities_rect.setX(x + SPEED);
                     } else
@@ -574,7 +573,7 @@ public class Bomber extends Entity {
                 x += SPEED;
                 posXInMap += SPEED;
                 entities_rect.setX(x);
-                if (entity_collision.checkCollisions(entities_rect)) {
+                if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                     posXInMap -= SPEED;
                     x -= SPEED;
                 }
@@ -585,7 +584,7 @@ public class Bomber extends Entity {
                 if (posXInMap >= BombermanGame.WINDOW_WIDTH / 2
                         && posXInMap <= Map.widthOfMap - BombermanGame.WINDOW_WIDTH / 2) {
                     x -= SPEED;
-                    if (entity_collision.checkCollisions(entities_rect)) {
+                    if (entity_collision.checkCollisions(entities_rect) && !isWallpass) {
                         x += SPEED;
                         entities_rect.setX(x - SPEED);
                     } else

@@ -43,7 +43,7 @@ public class Collision {
     }
     public void setRectCollisions(List<Entity> stillObjects) {
         List<Rect> temp = new ArrayList<>();
-        if (!BombermanGame.fake_player.isWallpass) {
+        //if (!BombermanGame.fake_player.isWallpass) {
             for (int i = 0; i < stillObjects.size(); i++) {
                 if (stillObjects.get(i) instanceof Bomb) {
                     if (!((Bomb) stillObjects.get(i)).is_out_of_bomber || BombermanGame.fake_player.isBombpass) {
@@ -57,7 +57,7 @@ public class Collision {
                     stillObjects.get(i).setEntities_rect(new Rect(object.getX(), object.getY(), width, height));
                 }
             }
-        }
+       // }
         collisions = temp;
     }
 

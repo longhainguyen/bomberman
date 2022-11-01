@@ -57,7 +57,11 @@ public class MenuGame extends Parent {
     private ButtonMenu btnHowToPlay = new ButtonMenu("HOW TO PLAY");
 
     private ButtonMenu btnMenuHighScore = new ButtonMenu("HIGH SCORE");
-    private ButtonMenu btnMenuHowToPlay = new ButtonMenu("");
+    private ButtonMenu btnMenuHowToPlay = new ButtonMenu("\n" +
+            "- For Bomber use arrow keys corresponding to \n" +
+            "go up, left, down, right. Space to place bombs.\n" +
+            "- When playing, the player can choose the song,\n" +
+            " turn on / off the sound, the effect.");
     private ButtonMenu btnBack2 = new ButtonMenu("BACK");
     private ButtonMenu btnBack3 = new ButtonMenu("BACK");
     private ButtonMenu btnBack4 = new ButtonMenu("BACK");
@@ -71,7 +75,7 @@ public class MenuGame extends Parent {
     private Rectangle bg;
 
 
-    private musicItem clickMouse = new musicItem(1, 50, musicItem.click);
+    private final musicItem clickMouse = new musicItem(1, 50, musicItem.click);
 
     public musicItem lobbyMusic = new musicItem(-1, 50, musicItem.lobby);
 

@@ -36,7 +36,7 @@ public class MenuStage {
                 break;
             }
             index++;
-            score.append("st").append(index).append(" : ").append(listScore.get(i)).append("\n");
+            score.append("No.").append(index).append(" : ").append(listScore.get(i)).append("\n");
         }
         highScore = score.toString();
     }
